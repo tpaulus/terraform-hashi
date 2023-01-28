@@ -17,12 +17,6 @@ job "Lunch_Money_Offset_Tracker" {
 
       config {
         image = "ghcr.io/tpaulus/lunch-money-offset-tracker:main"
-        
-        auth {
-          server_address = "ghcr.io"
-          username = "tpaulus"
-          password = "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"
-        }
       }
 
       template {
