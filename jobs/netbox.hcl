@@ -164,8 +164,8 @@ WEBHOOKS_ENABLED=true
         image = "docker.io/netboxcommunity/netbox:v3.4"
 
         auth_soft_fail = true
-
-        command = "/opt/netbox/venv/bin/python /opt/netbox/netbox/manage.py rqworker"
+        entrypoint = "/opt/netbox/venv/bin/python"
+        command = "/opt/netbox/netbox/manage.py rqworker"
       }
 
       resources {
