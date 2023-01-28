@@ -27,7 +27,7 @@ job "Netbox" {
       }
 
       port "http" {
-        to = 8000
+        to = 8080
       }
     }
 
@@ -63,7 +63,7 @@ job "Netbox" {
         tags = [
           "global", "netbox",
           "traefik.enable=true",
-          "traefik.http.routers.http.rule=Host(`netbox.whitestar.systems`)",
+          "traefik.http.routers.netbox.rule=Host(`netbox.whitestar.systems`)",
         ]
 
         check {
@@ -72,6 +72,7 @@ job "Netbox" {
           port     = "http"
           interval = "60s"
           timeout  = "5s"
+          failures_before_critical = "5"
 
           check_restart {
             limit = 3
@@ -87,6 +88,7 @@ job "Netbox" {
           path     = "/"
           interval = "60s"
           timeout  = "5s"
+          failures_before_critical = "5"
 
           header {
             X-Forwarded-Host  = ["netbox.whitestar.systems"]
@@ -132,17 +134,21 @@ HOUSEKEEPING_INTERVAL=86400
 MEDIA_ROOT=/opt/netbox/netbox/media
 METRICS_ENABLED=false
 REDIS_CACHE_DATABASE=1
-REDIS_CACHE_HOST={{ range service "netbox-redis-cache" }}{{ .Address }}{{ end }}
+{{ range service "netbox-redis-cache" -}}
+REDIS_CACHE_HOST={{ .Address }}
+REDIS_CACHE_PORT={{ .Port }}
+{{ end }}
 REDIS_CACHE_INSECURE_SKIP_TLS_VERIFY=false
 REDIS_CACHE_PASSWORD={{ with nomadVar "nomad/jobs/Netbox" }}{{ .redisCachePassword }}{{ end }}
 REDIS_CACHE_SSL=false
-REDIS_CACHE_PORT={{ range service "netbox-redis-cache" }}{{ .Port }}{{ end }}
 REDIS_DATABASE=0
-REDIS_HOST={{ range service "netbox-redis" }}{{ .Address }}{{ end }}
+{{ range service "netbox-redis" -}}
+REDIS_HOST={{ .Address }}
+REDIS_PORT={{ .Port }}
+{{- end }}
 REDIS_INSECURE_SKIP_TLS_VERIFY=false
 REDIS_PASSWORD={{ with nomadVar "nomad/jobs/Netbox" }}{{ .redisPassword }}{{ end }}
 REDIS_SSL=false
-REDIS_PORT={{ range service "netbox-redis" }}{{ .Port }}{{ end }}
 RELEASE_CHECK_URL=https://api.github.com/repos/netbox-community/netbox/releases
 SECRET_KEY={{ with nomadVar "nomad/jobs/Netbox" }}{{ .secretKey }}{{ end }}
 SKIP_SUPERUSER=true
@@ -264,14 +270,17 @@ POSTGRES_USER={{ .dbUser }}
     }
 
 
-    task "redis-cache" {  // Netbox calls this Redis-Cache
+    task "redis-cache" {
       driver = "docker"
       config = {
         image = "docker.io/redis:7.0.8-alpine"
         ports = ["redis"]
 
         auth_soft_fail = true
-        args = ["--requirepass $REDIS_PASSWORD"]
+        
+        args = [
+          "--requirepass", "{{ with nomadVar "nomad/jobs/Netbox" }}{{ .redisCachePassword }}{{ end }}"
+        ]
 
         mount {
           type   = "bind"
@@ -299,17 +308,6 @@ POSTGRES_USER={{ .dbUser }}
             ignore_warnings = false
           }
         }
-      }
-
-      template {
-        data = <<EOH
-{{ with nomadVar "nomad/jobs/Netbox" -}}
-REDIS_PASSWORD={{ .redisCachePassword }}
-{{- end }}
-        EOH
-
-        destination = "secrets/file.env"
-        env         = true
       }
 
       resources {
@@ -346,7 +344,10 @@ REDIS_PASSWORD={{ .redisCachePassword }}
         ports = ["redis"]
 
         auth_soft_fail = true
-        args = ["--requirepass $REDIS_PASSWORD"]
+        args = [
+          "--appendonly", "yes",
+          "--requirepass", "{{ with nomadVar "nomad/jobs/Netbox" }}{{ .redisPassword }}{{ end }}"
+        ]
 
         mount {
           type   = "bind"
@@ -374,17 +375,6 @@ REDIS_PASSWORD={{ .redisCachePassword }}
             ignore_warnings = false
           }
         }
-      }
-
-      template {
-        data = <<EOH
-{{ with nomadVar "nomad/jobs/Netbox" -}}
-REDIS_PASSWORD={{ .redisPassword }}
-{{- end }}
-        EOH
-
-        destination = "secrets/file.env"
-        env         = true
       }
 
       resources {
