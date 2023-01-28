@@ -275,7 +275,7 @@ POSTGRES_USER={{ .dbUser }}
         ports = ["redis"]
 
         auth_soft_fail = true
-        args = ["local/redis.conf"]
+        args = ["/local/redis.conf"]
 
         mount {
           type   = "bind"
@@ -312,7 +312,7 @@ requirepass {{ .redisCachePassword }}
 {{- end }}
         EOH
 
-        destination = "local/redis.conf"
+        destination = "/local/redis.conf"
       }
 
       resources {
@@ -349,10 +349,7 @@ requirepass {{ .redisCachePassword }}
         ports = ["redis"]
 
         auth_soft_fail = true
-        args = [
-          "--appendonly", "yes",
-          "local/redis.conf"
-        ]
+        args = ["/local/redis.conf"]
 
         mount {
           type   = "bind"
@@ -386,10 +383,11 @@ requirepass {{ .redisCachePassword }}
         data = <<EOH
 {{ with nomadVar "nomad/jobs/Netbox" -}}
 requirepass {{ .redisPassword }}
+appendonly yes
 {{- end }}
         EOH
 
-        destination = "local/redis.conf"
+        destination = "/local/redis.conf"
       }
 
       resources {
