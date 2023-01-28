@@ -279,7 +279,7 @@ POSTGRES_USER={{ .dbUser }}
         auth_soft_fail = true
         
         args = [
-          "--requirepass", "{{ with nomadVar "nomad/jobs/Netbox" }}{{ .redisCachePassword }}{{ end }}"
+          "--requirepass", "{{ with nomadVar \"nomad/jobs/Netbox\" }}{{ .redisCachePassword }}{{ end }}"
         ]
 
         mount {
@@ -346,7 +346,7 @@ POSTGRES_USER={{ .dbUser }}
         auth_soft_fail = true
         args = [
           "--appendonly", "yes",
-          "--requirepass", "{{ with nomadVar "nomad/jobs/Netbox" }}{{ .redisPassword }}{{ end }}"
+          "--requirepass", "{{ with nomadVar \"nomad/jobs/Netbox\" }}{{ .redisPassword }}{{ end }}"
         ]
 
         mount {
