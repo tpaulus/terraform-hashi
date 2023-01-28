@@ -27,7 +27,7 @@ job "Lunch_Money_Offset_Tracker" {
 
       template {
         data = <<EOH
-{{ with nomadVar "nomad/job/Lunch_Money_Offset_Tracker" -}}
+{{ with nomadVar "nomad/jobs/Lunch_Money_Offset_Tracker" -}}
 LUNCHMONEY_KEY = "{{ .LUNCHMONEY_KEY }}"
 NOTION_DB = "{{ .NOTION_DB }}"
 NOTION_KEY = "{{ .NOTION_KEY }}"
