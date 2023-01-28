@@ -72,7 +72,6 @@ job "Netbox" {
           port     = "http"
           interval = "60s"
           timeout  = "5s"
-          failures_before_critical = "5"
 
           check_restart {
             limit = 3
@@ -88,7 +87,6 @@ job "Netbox" {
           path     = "/"
           interval = "60s"
           timeout  = "5s"
-          failures_before_critical = "5"
 
           header {
             X-Forwarded-Host  = ["netbox.whitestar.systems"]
@@ -277,10 +275,7 @@ POSTGRES_USER={{ .dbUser }}
         ports = ["redis"]
 
         auth_soft_fail = true
-        
-        args = [
-          "--requirepass", "{{ with nomadVar \"nomad/jobs/Netbox\" }}{{ .redisCachePassword }}{{ end }}"
-        ]
+        args = ["local/redis.conf"]
 
         mount {
           type   = "bind"
@@ -308,6 +303,16 @@ POSTGRES_USER={{ .dbUser }}
             ignore_warnings = false
           }
         }
+      }
+
+      template {
+        data = <<EOH
+{{ with nomadVar "nomad/jobs/Netbox" -}}
+requirepass {{ .redisCachePassword }}
+{{- end }}
+        EOH
+
+        destination = "local/redis.conf"
       }
 
       resources {
@@ -346,7 +351,7 @@ POSTGRES_USER={{ .dbUser }}
         auth_soft_fail = true
         args = [
           "--appendonly", "yes",
-          "--requirepass", "{{ with nomadVar \"nomad/jobs/Netbox\" }}{{ .redisPassword }}{{ end }}"
+          "local/redis.conf"
         ]
 
         mount {
@@ -375,6 +380,16 @@ POSTGRES_USER={{ .dbUser }}
             ignore_warnings = false
           }
         }
+      }
+
+      template {
+        data = <<EOH
+{{ with nomadVar "nomad/jobs/Netbox" -}}
+requirepass {{ .redisPassword }}
+{{- end }}
+        EOH
+
+        destination = "local/redis.conf"
       }
 
       resources {
