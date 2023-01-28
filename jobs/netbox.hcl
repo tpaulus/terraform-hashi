@@ -170,7 +170,7 @@ WEBHOOKS_ENABLED=true
 
       resources {
         cpu    = 256
-        memory = 128
+        memory = 256
       }
 
       template {
