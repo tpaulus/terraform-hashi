@@ -158,71 +158,7 @@ WEBHOOKS_ENABLED=true
       }
     }
 
-    task "netbox-worker" {
-      driver = "docker"
-      config = {
-        image = "docker.io/netboxcommunity/netbox:v3.4"
 
-        auth_soft_fail = true
-        entrypoint = ["/opt/netbox/venv/bin/python"]
-        command = "/opt/netbox/netbox/manage.py rqworker"
-      }
-
-      resources {
-        cpu    = 256
-        memory = 512
-      }
-
-      template {
-        data = <<EOH
-CORS_ORIGIN_ALLOW_ALL=True
-DB_HOST={{ range service "netbox-db" }}{{ .Address }}{{ end }}
-{{ with nomadVar "nomad/jobs/Netbox" -}}
-DB_NAME={{ .dbName }}
-DB_PASSWORD={{ .dbPassword }}
-DB_USER={{ .dbUser }}
-{{- end }}
-DB_PORT={{ range service "netbox-db" }}{{ .Port }}{{ end }}
-{{ with nomadVar "SMTP" -}}
-EMAIL_FROM=netbox@whitestar.systems
-EMAIL_PASSWORD={{ .pass }}
-EMAIL_PORT={{ .port }}
-EMAIL_SERVER= {{ .host }}
-EMAIL_TIMEOUT=5
-EMAIL_USERNAME={{ .user }}
-{{- end }}
-EMAIL_USE_SSL=false
-EMAIL_USE_TLS=true
-GRAPHQL_ENABLED=true
-HOUSEKEEPING_INTERVAL=86400
-MEDIA_ROOT=/opt/netbox/netbox/media
-METRICS_ENABLED=false
-REDIS_CACHE_DATABASE=1
-{{ range service "netbox-redis-cache" -}}
-REDIS_CACHE_HOST={{ .Address }}
-REDIS_CACHE_PORT={{ .Port }}
-{{ end }}
-REDIS_CACHE_INSECURE_SKIP_TLS_VERIFY=false
-REDIS_CACHE_PASSWORD={{ with nomadVar "nomad/jobs/Netbox" }}{{ .redisCachePassword }}{{ end }}
-REDIS_CACHE_SSL=false
-REDIS_DATABASE=0
-{{ range service "netbox-redis" -}}
-REDIS_HOST={{ .Address }}
-REDIS_PORT={{ .Port }}
-{{- end }}
-REDIS_INSECURE_SKIP_TLS_VERIFY=false
-REDIS_PASSWORD={{ with nomadVar "nomad/jobs/Netbox" }}{{ .redisPassword }}{{ end }}
-REDIS_SSL=false
-RELEASE_CHECK_URL=https://api.github.com/repos/netbox-community/netbox/releases
-SECRET_KEY={{ with nomadVar "nomad/jobs/Netbox" }}{{ .secretKey }}{{ end }}
-SKIP_SUPERUSER=true
-WEBHOOKS_ENABLED=true
-        EOH
-
-        destination = "secrets/file.env"
-        env         = true
-      }
-    }
 
     task "netbox-housekeeping" {
       driver = "docker"
