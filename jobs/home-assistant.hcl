@@ -83,27 +83,6 @@ job "HomeAssistant" {
             ignore_warnings = false
           }
         }
-
-        check {
-          name     = "HTTP Health Check"
-          type     = "http"
-          port     = "http"
-          path     = "/"
-          interval = "60s"
-          timeout  = "5s"
-
-          header {
-            X-Forwarded-Host  = ["home.whitestar.systems"]
-            X-Forwarded-For   = ["127.0.0.1"]
-            X-Forwarded-Proto = ["https"]
-          }
-
-          check_restart {
-            limit = 3
-            grace = "90s"
-            ignore_warnings = false
-          }
-        }
       }
 
       resources {
