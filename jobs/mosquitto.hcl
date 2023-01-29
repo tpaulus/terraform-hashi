@@ -63,6 +63,8 @@ job "MQTT" {
 
       template {
         destination   = "local/mosquitto.conf"
+        change_mode   = "signal"
+        change_signal = "SIGHUP"
         data          = <<EOH
         listener 1883
         allow_anonymous false
