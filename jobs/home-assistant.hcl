@@ -22,7 +22,11 @@ job "HomeAssistant" {
     }
 
     network {
-      port "web-ui" {
+      dns {
+        servers = ["10.0.1.249", "1.1.1.1", "1.0.0.1"]
+      }
+
+      port "ui" {
         to = 8123
       }
     }
@@ -40,7 +44,7 @@ job "HomeAssistant" {
       config = {
         network = "corp"
         image = "ghcr.io/home-assistant/home-assistant:2023.1.7"
-        ports = ["web-ui"]
+        ports = ["ui"]
 
         auth_soft_fail = true
 
@@ -55,7 +59,7 @@ job "HomeAssistant" {
 
       service {
         name         = "HomeAssistant"
-        port         = "web-ui"
+        port         = "ui"
         provider     = "consul"
         address_mode = "driver"
 

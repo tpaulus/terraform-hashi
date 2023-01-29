@@ -23,6 +23,10 @@ job "Zigbee2MQTT" {
     }
 
     network {
+      dns {
+        servers = ["10.0.1.249", "1.1.1.1", "1.0.0.1"]
+      }
+
       port "http" {}
     }
 
@@ -62,9 +66,6 @@ job "Zigbee2MQTT" {
     }
 
     task "z2m" {
-      resources {
-        device "1a86/usb/7523" {}
-
       driver = "docker"
       config = {
         image = "docker.io/koenkk/zigbee2mqtt:1.29.2"
@@ -100,6 +101,8 @@ ZIGBEE2MQTT_CONFIG_MQTT_CLIENT_ID={{ env "NOMAD_ALLOC_NAME" }}
       }
 
       resources {
+        device "1a86/usb/7523" {}
+
         cpu    = 1024
         memory = 1024
       }
