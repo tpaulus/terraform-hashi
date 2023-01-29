@@ -47,7 +47,7 @@ job "HomeAssistant" {
         auth_soft_fail = true
 
         volumes = ["/etc/localtime:/etc/localtime:ro"]
-        cap_add = ["net_raw", "sys_time"]
+        cap_add = ["net_raw"]
       }
 
       volume_mount {
