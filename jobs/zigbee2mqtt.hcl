@@ -77,6 +77,7 @@ job "Zigbee2MQTT" {
         devices = [
           {
             host_path = "/dev/ttyUSB0"
+            container_path = "/dev/ttyUSB0"
           }
         ]
       }
