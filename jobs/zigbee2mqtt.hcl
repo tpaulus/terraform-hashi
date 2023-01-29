@@ -69,6 +69,7 @@ job "Zigbee2MQTT" {
       driver = "docker"
       config = {
         image = "docker.io/koenkk/zigbee2mqtt:1.29.2"
+        network_mode = "corp"
         ports = ["http"]
 
         auth_soft_fail = true

@@ -42,7 +42,7 @@ job "HomeAssistant" {
     task "home-assistant" {
       driver = "docker"
       config = {
-        network = "corp"
+        network_mode = "corp"
         image = "ghcr.io/home-assistant/home-assistant:2023.1.7"
         ports = ["http"]
 
