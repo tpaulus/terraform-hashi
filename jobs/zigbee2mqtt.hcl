@@ -87,6 +87,10 @@ job "Zigbee2MQTT" {
 TZ=America/Los_Angeles
 ZIGBEE2MQTT_CONFIG_FRONTEND_PORT={{ env "NOMAD_PORT_http" }}
 ZIGBEE2MQTT_CONFIG_MQTT_SERVER=mqtt://{{ range service "mqtt" }}{{ .Address }}:{{ .Port }}{{ end }}
+{{ with nomadVar "nomad/jobs/Zigbee2MQTT" -}}
+ZIGBEE2MQTT_CONFIG_MQTT_USER={{ .user }}
+ZIGBEE2MQTT_CONFIG_MQTT_PASSWORD={{ .pass }}
+{{- end }}
 ZIGBEE2MQTT_CONFIG_MQTT_CLIENT_ID={{ env "NOMAD_ALLOC_NAME" }}
         EOH
 

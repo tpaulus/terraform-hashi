@@ -78,7 +78,10 @@ job "MQTT" {
       template {
         destination   = "local/passwords.txt"
         data          = <<EOH
-        home-assistant:{{ with nomadVar "nomad/jobs/MQTT" }}{{ .homeAssistantPassword }}{{ end }}
+        {{ with nomadVar "nomad/jobs/MQTT" -}}
+        home-assistant:{{ .homeAssistantPassword }}
+        z2m:{{ .z2mPassword }}
+        {{- end }}
         EOH
       }
     }
