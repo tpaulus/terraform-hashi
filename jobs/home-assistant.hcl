@@ -66,8 +66,8 @@ job "HomeAssistant" {
         tags = [
           "global", "home-automation",
           "traefik.enable=true",
-          "traefik.http.routers.blog.rule=Host(`home.whitestar.systems`)",
-          "traefik.http.services.blog.loadbalancer.passhostheader=true"
+          "traefik.http.routers.homeassistant.rule=Host(`home.whitestar.systems`)",
+          "traefik.http.services.homeassistant.loadbalancer.passhostheader=true"
         ]
 
         check {
