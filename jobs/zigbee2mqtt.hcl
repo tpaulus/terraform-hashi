@@ -24,7 +24,7 @@ job "Zigbee2MQTT" {
 
     network {
       dns {
-        servers = ["10.0.1.249", "1.1.1.1", "1.0.0.1"]
+        servers = ["10.0.10.99", "1.1.1.1", "1.0.0.1"]
       }
 
       port "http" {}
