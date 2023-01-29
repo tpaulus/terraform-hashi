@@ -22,10 +22,6 @@ job "HomeAssistant" {
     }
 
     network {
-      dns {
-        servers = ["10.0.10.99", "1.1.1.1", "1.0.0.1"]
-      }
-
       port "http" {
         to = 8123
       }
@@ -43,6 +39,8 @@ job "HomeAssistant" {
       driver = "docker"
       config = {
         network_mode = "corp"
+        dns_servers = ["10.0.10.99", "1.1.1.1", "1.0.0.1"]
+        
         image = "ghcr.io/home-assistant/home-assistant:2023.1.7"
         ports = ["http"]
 

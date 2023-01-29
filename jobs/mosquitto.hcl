@@ -22,10 +22,6 @@ job "MQTT" {
     }
 
     network {
-      dns {
-        servers = ["10.0.10.99", "1.1.1.1", "1.0.0.1"]
-      }
-
       port "broker" {
         to = 1883
       }
@@ -36,6 +32,8 @@ job "MQTT" {
       driver = "docker"
       config = {
         network_mode = "corp"
+        dns_servers = ["10.0.10.99", "1.1.1.1", "1.0.0.1"]
+        
         image = "docker.io/eclipse-mosquitto:2.0.15"
         ports = ["broker"]
 
