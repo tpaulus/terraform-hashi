@@ -69,20 +69,6 @@ job "HomeAssistant" {
           "traefik.http.routers.homeassistant.rule=Host(`home.whitestar.systems`)",
           "traefik.http.services.homeassistant.loadbalancer.passhostheader=true"
         ]
-
-        check {
-          name     = "TCP Health Check"
-          type     = "tcp"
-          port     = "http"
-          interval = "60s"
-          timeout  = "5s"
-
-          check_restart {
-            limit = 3
-            grace = "90s"
-            ignore_warnings = false
-          }
-        }
       }
 
       resources {

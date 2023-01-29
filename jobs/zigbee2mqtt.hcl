@@ -49,20 +49,6 @@ job "Zigbee2MQTT" {
         "traefik.http.routers.blog.rule=Host(`z2m.brickyard.whitestar.systems`)",
         "traefik.http.services.blog.loadbalancer.passhostheader=true"
       ]
-
-      check {
-        name     = "TCP Health Check"
-        type     = "tcp"
-        port     = "http"
-        interval = "60s"
-        timeout  = "5s"
-
-        check_restart {
-          limit = 3
-          grace = "90s"
-          ignore_warnings = false
-        }
-      }
     }
 
     task "z2m" {
