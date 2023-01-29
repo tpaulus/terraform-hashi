@@ -73,11 +73,11 @@ job "Zigbee2MQTT" {
 
         auth_soft_fail = true
 
-//        devices = [
-//          {
-//            host_path = "/dev/ttyUSB0"
-//          }
-//        ]
+        devices = [
+          {
+            host_path = "/dev/ttyUSB0"
+          }
+        ]
       }
 
       template {
