@@ -77,6 +77,8 @@ job "MQTT" {
 
       template {
         destination   = "local/passwords.txt"
+        change_mode   = "signal"
+        change_signal = "SIGHUP"
         data          = <<EOH
         {{ with nomadVar "nomad/jobs/MQTT" -}}
         home-assistant:{{ .homeAssistantPassword }}
