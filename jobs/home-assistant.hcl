@@ -64,10 +64,7 @@ job "HomeAssistant" {
         address_mode = "driver"
 
         tags = [
-          "global", "home-automation",
-          "traefik.enable=true",
-          "traefik.http.routers.homeassistant.rule=Host(`home.whitestar.systems`)",
-          "traefik.http.services.homeassistant.loadbalancer.passhostheader=true"
+          "global", "home-automation"
         ]
       }
 

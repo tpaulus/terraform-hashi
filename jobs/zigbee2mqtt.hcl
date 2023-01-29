@@ -38,19 +38,6 @@ job "Zigbee2MQTT" {
       access_mode     = "single-node-writer"
     }
 
-    service {
-      name         = "Zigbee2MQTT"
-      port         = "http"
-      provider     = "consul"
-
-      tags = [
-        "global", "home-automation",
-        "traefik.enable=true",
-        "traefik.http.routers.blog.rule=Host(`z2m.brickyard.whitestar.systems`)",
-        "traefik.http.services.blog.loadbalancer.passhostheader=true"
-      ]
-    }
-
     task "z2m" {
       driver = "docker"
       config = {
@@ -67,6 +54,17 @@ job "Zigbee2MQTT" {
           }
         ]
       }
+
+    service {
+      name         = "Zigbee2MQTT"
+      port         = "http"
+      provider     = "consul"
+      address_mode = "driver"
+
+      tags = [
+        "global", "home-automation"
+      ]
+    }
 
       template {
         data = <<EOH
