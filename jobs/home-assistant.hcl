@@ -40,13 +40,14 @@ job "HomeAssistant" {
       config = {
         network_mode = "corp"
         dns_servers = ["10.0.10.99", "1.1.1.1", "1.0.0.1"]
-        
+
         image = "ghcr.io/home-assistant/home-assistant:2023.1.7"
         ports = ["http"]
 
         auth_soft_fail = true
 
         volumes = ["/etc/localtime:/etc/localtime:ro"]
+        cap_add = ["net_raw", "sys_time"]
       }
 
       volume_mount {
