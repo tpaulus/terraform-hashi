@@ -52,7 +52,7 @@ job "HomeAssistant" {
       }
 
       volume_mount {
-          volume      = "home-assistant"
+          volume      = "home-assistant-nfs-volume"
           destination = "/app/data"
           read_only   = false
       }
