@@ -203,7 +203,11 @@ resource "nomad_job" "Netbox" {
   jobspec = file("${path.module}/jobs/netbox.hcl")
 }
 
+
 resource "nomad_job" "Zigbee2Mqtt" {
-  jobspec = file("${path.module}/jobs/zigbee2mqtt.hcl") 
+  jobspec = file("${path.module}/jobs/zigbee2mqtt.hcl")
 }
 
+resource "nomad_job" "HomeAssistant" {
+  jobspec = file("${path.module}/jobs/home-assistant.hcl") 
+}
