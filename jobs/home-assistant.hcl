@@ -41,6 +41,7 @@ job "HomeAssistant" {
       config = {
         network_mode = "corp"
         dns_servers = ["10.0.10.99", "1.1.1.1", "1.0.0.1"]
+        ipv4_address = "10.0.10.51"  # Temporary until Consul DNS issues are resolved
 
         image = "ghcr.io/home-assistant/home-assistant:2023.1.7"
         ports = ["http"]

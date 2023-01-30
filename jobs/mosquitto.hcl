@@ -34,6 +34,8 @@ job "MQTT" {
       config = {
         network_mode = "corp"
         dns_servers = ["10.0.10.99", "1.1.1.1", "1.0.0.1"]
+        ipv4_address = "10.0.10.50"  # Temporary until Consul DNS issues are resolved
+
 
         image = "docker.io/eclipse-mosquitto:2.0.15"
         ports = ["broker"]
