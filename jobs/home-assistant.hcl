@@ -89,7 +89,7 @@ job "HomeAssistant" {
 {{- with nomadVar "nomad/jobs/HomeAssistant/home-assistant/Update-CoIoT-IPs" }}
 HOSTS = {{ .Hosts }}
 {{- end }}
-{{- range service "HomeAssistant" -}}
+{{ range service "HomeAssistant" -}}
 PEER="{{ .Address }}"
 {{- end }}
         EOH
