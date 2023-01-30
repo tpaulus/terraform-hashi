@@ -37,14 +37,6 @@ job "unifi-protect-backup" {
       driver = "docker"
       config = {
         image = "ghcr.io/ep1cman/unifi-protect-backup:0.8.8"
-        args = [
-          "--no-verify-ssl",
-          "--rclone-destination", "'encrypt-compress-b2:/'",
-          "--rclone-args", "--config=\"/local/rclone.conf\"'",
-          "--retention", "'3d'",
-          "--sqlite_path", "'/data/backup-events'"
-        ]
-
         auth_soft_fail = true
 
         mount {
@@ -85,6 +77,11 @@ UFP_USERNAME = {{ .protectUsername }}
 UFP_PASSWORD = {{ .protectPassword }}
 UFP_ADDRESS = {{ .protectAddress }}
 {{- end}}
+UFP_SSL_VERIFY = false
+RCLONE_RETENTION = 3d
+RCLONE_DESTINATION = 'encrypt-compress-b2:/'
+RCLONE_ARGS = '--config="/local/rclone.conf"'
+SQLITE_PATH = '/data/backup-events'
 EOH
         destination = "secrets/file.env"
         env         = true
