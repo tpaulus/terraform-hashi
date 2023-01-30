@@ -36,6 +36,7 @@ job "Zigbee2MQTT" {
 
     task "z2m" {
       driver = "docker"
+      kill_timeout = "30s"
       config = {
         network_mode = "corp"
         dns_servers = ["10.0.10.99", "1.1.1.1", "1.0.0.1"]

@@ -30,10 +30,11 @@ job "MQTT" {
 
     task "mosquitto" {
       driver = "docker"
+      kill_timeout = "30s"
       config = {
         network_mode = "corp"
         dns_servers = ["10.0.10.99", "1.1.1.1", "1.0.0.1"]
-        
+
         image = "docker.io/eclipse-mosquitto:2.0.15"
         ports = ["broker"]
 

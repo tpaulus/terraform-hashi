@@ -37,6 +37,7 @@ job "HomeAssistant" {
 
     task "home-assistant" {
       driver = "docker"
+      kill_timeout = "30s"
       config = {
         network_mode = "corp"
         dns_servers = ["10.0.10.99", "1.1.1.1", "1.0.0.1"]
@@ -80,11 +81,11 @@ job "HomeAssistant" {
 
       driver = "exec"
       config {
-        command = "/local/update-ips.sh"
+        command = "local/update-ips.sh"
       }
 
       template {
-        destination = "/local/update-ips.sh"
+        destination = "local/update-ips.sh"
         perms       = "755"
         data = <<EOH
 #!/bin/bash
