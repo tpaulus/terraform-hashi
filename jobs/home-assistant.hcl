@@ -80,12 +80,14 @@ job "HomeAssistant" {
 
       driver = "exec"
       config {
-        command = "bash /local/update-ips.sh"
+        command = "/local/update-ips.sh"
       }
 
       template {
         destination = "/local/update-ips.sh"
+        perms       = "755"
         data = <<EOH
+#!/bin/bash
 {{- range service "HomeAssistant" -}}
 PEER="{{ .Address }}"
 {{- end }}
