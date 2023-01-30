@@ -36,7 +36,7 @@ job "unifi-protect-backup" {
     task "unifi-protect-backup" {
       driver = "docker"
       config = {
-        image = "ghcr.io/ep1cman/unifi-protect-backup:v0.8.8"
+        image = "ghcr.io/ep1cman/unifi-protect-backup:0.8.8"
         args = [
           "--no-verify-ssl",
           "--rclone-destination", "'encrypt-compress-b2:/'",
