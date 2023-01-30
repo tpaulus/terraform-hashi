@@ -81,43 +81,25 @@ job "HomeAssistant" {
 
       driver = "exec"
       config {
-        command = "local/update-ips.sh"
+        command = "update_coiot.sh"
       }
 
       template {
-        destination = "local/update-ips.sh"
-        perms       = "755"
         data = <<EOH
-#!/bin/bash
+{{- with nomadVar "nomad/jobs/HomeAssistant/home-assistant/Update-CoIoT-IPs" }}
+HOSTS = {{ .Hosts }}
+{{- end }}
 {{- range service "HomeAssistant" -}}
 PEER="{{ .Address }}"
 {{- end }}
-
-{{- with nomadVar "nomad/jobs/HomeAssistant/home-assistant/Update-CoIoT-IPs" }}
-for HOST in "{{ .Hosts }}"; do
-  # Save Current Settings
-  current_settings=$(mktemp)
-  curl -X GET http://$HOST/settings --silent > $current_settings
-
-  new_settings=$(mktemp)
-  jq '.coiot.peer = "$PEER:5683"' $current_settings > $new_settings
-
-  # Update Settings
-  curl --location --request POST "http://$HOST/settings" \
-    --header "Content-Type: application/json" \
-    --data-raw @$new_settings \
-    --silent > /dev/null
-
-  echo "Settings Updated on $HOST"
-
-  # Reboot
-  # curl -X GET http://$HOST/reboot
-  echo "Issued Reboot Command to $HOST"
-
-  rm $current_settings $new_settings
-done
-{{- end }}
         EOH
+
+        destination = "secrets/file.env"
+        env         = true
+      }
+
+      artifact {
+        source = "https://gist.githubusercontent.com/tpaulus/fc32af7fa0b6f67ccfc40004592a3647/raw/174179f2cbb544f7d3d2fb5edb8183ca7eba6336/update_coiot.sh"
       }
     }
   }
