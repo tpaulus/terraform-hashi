@@ -91,30 +91,28 @@ PEER="{{ .Address }}"
 {{- end }}
 
 {{- with nomadVar "nomad/jobs/HomeAssistant/home-assistant/Update-CoIoT-IPs" }}
-{{ range (split ", " .Hosts) -}}
-HOST="{{ . }}"
+for HOST in "{{ .Hosts }}"; do
+  # Save Current Settings
+  current_settings=$(mktemp)
+  curl -X GET http://$HOST/settings --silent > $current_settings
 
-# Save Current Settings
-current_settings=$(mktemp)
-curl -X GET http://$HOST/settings --silent > $current_settings
+  new_settings=$(mktemp)
+  jq '.coiot.peer = "$PEER:5683"' $current_settings > $new_settings
 
-new_settings=$(mktemp)
-jq '.coiot.peer = "$PEER:5683"' $current_settings > $new_settings
+  # Update Settings
+  curl --location --request POST "http://$HOST/settings" \
+    --header "Content-Type: application/json" \
+    --data-raw @$new_settings \
+    --silent > /dev/null
 
-# Update Settings
-curl --location --request POST "http://$HOST/settings" \
-  --header "Content-Type: application/json" \
-  --data-raw @$new_settings \
-  --silent > /dev/null
+  echo "Settings Updated on $HOST"
 
-echo "Settings Updated on $HOST"
+  # Reboot
+  # curl -X GET http://$HOST/reboot
+  echo "Issued Reboot Command to $HOST"
 
-# Reboot
-# curl -X GET http://$HOST/reboot
-echo "Issued Reboot Command to $HOST"
-
-rm $current_settings $new_settings
-{{- end }}
+  rm $current_settings $new_settings
+done
 {{- end }}
         EOH
       }
