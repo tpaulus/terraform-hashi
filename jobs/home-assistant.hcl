@@ -80,11 +80,11 @@ job "HomeAssistant" {
 
       driver = "exec"
       config {
-        command = "bash local/update-ips.sh"
+        command = "bash /local/update-ips.sh"
       }
 
       template {
-        destination = "local/local/update-ips.sh"
+        destination = "/local/update-ips.sh"
         data = <<EOH
 {{- range service "HomeAssistant" -}}
 PEER="{{ .Address }}"
