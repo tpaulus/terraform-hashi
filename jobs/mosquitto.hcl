@@ -33,7 +33,7 @@ job "MQTT" {
       kill_timeout = "30s"
       config = {
         network_mode = "corp"
-        dns_servers = ["10.0.10.99", "1.1.1.1", "1.0.0.1"]
+        dns_servers = ["10.0.10.3"]
         ipv4_address = "10.0.10.50"  # Temporary until Consul DNS issues are resolved
 
 
