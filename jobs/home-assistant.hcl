@@ -12,7 +12,7 @@ job "HomeAssistant" {
   }
 
   affinity {
-    attribute = "${unique.hostname}"
+    attribute = "${attr.unique.hostname}"
     value     = "magnolia"
     weight    = 100
   }
