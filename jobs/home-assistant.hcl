@@ -11,6 +11,12 @@ job "HomeAssistant" {
    unlimited      = true
   }
 
+  affinity {
+    attribute = "${unique.hostname}"
+    value     = "magnolia"
+    weight    = 100
+  }
+
   group "home-assistant" {
     count = 1
 

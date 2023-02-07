@@ -11,7 +11,6 @@ job "Zigbee2MQTT" {
    unlimited      = true
   }
 
-
   group "z2m" {
     count = 1
 
