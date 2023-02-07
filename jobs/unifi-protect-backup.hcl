@@ -42,7 +42,7 @@ job "unifi-protect-backup" {
         mount {
           type   = "bind"
           source = "local/rclone.conf"
-          target = "/config/rclone.conf"
+          target = "/root/.config/rclone/rclone.conf"
         }
       }
 
