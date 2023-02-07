@@ -3,13 +3,6 @@ job "storage-node" {
   type        = "system"
   priority    = 100
 
-  reschedule {
-   delay          = "30s"
-   delay_function = "exponential"
-   max_delay      = "10m"
-   unlimited      = true
-  }
-
   group "truenas-nfs-node" {
     task "node" {
       driver = "docker"
