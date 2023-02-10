@@ -88,7 +88,7 @@ job "HomeAssistant" {
 
       driver = "exec"
       config {
-        command = "update_coiot.sh"
+        command = "home-automation/update_coiot.sh"
       }
 
       template {
@@ -106,7 +106,7 @@ PEER="{{ .Address }}"
       }
 
       artifact {
-        source = "https://gist.githubusercontent.com/tpaulus/fc32af7fa0b6f67ccfc40004592a3647/raw/174179f2cbb544f7d3d2fb5edb8183ca7eba6336/update_coiot.sh"
+        source = "git::https://github.com/tpaulus/server-scripts"
       }
     }
   }
