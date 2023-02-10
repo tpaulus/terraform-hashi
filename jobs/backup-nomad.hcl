@@ -12,11 +12,11 @@ job "backup-nomad" {
       driver = "raw_exec"
 
       config {
-        command = "backups/nomad.sh"
+        command = "nomad.sh"
       }
 
       artifact {
-        source = "git::https://github.com/tpaulus/server-scripts.git"
+        source = "https://raw.githubusercontent.com/tpaulus/server-scripts/main/backups/nomad.sh"
       }
     }
   }

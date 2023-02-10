@@ -12,11 +12,11 @@ job "backup-consul" {
       driver = "raw_exec"
 
       config {
-        command = "backups/consul.sh"
+        command = "consul.sh"
       }
 
       artifact {
-        source = "git::https://github.com/tpaulus/server-scripts.git"
+        source = "https://raw.githubusercontent.com/tpaulus/server-scripts/main/backups/consul.sh"
       }
     }
   }

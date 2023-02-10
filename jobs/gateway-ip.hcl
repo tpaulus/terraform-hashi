@@ -31,7 +31,7 @@ CF_GATEWAY_LOCATION = {{ .CF_GATEWAY_LOCATION }}
       }
 
       artifact {
-        source = "git::https://github.com/tpaulus/server-scripts.git"
+        source = "https://raw.githubusercontent.com/tpaulus/server-scripts/main/update-gateway-ip.sh"
       }
 
       resources {
