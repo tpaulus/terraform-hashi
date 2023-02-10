@@ -237,3 +237,11 @@ resource "nomad_job" "HomeAssistant" {
 resource "nomad_job" "unifi-protect-backup" {
   jobspec = file("${path.module}/jobs/unifi-protect-backup.hcl") 
 }
+
+resource "nomad_job" "backup-consul" {
+  jobspec = file("${path.module}/jobs/backup-consul.hcl") 
+}
+
+resource "nomad_job" "backup-nomad" {
+  jobspec = file("${path.module}/jobs/backup-nomad.hcl") 
+}
