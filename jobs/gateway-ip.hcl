@@ -31,7 +31,7 @@ CF_GATEWAY_LOCATION = {{ .CF_GATEWAY_LOCATION }}
       }
 
       artifact {
-        source = "git::https://github.com/tpaulus/server-scripts"
+        source = "git::https://github.com/tpaulus/server-scripts.git"
       }
 
       resources {

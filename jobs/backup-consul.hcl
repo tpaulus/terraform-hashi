@@ -16,7 +16,7 @@ job "backup-consul" {
       }
 
       artifact {
-        source = "git::https://github.com/tpaulus/server-scripts"
+        source = "git::https://github.com/tpaulus/server-scripts.git"
       }
     }
   }
