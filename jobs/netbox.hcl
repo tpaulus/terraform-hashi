@@ -43,7 +43,7 @@ job "Netbox" {
     task "netbox-ui" {
       driver = "docker"
       config = {
-        image = "docker.io/netboxcommunity/netbox:v3.4"
+        image = "docker.io/netboxcommunity/netbox:v3.4.4"
         ports = ["http"]
 
         auth_soft_fail = true
@@ -131,7 +131,7 @@ GRAPHQL_ENABLED=true
 HOUSEKEEPING_INTERVAL=86400
 MEDIA_ROOT=/opt/netbox/netbox/media
 METRICS_ENABLED=false
-REDIS_CACHE_DATABASE=1
+REDIS_CACHE_DATABASE=0
 {{ range service "netbox-redis-cache" -}}
 REDIS_CACHE_HOST={{ .Address }}
 REDIS_CACHE_PORT={{ .Port }}
@@ -163,7 +163,7 @@ WEBHOOKS_ENABLED=true
     task "netbox-housekeeping" {
       driver = "docker"
       config = {
-        image = "docker.io/netboxcommunity/netbox:v3.4"
+        image = "docker.io/netboxcommunity/netbox:v3.4.4"
 
         auth_soft_fail = true
 
@@ -199,7 +199,7 @@ GRAPHQL_ENABLED=true
 HOUSEKEEPING_INTERVAL=86400
 MEDIA_ROOT=/opt/netbox/netbox/media
 METRICS_ENABLED=false
-REDIS_CACHE_DATABASE=1
+REDIS_CACHE_DATABASE=0
 {{ range service "netbox-redis-cache" -}}
 REDIS_CACHE_HOST={{ .Address }}
 REDIS_CACHE_PORT={{ .Port }}
