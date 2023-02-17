@@ -11,13 +11,13 @@ job "Netbox" {
    unlimited      = true
   }
 
-  group "Application" {
-    count = 1
+  group "Frontend" {
+    count = 2
 
     restart {
-      attempts = 3
+      attempts = 5
       delay    = "15s"
-      interval = "10m"
+      interval = "2m"
       mode     = "fail"
     }
 
@@ -159,8 +159,23 @@ WEBHOOKS_ENABLED=true
         env         = true
       }
     }
+  }
 
+  group "Housekeeping" {
+    count = 1
+    
+    restart {
+      attempts = 5
+      delay    = "15s"
+      interval = "2m"
+      mode     = "fail"
+    }
 
+    network {
+      dns {
+        servers = ["1.1.1.1", "1.0.0.1"]
+      }
+    }
 
     task "netbox-housekeeping" {
       driver = "docker"
