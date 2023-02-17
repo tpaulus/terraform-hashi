@@ -37,7 +37,7 @@ job "Netbox" {
       source          = "netbox_media_volume"
       read_only       = false
       attachment_mode = "file-system"
-      access_mode     = "single-node-writer"
+      access_mode     = "multi-node-multi-writer"
     }
 
     task "netbox-ui" {
