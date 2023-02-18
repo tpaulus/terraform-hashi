@@ -69,7 +69,7 @@ job "N8N" {
     task "N8N" {
       driver = "docker"
       config = {
-        image = "docker.io/n8nio/n8n:0.216.0"
+        image = "n8nio/n8n:0.216.0"
         ports = ["http"]
 
         auth_soft_fail = true

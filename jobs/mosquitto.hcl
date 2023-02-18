@@ -35,7 +35,7 @@ job "MQTT" {
         network_mode = "corp"
         dns_servers = ["10.0.10.3"]
 
-        image = "docker.io/eclipse-mosquitto:2.0.15"
+        image = "eclipse-mosquitto:2.0.15"
         ports = ["broker"]
 
         auth_soft_fail = true

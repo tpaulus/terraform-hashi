@@ -44,7 +44,7 @@ job "traefik" {
       driver = "docker"
 
       config {
-        image = "docker.io/traefik:v3.0"
+        image = "traefik:v3.0"
         ports = ["http", "admin", "ping"]
 
         volumes = [

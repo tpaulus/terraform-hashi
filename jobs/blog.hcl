@@ -63,7 +63,7 @@ job "Blog" {
     task "ghost" {
       driver = "docker"
       config = {
-        image = "docker.io/ghost:5.35.0"
+        image = "ghost:5.35.0"
         ports = ["http"]
 
         auth_soft_fail = true

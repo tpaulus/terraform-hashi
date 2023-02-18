@@ -48,7 +48,7 @@ job "obs-grafana" {
       }
 
       config {
-        image = "docker.io/grafana/grafana:9.3.6"
+        image = "grafana/grafana:9.3.6"
         ports = ["http"]
       }
 

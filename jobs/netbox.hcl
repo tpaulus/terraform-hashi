@@ -43,7 +43,7 @@ job "Netbox" {
     task "netbox-ui" {
       driver = "docker"
       config = {
-        image = "docker.io/netboxcommunity/netbox:v3.4.4"
+        image = "netboxcommunity/netbox:v3.4.4"
         ports = ["http"]
 
         auth_soft_fail = true
@@ -180,7 +180,7 @@ WEBHOOKS_ENABLED=true
     task "netbox-housekeeping" {
       driver = "docker"
       config = {
-        image = "docker.io/netboxcommunity/netbox:v3.4.4"
+        image = "netboxcommunity/netbox:v3.4.4"
 
         auth_soft_fail = true
 
@@ -263,7 +263,7 @@ WEBHOOKS_ENABLED=true
     task "netbox-worker" {
       driver = "docker"
       config = {
-        image = "docker.io/netboxcommunity/netbox:v3.4.4"
+        image = "netboxcommunity/netbox:v3.4.4"
 
         auth_soft_fail = true
         entrypoint = ["/opt/netbox/venv/bin/python"]
@@ -358,7 +358,7 @@ WEBHOOKS_ENABLED=true
     task "postgres" {
       driver = "docker"
       config = {
-        image = "docker.io/postgres:15.2-alpine"
+        image = "postgres:15.2-alpine"
         ports = ["psql"]
 
         auth_soft_fail = true
@@ -436,7 +436,7 @@ POSTGRES_USER={{ .dbUser }}
     task "redis-cache" {
       driver = "docker"
       config = {
-        image = "docker.io/redis:7.0.8"
+        image = "redis:7.0.8"
         ports = ["redis"]
 
         auth_soft_fail = true
@@ -510,7 +510,7 @@ requirepass {{ .redisCachePassword }}
     task "redis" {
       driver = "docker"
       config = {
-        image = "docker.io/redis:7.0.8"
+        image = "redis:7.0.8"
         ports = ["redis"]
 
         auth_soft_fail = true
