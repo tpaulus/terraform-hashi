@@ -42,7 +42,7 @@ job "obs-alertmanager" {
       driver = "docker"
 
       config {
-        image = "docker.io/prom/alertmanager:v0.24.0"
+        image = "docker.io/prom/alertmanager:v0.25.0"
         args = [
           "--config.file=/etc/alertmanager/config/alertmanager.yml"
         ]
