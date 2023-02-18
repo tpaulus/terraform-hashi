@@ -20,8 +20,7 @@
     {
       "matchManagers": ["regex"],
       "groupName": "docker-image-updates",
-      "automerge": true,
-      "automergeType": "branch"
+      "automerge": true
     }
   ]
 }
