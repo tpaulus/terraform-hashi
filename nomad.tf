@@ -201,6 +201,30 @@ resource "nomad_external_volume" "unifi_protect_backup_volume" {
   }
 }
 
+resource "nomad_external_volume" "grafana_volume" {
+  type         = "csi"
+  plugin_id    = "org.democratic-csi.truenas-nfs"
+  volume_id    = "grafana_volume"
+  name         = "grafana_volume"
+  capacity_min = "1GiB"
+  capacity_max = "2.5GiB"
+
+  capability {
+    access_mode = "multi-node-reader-only"
+    attachment_mode = "file-system"
+  }
+
+  capability {
+    access_mode = "multi-node-multi-writer"
+    attachment_mode = "file-system"
+  }
+
+  mount_options {
+    fs_type = "nfs"
+    mount_flags = ["noatime", "nfsvers=3", "nolock"]
+  }
+}
+
 // ==== Jobs ====
 resource "nomad_job" "Lunch_Money_Offsets" {
   jobspec = file("${path.module}/jobs/offset_tracker.hcl")
@@ -236,4 +260,16 @@ resource "nomad_job" "HomeAssistant" {
 
 resource "nomad_job" "unifi-protect-backup" {
   jobspec = file("${path.module}/jobs/unifi-protect-backup.hcl") 
+}
+
+resource "nomad_job" "alertmanager" {
+  jobspec = file("${path.module}/jobs/alertmanager.hcl") 
+}
+
+resource "nomad_job" "grafana" {
+  jobspec = file("${path.module}/jobs/grafana.hcl") 
+}
+
+resource "nomad_job" "prometheus" {
+  jobspec = file("${path.module}/jobs/prometheus.hcl") 
 }
