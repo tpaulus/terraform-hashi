@@ -13,6 +13,10 @@ job "traefik" {
         to = 8081
         static = 8081
       }
+      port "ping"{
+        to = 8082
+        static = 8082
+      }
     }
 
     service {
@@ -52,12 +56,15 @@ job "traefik" {
         data = <<EOF
 [entryPoints]
   [entryPoints.http]
-  address = ":{{ env "NOMAD_PORT_http" }}"
-  [entryPoints.http.forwardedHeaders]
-    insecure = true
+    address = ":{{ env "NOMAD_PORT_http" }}"
+    [entryPoints.http.forwardedHeaders]
+      insecure = true
 
   [entryPoints.traefik]
-  address = ":{{ env "NOMAD_PORT_admin" }}"
+    address = ":{{ env "NOMAD_PORT_admin" }}"
+
+  [entryPoints.ping]
+    address = ":{{ env "NOMAD_PORT_ping" }}"
 
 [api]
   dashboard = true
@@ -79,6 +86,7 @@ job "traefik" {
   noColor = true
 
 [ping]
+  entryPoint = "ping"
 EOF
 
         destination = "local/traefik.toml"
