@@ -40,7 +40,7 @@ job "Zigbee2MQTT" {
         network_mode = "corp"
         dns_servers = ["10.0.10.99", "1.1.1.1", "1.0.0.1"]
 
-        image = "docker.io/koenkk/zigbee2mqtt:1.29.2"
+        image = "docker.io/koenkk/zigbee2mqtt:1.30.1"
         ports = ["http"]
 
         auth_soft_fail = true

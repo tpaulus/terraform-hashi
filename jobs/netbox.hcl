@@ -263,7 +263,7 @@ WEBHOOKS_ENABLED=true
     task "netbox-worker" {
       driver = "docker"
       config = {
-        image = "docker.io/netboxcommunity/netbox:v3.4"
+        image = "docker.io/netboxcommunity/netbox:v3.4.4"
 
         auth_soft_fail = true
         entrypoint = ["/opt/netbox/venv/bin/python"]
@@ -358,7 +358,7 @@ WEBHOOKS_ENABLED=true
     task "postgres" {
       driver = "docker"
       config = {
-        image = "docker.io/postgres:15.1-alpine"
+        image = "docker.io/postgres:15.2-alpine"
         ports = ["psql"]
 
         auth_soft_fail = true
