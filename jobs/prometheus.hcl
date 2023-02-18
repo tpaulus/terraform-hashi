@@ -1,4 +1,4 @@
-job "prometheus" {
+job "obs-prometheus" {
   datacenters = ["seaview"]
   type = "service"
 

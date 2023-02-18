@@ -1,4 +1,4 @@
-job "grafana" {
+job "obs-grafana" {
   datacenters = ["seaview"]
   type = "service"
 
@@ -31,8 +31,12 @@ job "grafana" {
 
     service {
       name = "grafana"
-      port = "3000"
-      tags = ["global", "metrics", "traefik.enable=true", "traefik.http.routers.grafana.rule=Host(`grafana.brickyard.whitestar.systems`)"]
+      port = "http"
+      tags = [
+        "global", "metrics",
+        "traefik.enable=true",
+        "traefik.http.routers.grafana.rule=Host(`grafana.brickyard.whitestar.systems`)"
+      ]
     }
 
     task "grafana" {

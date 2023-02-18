@@ -1,4 +1,4 @@
-job "HomeAssistant" {
+job "ha-HomeAssistant" {
   datacenters = ["seaview"]
   type = "service"
 

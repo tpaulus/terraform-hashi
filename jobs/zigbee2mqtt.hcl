@@ -1,4 +1,4 @@
-job "Zigbee2MQTT" {
+job "ha-Zigbee2MQTT" {
   datacenters = ["seaview"]
   type = "service"
 

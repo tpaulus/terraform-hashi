@@ -1,4 +1,4 @@
-job "alertmanager" {
+job "obs-alertmanager" {
   datacenters = ["seaview"]
   type = "service"
 

@@ -34,7 +34,7 @@ job "traefik" {
         name     = "heathy"
         type     = "http"
         path     = "/ping"
-        port     = "admin"
+        port     = "ping"
         interval = "10s"
         timeout  = "2s"
       }
@@ -57,6 +57,7 @@ job "traefik" {
 [entryPoints]
   [entryPoints.http]
     address = ":{{ env "NOMAD_PORT_http" }}"
+    asDefault =  true
     [entryPoints.http.forwardedHeaders]
       insecure = true
 
@@ -80,14 +81,13 @@ job "traefik" {
     address = "{{ env "attr.unique.network.ip-address" }}:8500"
     scheme  = "http"
 
-[accessLog]
 [log]
   level = "WARN"
   noColor = true
 
 [ping]
-  entryPoint = "ping"
-
+  entrypoint = "ping"
+  
 [metrics]
   [metrics.prometheus]
 EOF

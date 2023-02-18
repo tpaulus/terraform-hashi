@@ -1,4 +1,4 @@
-job "CF_Gateway_IP" {
+job "cf-sync-gateway-ip" {
   datacenters = ["seaview"]
   type = "batch"
 
