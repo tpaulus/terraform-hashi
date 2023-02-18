@@ -24,6 +24,8 @@ job "prometheus" {
 
       config {
         image = "docker.io/prom/prometheus:v2.42.0"
+        ports = ["http"]
+        
         args = [
           "--config.file=/etc/prometheus/config/prometheus.yml",
           "--storage.tsdb.path=/prometheus",
