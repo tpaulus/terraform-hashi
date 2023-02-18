@@ -45,7 +45,7 @@ job "traefik" {
 
       config {
         image = "docker.io/traefik:v3.0"
-        ports = ["http", "admin"]
+        ports = ["http", "admin", "ping"]
 
         volumes = [
           "local/traefik.toml:/etc/traefik/traefik.toml",
@@ -87,6 +87,9 @@ job "traefik" {
 
 [ping]
   entryPoint = "ping"
+
+[metrics]
+  [metrics.prometheus]
 EOF
 
         destination = "local/traefik.toml"
