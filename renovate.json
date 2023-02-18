@@ -17,8 +17,9 @@
   "packageRules": [
     {
       "matchManagers": ["regex"],
-      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
-      "automerge": true
+      "groupName": "docker-image-updates",
+      "automerge": true,
+      "automergeType": "branch"
     }
   ]
 }
