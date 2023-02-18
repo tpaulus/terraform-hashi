@@ -5,7 +5,7 @@
   ],
   "regexManagers": [
     {
-      "fileMatch": ["^[a-zA-Z0-9-_ ]+\\.hcl$"],
+      "fileMatch": ["[^.]+\\.hcl"],
       "matchStrings": [
         "image\\s?=\\s?\"(?<depName>.*?):(?<currentValue>.*?)(?:@(?<currentDigest>sha256:[a-f0-9]+))?\""
       ],
