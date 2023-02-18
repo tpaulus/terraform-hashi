@@ -27,7 +27,7 @@
     {
       "hostType": "docker",
       "matchHost": "ghcr.io",
-      "username": "token",
+      "username": "tpaulus",
       "encrypted": {
         "password": "wcFMA/xDdHCJBTolAQ//VXYTH6XYrMd8r8IpNVnxXEOjkVHtO7X3uM1E9GADAI7uYSTYRgngvtcDcpmQ7cXcTDaTCqYEVKh02pqOhLbz81tOLrtq0UZiO99RFppp/KwuQiKm+pf2NLq67Km/R3M9dymCP0t6j4sd442SHX0pqTck7dRi677xLR9lQxu/VGKHjeGHZn+i/3OpS4yk4PY9xpIRcBQWC1+bVFIwlbC4sc3Ef2FXEJWBfx7bLsaif2s+VGpB/mCkkShz9eo8TUrsmw5Ubyay8LS1QPhS7LlRvpk0MbKaOGgmEVKX+mgNteS3dBlhsXIxkdBvzQ3UQTK+Q8FPxjgafdjAyuJa2MYCi/fo+rdrW+fkavDbfnM4F687mY9vKLnyB6fMGwlyw0qEOmBJMHzmbME6177zVFaJoJkN/w4lc5G8xWbvr09H/g5TdX/rY9IlC1dipYSXYD4L3WaECO4Hj3LjGFoPfK/OGHokNx4SULK28aj+GKGiRWoWPqPXTDbb3KbnRMLTpPMbLURbLmSujH9j36ieyBWI7MN3cwY3zCmZSjfu0A6O9TXwzz/8Jb5Hjwl1E7+/w7AaGKmiyB6yfAdu1E2A5Oe/CzsOZfYWX1Tu0jKmm9t4TTewB0zQ84WhqxVSI5cZdVNuqqD6qw2yAINa7ddyXj1kJYO+3FBbmFK8CJZ0fJXXl5LShQEy5z9HhhRmHthQtHChssCYcc3pin9MBWLf7jL6ZVeafbCt4yDsa+0dhRdTVawaiGOvJIyqXisf4SnmP6QHHhW2IGHxRCJqx2Bu+bK2k08R44PltUt3/YbyhFSYhH6JCeUs0O+dmm3pyH2vjQL44NHqZF83zqu3Z7e+AIKx+30xlQbjNj0"
       }
