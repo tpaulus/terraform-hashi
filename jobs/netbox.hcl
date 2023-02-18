@@ -436,7 +436,7 @@ POSTGRES_USER={{ .dbUser }}
     task "redis-cache" {
       driver = "docker"
       config = {
-        image = "docker.io/redis:7.0.8-alpine"
+        image = "docker.io/redis:7.0.8"
         ports = ["redis"]
 
         auth_soft_fail = true
@@ -510,7 +510,7 @@ requirepass {{ .redisCachePassword }}
     task "redis" {
       driver = "docker"
       config = {
-        image = "docker.io/redis:7.0.8-alpine"
+        image = "docker.io/redis:7.0.8"
         ports = ["redis"]
 
         auth_soft_fail = true
