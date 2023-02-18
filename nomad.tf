@@ -12,6 +12,10 @@ resource "nomad_job" "Traefik" {
   jobspec = file("${path.module}/plugins/traefik.hcl")
 }
 
+resource "nomad_job" "cloudflared" {
+  jobspec = file("${path.module}/plugins/cloudflared.hcl")
+}
+
 
 // ==== Volumes ====
 resource "nomad_external_volume" "n8n_volume" {
