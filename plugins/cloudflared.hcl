@@ -3,6 +3,11 @@ job "cloudflared" {
   type        = "system"
   priority    = 100
 
+  update {
+    max_parallel = 1
+    stagger      = "1m"
+  }
+
   group "cloudflared" {
     network {
       mode = "host"
@@ -15,6 +20,7 @@ job "cloudflared" {
 
       config {
         image = "docker.io/cloudflare/cloudflared:2023.2.1"
+        ports = ["metrics"]
         command = "tunnel"
         args = [
           "--",
@@ -24,7 +30,7 @@ job "cloudflared" {
 
         volumes = [
           "secrets/cert.pem:/etc/cloudflared/cert.pem",
-          "secrets/credentials.yaml:/etc/cloudflared/credentials.json",
+          "secrets/credentials.json:/etc/cloudflared/credentials.json",
           "local/config.yaml:/etc/cloudflared/config.yaml"
         ]
       }
@@ -42,8 +48,8 @@ job "cloudflared" {
 {{- $configVarName := print "cloudflared/" $hostname "_" $dc "_us" }}
 {{- with nomadVar $configVarName -}}
 {
-  "AccountTag": "{{ .AccountTag }}"
-  "TunnelSecret": "{{ .TunnelSecret }}"
+  "AccountTag": "{{ .AccountTag }}",
+  "TunnelSecret": "{{ .TunnelSecret }}",
   "TunnelID": "{{ .TunnelID }}"
 }
 {{ end }}
@@ -72,7 +78,7 @@ EOF
 {{- with nomadVar $configVarName -}}
 tunnel: {{ .TunnelID }}
 {{- end }}
-credentials-file: /etc/cloudflared/credentials.yaml
+credentials-file: /etc/cloudflared/credentials.json
 warp-routing:
   enabled: false
 
