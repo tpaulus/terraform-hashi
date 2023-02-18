@@ -86,7 +86,7 @@ warp-routing:
 ingress:
 # https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/install-and-setup/tunnel-guide/local/local-management/ingress/
 - hostname: nomad.brickyard.whitestar.systems
-  service: http://127.0.0.1:4646
+  service: http://{{ env "attr.unique.network.ip-address" }}:4646
   originRequest:
     access:
       required: true
@@ -94,7 +94,7 @@ ingress:
       audTag:
       - d219a1e2d81d3034f30ad054bbcda9de6e7b8ac3107acbe2c5c66f5b36a7ca35
 - hostname: consul.brickyard.whitestar.systems
-  service: http://127.0.0.1:8500
+  service: http://{{ env "attr.unique.network.ip-address" }}:8500
   originRequest:
     access:
       required: true
