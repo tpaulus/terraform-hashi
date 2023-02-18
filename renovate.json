@@ -2,8 +2,9 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:base",
-    "config:disableRateLimit"
   ],
+  "prConcurrentLimit": 0,
+  "prHourlyLimit": 0,
   "regexManagers": [
     {
       "fileMatch": ["[^.]+\\.hcl"],
