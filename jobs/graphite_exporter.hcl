@@ -8,7 +8,7 @@ job "obs-graphite-exporter" {
     network {
       port "graphite" {
         to = 9109
-        static = 2300
+        static = 2003
       }
       
       port "prometheus" {
@@ -25,7 +25,7 @@ job "obs-graphite-exporter" {
       }
 
       resources {
-        cpu    = 100
+        cpu    = 256
         memory = 64
       }
 
