@@ -35,7 +35,7 @@ job "obs-graphite-exporter" {
         port     = "http"
         tags     = ["global", "metrics", "metrics-scraper"]
         check {
-          type     = "http"
+          type     = "prometheus"
           path     = "/"
           interval = "30s"
           timeout  = "30s"
