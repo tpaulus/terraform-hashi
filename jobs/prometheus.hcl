@@ -95,9 +95,9 @@ scrape_configs:
     - server: "{{ env "attr.unique.network.ip-address" }}:8500"
       services:
         - "nomad-client"
-  - job_name: 'snmp'
+  - job_name: 'snmp-unifi'
     static_configs:
-      - targets:
+      - targets: &unifi_devices
         - 10.0.1.63   # STTLWASCQ01
         - 10.0.1.214  # STTLWASCQ02
         - 10.0.1.97   # STTLWASCQ03
@@ -118,6 +118,37 @@ scrape_configs:
         target_label: instance
       - target_label: __address__
         replacement: {{ range service "prometheus-snmp-exporter" }}{{ .Address }}:{{ .Port }}{{ end }}
+
+  - job_name: 'snmp-ubiquiti_unifi'
+    static_configs:
+      - targets: *unifi_devices
+
+    metrics_path: /snmp
+    params:
+      module: [ubiquiti_unifi]
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: {{ range service "prometheus-snmp-exporter" }}{{ .Address }}:{{ .Port }}{{ end }}
+
+  - job_name: 'snmp-if_mib'
+    static_configs:
+      - targets: *unifi_devices
+
+    metrics_path: /snmp
+    params:
+      module: [if_mib]
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: {{ range service "prometheus-snmp-exporter" }}{{ .Address }}:{{ .Port }}{{ end }}
+
   - job_name: graphite
     static_configs:
       - targets:
