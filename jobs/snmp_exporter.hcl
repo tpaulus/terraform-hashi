@@ -16,12 +16,12 @@ job "obs-snmp-exporter" {
       config {
         image = "prom/snmp-exporter:v0.21.0"
         ports = ["http"]
-        command = "--config.file=${NOMAD_TASK_DIR}/snmp.yml"
+        command = "--config.file=${NOMAD_TASK_DIR}/snmp.yaml"
       }
 
       resources {
-        cpu    = 100
-        memory = 64
+        cpu    = 1024
+        memory = 128
       }
 
       service {
@@ -38,7 +38,7 @@ job "obs-snmp-exporter" {
       }
 
       artifact {
-        source = "https://gist.githubusercontent.com/tpaulus/1b2c652b8e7ac16a94de1ae4b673520a/raw/8e8ff62df8e8eef52af1197a6bb21f7b47370578/snmp.yml"
+        source = "https://gist.githubusercontent.com/tpaulus/750d0faeb117d7362bb9300eda770ec9/raw/9399bd903b5d9525621029398e0106cf3486d779/snmp.yaml"
         destination = "local/"
       }
     }

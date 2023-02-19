@@ -110,7 +110,7 @@ scrape_configs:
 
     metrics_path: /snmp
     params:
-      module: [if_mib]
+      module: [unifi]
     relabel_configs:
       - source_labels: [__address__]
         target_label: __param_target
