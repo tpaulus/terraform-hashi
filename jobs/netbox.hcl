@@ -74,7 +74,7 @@ job "Netbox" {
           "global", "netbox",
           "traefik.enable=true",
           "traefik.http.routers.netbox.rule=Host(`netbox.whitestar.systems`)",
-          "traefik.http.routers.myrouter.middlewares=netbox-retry",
+          "traefik.http.routers.netbox.middlewares=netbox-retry",
           "traefik.http.middlewares.netbox-retry.retry.attempts=5",
           "traefik.http.middlewares.netbox-retry.retry.initialinterval=100ms"
         ]
