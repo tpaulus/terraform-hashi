@@ -98,8 +98,19 @@ scrape_configs:
   - job_name: 'snmp'
     static_configs:
       - targets:
-        - 192.168.1.2  # SNMP device.
-        - switch.local # SNMP device.
+        - 10.0.10.32  # Woodlandpark
+
+        - 10.0.1.63   # STTLWASCQ01
+        - 10.0.1.214  # STTLWASCQ02
+        - 10.0.1.97   # STTLWASCQ03
+        - 10.0.1.196  # STTLWASCQ04
+        - 10.0.1.91   # STTLWASCS01
+        - 10.0.1.73   # STTLWASCS02
+        # STTLWASCS03 does not support SNMP
+        - 10.0.1.140  # STTLWASCS04
+        - 10.0.1.150  # STTLWASCS05
+
+        - 10.0.10.10  # STTLWASCVR1
     metrics_path: /snmp
     params:
       module: [if_mib]
