@@ -35,8 +35,7 @@ job "obs-grafana" {
       tags = [
         "global", "metrics",
         "traefik.enable=true",
-        "traefik.http.routers.grafana.rule=Host(`grafana.brickyard.whitestar.systems`)",
-        "traefik.http.routers.grafana.middlewares=traefik-real-ip",
+        "traefik.http.routers.grafana.rule=Host(`grafana.brickyard.whitestar.systems`)"
       ]
     }
 

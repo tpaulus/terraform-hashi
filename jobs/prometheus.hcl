@@ -102,7 +102,6 @@ EOH
           "global", "metrics",
           "traefik.enable=true",
           "traefik.http.routers.prometheus.rule=Host(`prometheus.brickyard.whitestar.systems`)",
-          "traefik.http.routers.prometheus.middlewares=traefik-real-ip",
         ]
 
         check {
