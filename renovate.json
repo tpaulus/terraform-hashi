@@ -20,7 +20,7 @@
     {
       "matchManagers": ["regex"],
       "groupName": "docker-image-updates",
-      "automerge": true
+      "automerge": false
     }
   ],
     "hostRules": [
