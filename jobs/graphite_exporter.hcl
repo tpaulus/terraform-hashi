@@ -32,10 +32,10 @@ job "obs-graphite-exporter" {
       service {
         name     = "prometheus-graphite-exporter"
         provider = "consul"
-        port     = "http"
+        port     = "prometheus"
         tags     = ["global", "metrics", "metrics-scraper"]
         check {
-          type     = "prometheus"
+          type     = "http"
           path     = "/"
           interval = "30s"
           timeout  = "30s"
