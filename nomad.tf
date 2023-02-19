@@ -162,7 +162,7 @@ resource "nomad_external_volume" "mqtt_volume" {
   plugin_id    = "org.democratic-csi.truenas-nfs"
   volume_id    = "mqtt_volume"
   name         = "mqtt_volume"
-  capacity_min = "0.25GiB"
+  capacity_min = "1GiB"
   capacity_max = "1GiB"
 
   capability {
