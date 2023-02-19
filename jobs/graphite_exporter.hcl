@@ -43,7 +43,7 @@ job "obs-graphite-exporter" {
       }
       
       template {
-        data = < EOH
+        data = <<EOH
 ---
 # All FreeNAS metrics start with server.<server_name>
 # https://www.truenas.com/community/threads/mapping-of-freenas-data-sent-to-graphite_exporter-part-of-prometheus.80948/
