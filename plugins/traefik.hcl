@@ -48,51 +48,55 @@ job "traefik" {
         ports = ["http", "admin", "ping"]
 
         volumes = [
-          "local/traefik.toml:/etc/traefik/traefik.toml",
+          "local/traefik.yaml:/etc/traefik/traefik.yaml",
         ]
       }
 
       template {
         data = <<EOF
-[entryPoints]
-  [entryPoints.http]
-    address = ":{{ env "NOMAD_PORT_http" }}"
-    asDefault =  true
-    [entryPoints.http.forwardedHeaders]
-      insecure = true
+entryPoints:
+  http:
+    address: ":{{ env "NOMAD_PORT_http" }}"
+    asDefault: true
+    forwardedHeaders:
+      insecure: true
+  traefik:
+    address: ":{{ env "NOMAD_PORT_admin" }}"
+  ping:
+    address: ":{{ env "NOMAD_PORT_ping" }}"
+api:
+  dashboard: true
+  insecure: true
+providers:
+  consulCatalog:
+    prefix: traefik
+    exposedByDefault: false
+    watch: true
+    endpoint:
+      address: "{{ env "attr.unique.network.ip-address" }}:8500"
+      scheme: http
+log:
+  level: WARN
+  noColor: true
+ping:
+  entrypoint: ping
+metrics:
+  prometheus: {}
 
-  [entryPoints.traefik]
-    address = ":{{ env "NOMAD_PORT_admin" }}"
+experimental:
+  plugins:
+    traefik-real-ip:
+      moduleName: "github.com/soulbalz/traefik-real-ip"
+      version: "v1.0.3"
 
-  [entryPoints.ping]
-    address = ":{{ env "NOMAD_PORT_ping" }}"
-
-[api]
-  dashboard = true
-  insecure  = true
-
-# Enable Consul Catalog configuration backend.
-[providers.consulCatalog]
-  prefix           = "traefik"
-  exposedByDefault = false
-  watch            = true
-
-  [providers.consulCatalog.endpoint]
-    address = "{{ env "attr.unique.network.ip-address" }}:8500"
-    scheme  = "http"
-
-[log]
-  level = "WARN"
-  noColor = true
-
-[ping]
-  entrypoint = "ping"
-  
-[metrics]
-  [metrics.prometheus]
+http:
+  middlewares:
+    traefik-real-ip:
+      traefik-real-ip:
+        excludednets: []
 EOF
 
-        destination = "local/traefik.toml"
+        destination = "local/traefik.yaml"
       }
 
       resources {

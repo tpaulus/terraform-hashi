@@ -28,6 +28,7 @@ job "obs-alertmanager" {
         "global", "metrics",
         "traefik.enable=true",
         "traefik.http.routers.alertmanager.rule=Host(`alertmanager.brickyard.whitestar.systems`)",
+        "traefik.http.routers.alertmanager.middlewares=traefik-real-ip"
       ]
 
       check {

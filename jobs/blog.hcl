@@ -42,7 +42,8 @@ job "Blog" {
           "global", "blog",
           "traefik.enable=true",
           "traefik.http.routers.blog.rule=Host(`blog.tompaulus.com`)",
-          "traefik.http.services.blog.loadbalancer.passhostheader=true"
+          "traefik.http.services.blog.loadbalancer.passhostheader=true",
+          "traefik.http.routers.blog.middlewares=traefik-real-ip",
       ]
 
       check {
