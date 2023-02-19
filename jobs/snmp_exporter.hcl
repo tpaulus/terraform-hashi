@@ -15,6 +15,7 @@ job "obs-snmp-exporter" {
       driver = "docker"
       config {
         image = "prom/snmp-exporter:v0.21.0"
+        ports = ["http"]
       }
 
       resources {
