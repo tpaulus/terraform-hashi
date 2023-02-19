@@ -29,6 +29,7 @@ job "Netbox" {
       progress_deadline = "10m"
       auto_revert       = true
       auto_promote      = true
+      canary            = 1
     }
 
     network {
