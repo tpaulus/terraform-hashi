@@ -140,6 +140,29 @@ scrape_configs:
 {{ end }}
 {{ end }}
 
+{{ range services }}
+{{ if .Tags | contains "metrics=true" }}
+{{ scratch.Set "metrics_path" "/metrics" }}
+{{ range .Tags }}
+{{ if .Value | contains "metrics_path=" }}
+{{ scratch.Set "metrics_path" (.Valuee | trimPrefix "metrics_path=") }}
+{{ end }}
+{{ end }}
+
+  - job_name: {{ .Name }}
+    metrics_path: "{{ scratch.Get "metrics_path" }}"
+    params:
+      format:
+      - "prometheus"
+    consul_sd_configs:
+    - server: "{{ env "attr.unique.network.ip-address" }}:8500"
+      services:
+        - "{{ .Name }}"
+
+
+{{ end }}
+{{ end }}
+
 
 EOH
 
