@@ -108,9 +108,8 @@ scrape_configs:
         - 10.0.1.73   # STTLWASCS02
         # STTLWASCS03 does not support SNMP
         - 10.0.1.140  # STTLWASCS04
-        - 10.0.1.150  # STTLWASCS05
+        # STTLWASCS05 does not support SNMP
 
-        - 10.0.10.10  # STTLWASCVR1
     metrics_path: /snmp
     params:
       module: [if_mib]
