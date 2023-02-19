@@ -157,6 +157,30 @@ resource "nomad_external_volume" "z2m_volume" {
   }
 }
 
+resource "nomad_external_volume" "mqtt_volume" {
+  type         = "csi"
+  plugin_id    = "org.democratic-csi.truenas-nfs"
+  volume_id    = "mqtt_volume"
+  name         = "mqtt_volume"
+  capacity_min = "0.25GiB"
+  capacity_max = "1GiB"
+
+  capability {
+    access_mode = "multi-node-reader-only"
+    attachment_mode = "file-system"
+  }
+
+  capability {
+    access_mode = "multi-node-multi-writer"
+    attachment_mode = "file-system"
+  }
+
+  mount_options {
+    fs_type = "nfs"
+    mount_flags = ["noatime", "nfsvers=3", "nolock"]
+  }
+}
+
 resource "nomad_external_volume" "home_assistant_volume" {
   type         = "csi"
   plugin_id    = "org.democratic-csi.truenas-nfs"
@@ -212,6 +236,30 @@ resource "nomad_external_volume" "grafana_volume" {
   name         = "grafana_volume"
   capacity_min = "1GiB"
   capacity_max = "2.5GiB"
+
+  capability {
+    access_mode = "multi-node-reader-only"
+    attachment_mode = "file-system"
+  }
+
+  capability {
+    access_mode = "multi-node-multi-writer"
+    attachment_mode = "file-system"
+  }
+
+  mount_options {
+    fs_type = "nfs"
+    mount_flags = ["noatime", "nfsvers=3", "nolock"]
+  }
+}
+
+resource "nomad_external_volume" "prometheus_volume" {
+  type         = "csi"
+  plugin_id    = "org.democratic-csi.truenas-nfs"
+  volume_id    = "prometheus_volume"
+  name         = "prometheus_volume"
+  capacity_min = "10GiB"
+  capacity_max = "100GiB"
 
   capability {
     access_mode = "multi-node-reader-only"

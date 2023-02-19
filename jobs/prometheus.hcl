@@ -19,6 +19,14 @@ job "obs-prometheus" {
       }
     }
 
+    volume "prometheus-volume" {
+      type            = "csi"
+      source          = "prometheus_volume"
+      read_only       = false
+      attachment_mode = "file-system"
+      access_mode     = "single-node-writer"
+    }
+
     task "prometheus" {
       driver = "docker"
 
@@ -37,6 +45,12 @@ job "obs-prometheus" {
         volumes = [
           "local/config:/etc/prometheus/config",
         ]
+      }
+
+      volume_mount {
+          volume      = "prometheus-volume"
+          destination = "/prometheus
+          read_only   = false
       }
 
       template {

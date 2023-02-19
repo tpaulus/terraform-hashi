@@ -27,6 +27,13 @@ job "MQTT" {
       }
     }
 
+    volume "mqtt-volume" {
+      type            = "csi"
+      source          = "mqtt_volume"
+      read_only       = false
+      attachment_mode = "file-system"
+      access_mode     = "single-node-writer"
+    }
 
     task "mosquitto" {
       driver = "docker"
@@ -60,24 +67,33 @@ job "MQTT" {
         memory = 256 # 256MB
       }
 
+      volume_mount {
+        volume      = "mqtt-volume"
+        destination = "/persistence"
+        read_only   = false
+      }
+
       template {
         destination   = "local/mosquitto.conf"
         change_mode   = "signal"
         change_signal = "SIGHUP"
+
         data          = <<EOH
-        listener 1883
-        allow_anonymous false
+listener 1883
+allow_anonymous false
 
-        persistence true
-        persistent_client_expiration 1h
+autosave_interval 60
+persistence true
+persistence_location /persistence
+persistent_client_expiration 1h
 
-        password_file /mosquitto/config/passwords.txt
+password_file {{ env "NOMAD_SECRETS_DIR" }}/passwords.txt
         EOH
         
       }
 
       template {
-        destination   = "local/passwords.txt"
+        destination   = "secrets/passwords.txt"
         change_mode   = "signal"
         change_signal = "SIGHUP"
         data          = <<EOH
