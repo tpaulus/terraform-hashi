@@ -49,7 +49,7 @@ job "obs-prometheus" {
 
       volume_mount {
           volume      = "prometheus-volume"
-          destination = "/prometheus
+          destination = "/prometheus"
           read_only   = false
       }
 
