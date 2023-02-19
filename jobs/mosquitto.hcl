@@ -1,8 +1,7 @@
 job "MQTT" {
   datacenters = ["seaview"]
-  type = "service"
-
-  priority = 75
+  type        = "service"
+  priority    = 75
 
   reschedule {
    delay          = "30s"
