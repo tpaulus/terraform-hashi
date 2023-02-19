@@ -21,6 +21,16 @@ job "Netbox" {
       mode     = "fail"
     }
 
+    update {
+      max_parallel      = 1
+      health_check      = "checks"
+      min_healthy_time  = "10s"
+      healthy_deadline  = "5m"
+      progress_deadline = "10m"
+      auto_revert       = true
+      auto_promote      = true
+    }
+
     network {
       dns {
         servers = ["1.1.1.1", "1.0.0.1"]
