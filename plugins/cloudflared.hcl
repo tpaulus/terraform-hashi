@@ -82,7 +82,6 @@ credentials-file: /etc/cloudflared/credentials.json
 warp-routing:
   enabled: false
 
-
 ingress:
 # https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/install-and-setup/tunnel-guide/local/local-management/ingress/
 - hostname: nomad.brickyard.whitestar.systems
