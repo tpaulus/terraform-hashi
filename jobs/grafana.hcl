@@ -61,7 +61,7 @@ job "obs-grafana" {
         GF_LOG_LEVEL = "DEBUG"
         GF_LOG_MODE = "console"
         GF_SERVER_HTTP_PORT = "${NOMAD_PORT_http}"
-        GF_PATHS_PROVISIONING = "/local/grafana/provisioning"
+        GF_PATHS_PROVISIONING = "${NOMAD_TASK_DIR}/grafana/provisioning"
         GF_INSTALL_PLUGINS = "grafana-clock-panel,grafana-piechart-panel"
       }
 

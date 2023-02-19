@@ -80,7 +80,7 @@ UFP_ADDRESS = {{ .protectAddress }}
 UFP_SSL_VERIFY = false
 RCLONE_RETENTION = 3d
 RCLONE_DESTINATION = 'encrypt-compress-b2:/'
-RCLONE_ARGS = '--config="/local/rclone.conf"'
+RCLONE_ARGS = '--config="{{ env "NOMAD_TASK_DIR" }}/rclone.conf"'
 SQLITE_PATH = '/data/backup-events'
 EOH
         destination = "secrets/file.env"
