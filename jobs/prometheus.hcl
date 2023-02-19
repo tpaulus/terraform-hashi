@@ -95,6 +95,22 @@ scrape_configs:
     - server: "{{ env "attr.unique.network.ip-address" }}:8500"
       services:
         - "nomad-client"
+  - job_name: 'snmp'
+    static_configs:
+      - targets:
+        - 192.168.1.2  # SNMP device.
+        - switch.local # SNMP device.
+    metrics_path: /snmp
+    params:
+      module: [if_mib]
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: {{ range service "prometheus-snmp-exporter" }}{{ .Address }}:{{ .Port }}{{ end }}
+
 
 EOH
 

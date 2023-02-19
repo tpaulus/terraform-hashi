@@ -301,3 +301,7 @@ resource "nomad_job" "grafana" {
 resource "nomad_job" "prometheus" {
   jobspec = file("${path.module}/jobs/prometheus.hcl") 
 }
+
+resource "nomad_job" "snmp-exporter" {
+  jobspec = file("${path.module}/jobs/snmp_exporter.hcl") 
+}
