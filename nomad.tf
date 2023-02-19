@@ -305,3 +305,7 @@ resource "nomad_job" "prometheus" {
 resource "nomad_job" "snmp-exporter" {
   jobspec = file("${path.module}/jobs/snmp_exporter.hcl") 
 }
+
+resource "nomad_job" "graphite-exporter" {
+  jobspec = file("${path.module}/jobs/graphite_exporter.hcl") 
+}

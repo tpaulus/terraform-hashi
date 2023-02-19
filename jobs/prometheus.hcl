@@ -98,8 +98,6 @@ scrape_configs:
   - job_name: 'snmp'
     static_configs:
       - targets:
-        - 10.0.10.32  # Woodlandpark
-
         - 10.0.1.63   # STTLWASCQ01
         - 10.0.1.214  # STTLWASCQ02
         - 10.0.1.97   # STTLWASCQ03
@@ -120,6 +118,11 @@ scrape_configs:
         target_label: instance
       - target_label: __address__
         replacement: {{ range service "prometheus-snmp-exporter" }}{{ .Address }}:{{ .Port }}{{ end }}
+  - job_name: graphite
+    static_configs:
+      - targets:
+          - {{ range service "prometheus-graphite-exporter" }}{{ .Address }}:{{ .Port }}{{ end }}
+    honor_labels: true  
 
 
 EOH
