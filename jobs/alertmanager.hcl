@@ -46,10 +46,7 @@ job "obs-alertmanager" {
         ports = ["http"]
 
         args = [
-          "--config.file=/etc/alertmanager/config/alertmanager.yml"
-        ]
-        volumes = [
-          "local/config:/etc/alertmanager/config",
+          "--config.file=${NOMAD_TASK_DIR}/config/alertmanager.yml"
         ]
       }
 

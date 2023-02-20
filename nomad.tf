@@ -313,3 +313,7 @@ resource "nomad_job" "graphite-exporter" {
 resource "nomad_job" "consul-exporter" {
   jobspec = file("${path.module}/jobs/consul_exporter.hcl") 
 }
+
+resource "nomad_job" "cloudprober" {
+  jobspec = file("${path.module}/jobs/cloudprober.hcl") 
+}
