@@ -16,6 +16,10 @@ job "obs-grafana" {
     count = 1
 
     network {
+      dns {
+        servers = ["${attr.unique.network.ip-address}"]
+      }
+
       port "http" {
         to = 3000
       }
