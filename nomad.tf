@@ -309,3 +309,7 @@ resource "nomad_job" "snmp-exporter" {
 resource "nomad_job" "graphite-exporter" {
   jobspec = file("${path.module}/jobs/graphite_exporter.hcl") 
 }
+
+resource "nomad_job" "consul-exporter" {
+  jobspec = file("${path.module}/jobs/consul_exporter.hcl") 
+}

@@ -23,8 +23,6 @@ job "cloudflared" {
         ports = ["metrics"]
         command = "tunnel"
         args = [
-          "--",
-          "--metrics \"localhost:${NOMAD_PORT_metrics}\"",
           "run \"${TUNNEL_NAME}\""
         ]
 
@@ -38,7 +36,18 @@ job "cloudflared" {
       env {
         TUNNEL_NAME = "${attr.unique.hostname}.${node.datacenter}.${node.region}"
         TUNNEL_ORIGIN_CERT = "${NOMAD_SECRETS_DIR}/cert.pem"
+        TUNNEL_METRICS = "0.0.0.0:${NOMAD_PORT_metrics}"
       }
+
+      service {
+      name = "cloudflared"
+      provider = "consul"
+      port = "metrics"
+      
+      tags = [
+        "metrics=true"
+      ]
+    }
 
       template {
         data = <<EOF

@@ -76,6 +76,14 @@ scrape_configs:
     static_configs:
     - targets:
       - 0.0.0.0:9090
+
+- job_name: "consul"
+  metrics_path: "/metrics"
+  consul_sd_configs:
+    - server: "{{ env "attr.unique.network.ip-address" }}:8500"
+      services:
+        - "prometheus-consul-exporter"
+
   - job_name: "nomad_server"
     metrics_path: "/v1/metrics"
     params:
@@ -87,6 +95,7 @@ scrape_configs:
         - "nomad"
       tags:
         - "http"
+
   - job_name: "nomad_client"
     metrics_path: "/v1/metrics"
     params:
@@ -96,6 +105,7 @@ scrape_configs:
     - server: "{{ env "attr.unique.network.ip-address" }}:8500"
       services:
         - "nomad-client"
+
   - job_name: 'snmp-unifi'
     static_configs:
       - targets: &unifi_devices
@@ -154,33 +164,15 @@ scrape_configs:
     static_configs:
       - targets:
           - {{ range service "prometheus-graphite-exporter" }}{{ .Address }}:{{ .Port }}{{ end }}
-    honor_labels: true
-    
+    honor_labels: true  
 {{ range services }}
-{{ if .Tags | contains "mentrics=true" }}
-  - job_name: {{ .Name }}
-    metrics_path: "/v1/metrics"
-    params:
-      format:
-      - "prometheus"
-    consul_sd_configs:
-    - server: "{{ env "attr.unique.network.ip-address" }}:8500"
-      services:
-        - "{{ .Name }}"
-
-
-{{ end }}
-{{ end }}
-
-{{ range services }}
-{{ if .Tags | contains "metrics=true" }}
-{{ scratch.Set "metrics_path" "/metrics" }}
-{{ range .Tags }}
-{{ if .Value | contains "metrics_path=" }}
-{{ scratch.Set "metrics_path" (.Valuee | trimPrefix "metrics_path=") }}
-{{ end }}
-{{ end }}
-
+{{- if .Tags | contains "metrics=true" }}
+{{- scratch.Set "metrics_path" "/metrics" }}
+{{- range .Tags }}
+{{- if . | contains "metrics_path=" }}
+{{- scratch.Set "metrics_path" (.Valuee | trimPrefix "metrics_path=") }}
+{{- end }}
+{{- end }}
   - job_name: {{ .Name }}
     metrics_path: "{{ scratch.Get "metrics_path" }}"
     params:
@@ -191,11 +183,8 @@ scrape_configs:
       services:
         - "{{ .Name }}"
 
-
-{{ end }}
-{{ end }}
-
-
+{{- end }}
+{{- end -}}
 EOH
 
         change_mode   = "signal"
