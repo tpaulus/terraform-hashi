@@ -93,7 +93,7 @@ datasources:
   - name: Prometheus
     type: prometheus
     access: proxy
-    url: http://{{ range service "prometheus" }}{{ .Address }}:{{ .Port }}{{ end }}
+    url: http://prometheus.service.{{ env "NOMAD_DC" }}.consul:9090
 EOF
         destination = "/local/grafana/provisioning/datasources/datasources.yaml"
 
