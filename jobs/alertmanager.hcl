@@ -43,6 +43,8 @@ job "obs-alertmanager" {
 
       config {
         image = "prom/alertmanager:v0.25.0"
+        ports = ["http"]
+
         args = [
           "--config.file=/etc/alertmanager/config/alertmanager.yml"
         ]
