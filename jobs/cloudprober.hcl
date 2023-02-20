@@ -72,6 +72,14 @@ probe {
     resolved_domain: "consul.service.seaview.consul"
     min_answers: 1
   }
+  additional_label {
+    key: "location"
+    value: "internal"
+  }
+  additional_label {
+    key: "type"
+    value: "infra"
+  }
   interval_msec: 5000  # 5s
   timeout_msec: 1000   # 1s
 }
@@ -83,7 +91,14 @@ probe {
   targets {
     host_names: "home.whitestar.systems"
   }
-
+  additional_label {
+    key: "location"
+    value: "internal"
+  }
+  additional_label {
+    key: "type"
+    value: "service"
+  }
   interval_msec: 5000  # 5s
   timeout_msec: 1000   # 1s
 }
@@ -96,6 +111,10 @@ probe {
   targets {
     host_names: "1.1.1.1"
   }
+  additional_label {
+    key: "location"
+    value: "external"
+  }
   interval_msec: 5000  # 5s
   timeout_msec: 1000   # 1s
 }
@@ -106,6 +125,10 @@ probe {
   targets {
     host_names: "www.google.com"
   }
+  additional_label {
+    key: "location"
+    value: "external"
+  }
   interval_msec: 5000  # 5s
   timeout_msec: 1000   # 1s
 }
@@ -115,6 +138,10 @@ probe {
   type: HTTP
   targets {
     host_names: "apple.com"
+  }
+  additional_label {
+    key: "location"
+    value: "external"
   }
   interval_msec: 5000  # 5s
   timeout_msec: 1000   # 1s
