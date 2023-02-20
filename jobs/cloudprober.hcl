@@ -38,21 +38,20 @@ job "obs-cloudprober" {
       }
     }
 
-    task "alertmanager" {
+    task "cloudprober" {
       driver = "docker"
 
       config {
-        image = "prom/alertmanager:v0.25.0"
+        image = "cloudprober/cloudprober:v0.12.3"
         ports = ["http"]
 
         args = [
-          "--config.file${NOMAD_TASK_DIR}/cloudprober.cfg"
+          "--config_file", "${NOMAD_TASK_DIR}/cloudprober.cfg"
         ]
       }
 
       env {
-        CLOUDPROBER_PORT = "NOMAD_PORT_http"
-        CLOUDPROBER_HOST = "${attr.unique.network.ip-address}"
+        CLOUDPROBER_PORT = "${NOMAD_PORT_http}"
       }
 
       resources {
@@ -68,8 +67,11 @@ probe {
   targets {
     host_names: "10.0.10.3"
   }
-  fqdn: "consul.service.seaview.consul"
-  queryType: A
+  dns_probe {
+    query_type: A
+    resolved_domain: "consul.service.seaview.consul"
+    min_answers: 1
+  }
   interval_msec: 5000  # 5s
   timeout_msec: 1000   # 1s
 }

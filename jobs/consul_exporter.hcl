@@ -19,7 +19,10 @@ job "obs-consul_exporter" {
 
       config {
         image = "prom/consul-exporter:v0.9.0"
-        args  = []
+        ports = ["http"]
+        args  = [
+        "--consul.server=${attr.unique.network.ip-address}:8500"
+        ]
       }
 
       resources {

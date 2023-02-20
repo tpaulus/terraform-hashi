@@ -165,6 +165,7 @@ scrape_configs:
       - targets:
           - {{ range service "prometheus-graphite-exporter" }}{{ .Address }}:{{ .Port }}{{ end }}
     honor_labels: true  
+
 {{ range services }}
 {{- if .Tags | contains "metrics=true" }}
 {{- scratch.Set "metrics_path" "/metrics" }}
