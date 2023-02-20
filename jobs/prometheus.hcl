@@ -77,12 +77,12 @@ scrape_configs:
     - targets:
       - 0.0.0.0:9090
 
-- job_name: "consul"
-  metrics_path: "/metrics"
-  consul_sd_configs:
-    - server: "{{ env "attr.unique.network.ip-address" }}:8500"
-      services:
-        - "prometheus-consul-exporter"
+  - job_name: "consul"
+    metrics_path: "/metrics"
+    consul_sd_configs:
+      - server: "{{ env "attr.unique.network.ip-address" }}:8500"
+        services:
+          - "prometheus-consul-exporter"
 
   - job_name: "nomad_server"
     metrics_path: "/v1/metrics"
