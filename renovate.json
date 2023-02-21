@@ -19,7 +19,6 @@
   "packageRules": [
     {
       "matchManagers": ["regex"],
-      "groupName": "docker-image-updates",
       "automerge": false
     }
   ],
