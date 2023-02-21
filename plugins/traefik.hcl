@@ -44,7 +44,7 @@ job "traefik" {
       driver = "docker"
 
       config {
-        image = "traefik:v3.0.0-beta2"
+        image = "traefik:v3.0.0-beta2-windowsservercore-1809"
         ports = ["http", "admin", "ping"]
 
         volumes = [
