@@ -54,7 +54,7 @@ job "Netbox" {
     task "netbox-ui" {
       driver = "docker"
       config = {
-        image = "netboxcommunity/netbox:v3.4.4"
+        image = "netboxcommunity/netbox:v3.4.5"
         ports = ["http"]
 
         auth_soft_fail = true
@@ -192,7 +192,7 @@ WEBHOOKS_ENABLED=true
     task "netbox-housekeeping" {
       driver = "docker"
       config = {
-        image = "netboxcommunity/netbox:v3.4.4"
+        image = "netboxcommunity/netbox:v3.4.5"
 
         auth_soft_fail = true
 
@@ -275,7 +275,7 @@ WEBHOOKS_ENABLED=true
     task "netbox-worker" {
       driver = "docker"
       config = {
-        image = "netboxcommunity/netbox:v3.4.4"
+        image = "netboxcommunity/netbox:v3.4.5"
 
         auth_soft_fail = true
         entrypoint = ["/opt/netbox/venv/bin/python"]
