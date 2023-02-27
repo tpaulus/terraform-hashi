@@ -42,7 +42,7 @@ job "obs-cloudprober" {
       driver = "docker"
 
       config {
-        image = "cloudprober/cloudprober:v0.12.3"
+        image = "cloudprober/cloudprober:v0.12.4"
         ports = ["http"]
 
         args = [
