@@ -19,7 +19,7 @@ job "obs-graphite-exporter" {
     task "prometheus_graphite_exporter" {
       driver = "docker"
       config {
-        image = "prom/graphite-exporter:v0.13.1"
+        image = "prom/graphite-exporter:v0.13.3"
         command = "--graphite.mapping-config=local/graphite_mapping.conf"
         ports = ["graphite", "prometheus"]
       }
