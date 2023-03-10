@@ -253,6 +253,78 @@ resource "nomad_external_volume" "prometheus_volume" {
   }
 }
 
+resource "nomad_external_volume" "immich_photos_volume" {
+  type         = "csi"
+  plugin_id    = "org.democratic-csi.truenas-nfs"
+  volume_id    = "immich_photos_volume"
+  name         = "immich_photos_volume"
+  capacity_min = "500GiB"
+  capacity_max = "1TiB"
+
+  capability {
+    access_mode = "multi-node-reader-only"
+    attachment_mode = "file-system"
+  }
+
+  capability {
+    access_mode = "multi-node-multi-writer"
+    attachment_mode = "file-system"
+  }
+
+  mount_options {
+    fs_type = "nfs"
+    mount_flags = ["noatime", "nfsvers=3", "nolock"]
+  }
+}
+
+resource "nomad_external_volume" "immich_db_volume" {
+  type         = "csi"
+  plugin_id    = "org.democratic-csi.truenas-nfs"
+  volume_id    = "immich_db_volume"
+  name         = "immich_db_volume"
+  capacity_min = "1GiB"
+  capacity_max = "10GiB"
+
+  capability {
+    access_mode = "multi-node-reader-only"
+    attachment_mode = "file-system"
+  }
+
+  capability {
+    access_mode = "multi-node-multi-writer"
+    attachment_mode = "file-system"
+  }
+
+  mount_options {
+    fs_type = "nfs"
+    mount_flags = ["noatime", "nfsvers=3", "nolock"]
+  }
+}
+
+resource "nomad_external_volume" "immich_seach_volume" {
+  type         = "csi"
+  plugin_id    = "org.democratic-csi.truenas-nfs"
+  volume_id    = "immich_seach_volume"
+  name         = "immich_seach_volume"
+  capacity_min = "1GiB"
+  capacity_max = "2.5GiB"
+
+  capability {
+    access_mode = "multi-node-reader-only"
+    attachment_mode = "file-system"
+  }
+
+  capability {
+    access_mode = "multi-node-multi-writer"
+    attachment_mode = "file-system"
+  }
+
+  mount_options {
+    fs_type = "nfs"
+    mount_flags = ["noatime", "nfsvers=3", "nolock"]
+  }
+}
+
 // ==== Jobs ====
 resource "nomad_job" "Lunch_Money_Offsets" {
   jobspec = file("${path.module}/jobs/offset_tracker.hcl")
@@ -320,4 +392,8 @@ resource "nomad_job" "cloudprober" {
 
 resource "nomad_job" "coa-utilities-bill-generation" {
   jobspec = file("${path.module}/jobs/coa-utilities-bill-generation.hcl") 
+}
+
+resource "nomad_job" "immich" {
+  jobspec = file("${path.module}/jobs/immich.hcl") 
 }
