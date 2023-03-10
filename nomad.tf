@@ -258,7 +258,7 @@ resource "nomad_external_volume" "immich_photos_volume" {
   plugin_id    = "org.democratic-csi.truenas-nfs"
   volume_id    = "immich_photos_volume"
   name         = "immich_photos_volume"
-  capacity_min = "500GiB"
+  capacity_min = "1024GiB"
   capacity_max = "1024GiB"
 
   capability {
