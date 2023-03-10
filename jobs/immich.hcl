@@ -137,7 +137,7 @@ IMMICH_MACHINE_LEARNING_URL=http://{{ .Address }}:{{ .Port }}
       }
 
       env {
-        NODE_ENV = production
+        NODE_ENV = "production"
       }
 
       template {
@@ -228,7 +228,7 @@ REVERSE_GEOCODING_PRECISION=3
       }
 
       env {
-        NODE_ENV = production
+        NODE_ENV = "production"
       }
 
       template {
@@ -302,7 +302,7 @@ REVERSE_GEOCODING_PRECISION=3
       }
 
       env {
-        NODE_ENV = production
+        NODE_ENV = "production"
       }
 
       template {
