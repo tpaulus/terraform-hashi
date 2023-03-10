@@ -367,18 +367,17 @@ REVERSE_GEOCODING_PRECISION=3
         ports = ["redis"]
 
         auth_soft_fail = true
-        args = ["/local/redis.conf"]
 
         mount = {
           type   = "bind"
           source = "local"
           target = "/data"
         }
+      }
 
-        resources {
-          cpu    = 256
-          memory = 512
-        }
+      resources {
+        cpu    = 256
+        memory = 512
       }
 
       service {
@@ -480,7 +479,7 @@ REVERSE_GEOCODING_PRECISION=3
 {{ .K }}="{{ .V }}"
 {{ end }}
 {{- end }}
-PG_DATA: /var/lib/postgresql/data
+PG_DATA="/var/lib/postgresql/data"
         EOH
 
         destination = "secrets/file.env"
