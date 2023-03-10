@@ -259,7 +259,7 @@ resource "nomad_external_volume" "immich_photos_volume" {
   volume_id    = "immich_photos_volume"
   name         = "immich_photos_volume"
   capacity_min = "500GiB"
-  capacity_max = "1TiB"
+  capacity_max = "1024GiB"
 
   capability {
     access_mode = "multi-node-reader-only"
@@ -301,11 +301,11 @@ resource "nomad_external_volume" "immich_db_volume" {
   }
 }
 
-resource "nomad_external_volume" "immich_seach_volume" {
+resource "nomad_external_volume" "immich_search_volume" {
   type         = "csi"
   plugin_id    = "org.democratic-csi.truenas-nfs"
-  volume_id    = "immich_seach_volume"
-  name         = "immich_seach_volume"
+  volume_id    = "immich_search_volume"
+  name         = "immich_search_volume"
   capacity_min = "1GiB"
   capacity_max = "2.5GiB"
 
