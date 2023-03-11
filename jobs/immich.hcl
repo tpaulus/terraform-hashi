@@ -100,8 +100,8 @@ IMMICH_MACHINE_LEARNING_URL=http://{{ .Address }}:{{ .Port }}
       }
 
       resources {
-        cpu    = 1024
-        memory = 1024
+        cpu    = 3072
+        memory = 5120
       }
     }
   }
@@ -175,8 +175,8 @@ REVERSE_GEOCODING_PRECISION=3
       }
 
       resources {
-        cpu    = 1024
-        memory = 1024
+        cpu    = 3072
+        memory = 5120
       }
     }
   }
@@ -263,7 +263,7 @@ REVERSE_GEOCODING_PRECISION=3
 
       resources {
         cpu    = 3072
-        memory = 1024
+        memory = 5120
       }
     }
 
