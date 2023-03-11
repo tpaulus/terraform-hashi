@@ -52,7 +52,7 @@ job "Immich" {
     task "immich-server" {
       driver = "docker"
       config {
-        image = "altran1502/immich-server:v1.50.1"
+        image = "ghcr.io/immich-app/immich-server:v1.50.1"
         command = "/bin/sh"
         args    = ["./start-server.sh"]
 
@@ -127,7 +127,7 @@ IMMICH_MACHINE_LEARNING_URL=http://{{ .Address }}:{{ .Port }}
     task "immich-worker" {
       driver = "docker"
       config {
-        image = "altran1502/immich-server:v1.50.1"
+        image = "ghcr.io/immich-app/immich-server:pr-1914"
         command = "/bin/sh"
         args    = ["./start-microservices.sh"]
 
@@ -214,7 +214,7 @@ REVERSE_GEOCODING_PRECISION=3
     task "immich-ml" {
       driver = "docker"
       config {
-        image = "altran1502/immich-machine-learning:v1.50.1"
+        image = "ghcr.io/immich-app/immich-machine-learning:v1.50.1"
         ports = ["http"]
 
         auth_soft_fail = true
@@ -300,7 +300,7 @@ REVERSE_GEOCODING_PRECISION=3
     task "immich-web" {
       driver = "docker"
       config {
-        image   = "altran1502/immich-web:v1.50.1"
+        image   = "ghcr.io/immich-app/immich-web:v1.50.1"
         command = "/bin/sh"
         args    = ["./entrypoint.sh"]
         ports   = ["http"]
@@ -346,8 +346,8 @@ REVERSE_GEOCODING_PRECISION=3
       }
 
       resources {
-        cpu    = 1024
-        memory = 1024
+        cpu    = 128
+        memory = 256
       }
     }
   }
