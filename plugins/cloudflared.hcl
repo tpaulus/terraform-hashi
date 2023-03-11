@@ -152,12 +152,7 @@ ingress:
       - fa3dd83c769193080cdc3a7156abea0e265e6f87c8b788551d7a7f87c521e75a
 - hostname: immich.brickyard.whitestar.systems
   service: http://{{ env "attr.unique.network.ip-address" }}:8080
-  originRequest:
-    access:
-      required: true
-      teamName: whitestar
-      audTag:
-      - 4d25a12efb15c03c897eeb4212133186bed7f9c065bfd462add8afcdf7a13727
+  originRequest: {}
 - hostname: blog.tompaulus.com
   service: http://{{ env "attr.unique.network.ip-address" }}:8080
   originRequest: {}
