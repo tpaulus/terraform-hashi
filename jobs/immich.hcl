@@ -46,13 +46,16 @@ job "Immich" {
       source          = "immich_photos_volume"
       read_only       = false
       attachment_mode = "file-system"
-      access_mode     = "single-node-writer"
+      access_mode     = "multi-node-multi-writer"
     }
 
     task "immich-server" {
       driver = "docker"
       config {
         image = "altran1502/immich-server:v1.50.1"
+        command = "/bin/sh"
+        args    = ["./start-server.sh"]
+
         ports = ["http"]
 
         auth_soft_fail = true
@@ -66,6 +69,7 @@ job "Immich" {
 
       env {
         NODE_ENV = "production"
+        TYPESENSE_ENABLED = "false"
       }
 
       template {
@@ -117,15 +121,15 @@ IMMICH_MACHINE_LEARNING_URL=http://{{ .Address }}:{{ .Port }}
       source          = "immich_photos_volume"
       read_only       = false
       attachment_mode = "file-system"
-      access_mode     = "single-node-writer"
+      access_mode     = "multi-node-multi-writer"
     }
 
     task "immich-worker" {
       driver = "docker"
       config {
         image = "altran1502/immich-server:v1.50.1"
-        ports = ["http"]
-        entrypoint = "/bin/sh ./start-microservices.sh"
+        command = "/bin/sh"
+        args    = ["./start-microservices.sh"]
 
         auth_soft_fail = true
       }
@@ -138,6 +142,7 @@ IMMICH_MACHINE_LEARNING_URL=http://{{ .Address }}:{{ .Port }}
 
       env {
         NODE_ENV = "production"
+        TYPESENSE_ENABLED = "false"
       }
 
       template {
@@ -203,7 +208,7 @@ REVERSE_GEOCODING_PRECISION=3
       source          = "immich_photos_volume"
       read_only       = false
       attachment_mode = "file-system"
-      access_mode     = "single-node-writer"
+      access_mode     = "multi-node-multi-writer"
     }
 
     task "immich-ml" {
@@ -295,14 +300,17 @@ REVERSE_GEOCODING_PRECISION=3
     task "immich-web" {
       driver = "docker"
       config {
-        image = "altran1502/immich-web:v1.50.1"
-        ports = ["http"]
+        image   = "altran1502/immich-web:v1.50.1"
+        command = "/bin/sh"
+        args    = ["./entrypoint.sh"]
+        ports   = ["http"]
 
         auth_soft_fail = true
       }
 
       env {
         NODE_ENV = "production"
+        TYPESENSE_ENABLED = "false"
       }
 
       template {
