@@ -253,6 +253,54 @@ resource "nomad_external_volume" "prometheus_volume" {
   }
 }
 
+resource "nomad_external_volume" "icloud_pd_volume" {
+  type         = "csi"
+  plugin_id    = "org.democratic-csi.truenas-nfs"
+  volume_id    = "icloud_pd_volume"
+  name         = "icloud_pd_volume"
+  capacity_min = "500GiB"
+  capacity_max = "500GiB"
+
+  capability {
+    access_mode = "multi-node-reader-only"
+    attachment_mode = "file-system"
+  }
+
+  capability {
+    access_mode = "multi-node-multi-writer"
+    attachment_mode = "file-system"
+  }
+
+  mount_options {
+    fs_type = "nfs"
+    mount_flags = ["noatime", "nfsvers=3", "nolock"]
+  }
+}
+
+resource "nomad_external_volume" "icloud_pd_cookies_volume" {
+  type         = "csi"
+  plugin_id    = "org.democratic-csi.truenas-nfs"
+  volume_id    = "icloud_pd_cookies_volume"
+  name         = "icloud_pd_cookies_volume"
+  capacity_min = "100MiB"
+  capacity_max = "100MiB"
+
+  capability {
+    access_mode = "multi-node-reader-only"
+    attachment_mode = "file-system"
+  }
+
+  capability {
+    access_mode = "multi-node-multi-writer"
+    attachment_mode = "file-system"
+  }
+
+  mount_options {
+    fs_type = "nfs"
+    mount_flags = ["noatime", "nfsvers=3", "nolock"]
+  }
+}
+
 // ==== Jobs ====
 resource "nomad_job" "Lunch_Money_Offsets" {
   jobspec = file("${path.module}/jobs/offset_tracker.hcl")
