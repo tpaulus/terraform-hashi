@@ -335,7 +335,7 @@ resource "nomad_job" "HomeAssistant" {
 }
 
 resource "nomad_job" "unifi-protect-backup" {
-  jobspec = file("${path.module}/jobs/unifi-protect-backup.hcl") 
+  jobspec = file("${path.module}/jobs/backup-unifi-protect.hcl") 
 }
 
 resource "nomad_job" "alertmanager" {
@@ -368,4 +368,8 @@ resource "nomad_job" "cloudprober" {
 
 resource "nomad_job" "coa-utilities-bill-generation" {
   jobspec = file("${path.module}/jobs/coa-utilities-bill-generation.hcl") 
+}
+
+resource "nomad_job" "icloud_pd" {
+  jobspec = file("${path.module}/jobs/backup-icloud-photos.hcl") 
 }
