@@ -1,4 +1,4 @@
-job "unifi-protect-backup" {
+job "backup-unifi-protect" {
   datacenters = ["seaview"]
   type = "service"
 
