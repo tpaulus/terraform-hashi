@@ -282,8 +282,8 @@ resource "nomad_external_volume" "icloud_pd_cookies_volume" {
   plugin_id    = "org.democratic-csi.truenas-nfs"
   volume_id    = "icloud_pd_cookies_volume"
   name         = "icloud_pd_cookies_volume"
-  capacity_min = "0.1GiB"
-  capacity_max = "0.1GiB"
+  capacity_min = "1GiB"
+  capacity_max = "1GiB"
 
   capability {
     access_mode = "multi-node-reader-only"
