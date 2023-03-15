@@ -63,7 +63,7 @@ COOKIE={{ .cookie }}
       driver = "exec"
       config {
         command = "sh"
-        args = ["-c", "echo $COOKIE | base64 -d > ${NOMAD_ALLOC_DIR}/data/tomtompauluscom"]
+        args = ["-c", "echo \"$COOKIE\"==== | fold -w 4 | sed '$ d' | tr -d '\n' | base64 --decode > ${NOMAD_ALLOC_DIR}/data/tomtompauluscom"]
       }
     }
 
@@ -178,14 +178,14 @@ COOKIE={{ .cookie }}
 {{- end }}
         EOH
 
-        destination = "secrets/file.env"
+        destination = "secrets/cookie"
         env         = true
       }
 
       driver = "exec"
       config {
         command = "sh"
-        args = ["-c", "echo $COOKIE | base64 -d > ${NOMAD_ALLOC_DIR}/data/melindamelearth"]
+        args = ["-c", "echo \"$COOKIE\"==== | fold -w 4 | sed '$ d' | tr -d '\n' | base64 --decode > ${NOMAD_ALLOC_DIR}/data/melindamelearth"]
       }
     }
 
