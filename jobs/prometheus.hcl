@@ -32,7 +32,7 @@ job "obs-prometheus" {
       driver = "docker"
 
       config {
-        image = "prom/prometheus:v2.42.0"
+        image = "prom/prometheus:v2.43.0"
         ports = ["http"]
         
         args = [
