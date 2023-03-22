@@ -52,7 +52,7 @@ job "obs-grafana" {
       }
 
       config {
-        image = "grafana/grafana:9.4.3"
+        image = "grafana/grafana:9.4.7"
         ports = ["http"]
       }
 
