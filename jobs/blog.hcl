@@ -21,6 +21,7 @@ job "Blog" {
       mode     = "fail"
     }
 
+
     network {
       port "http" {}
     }
@@ -63,7 +64,7 @@ job "Blog" {
     task "ghost" {
       driver = "docker"
       config = {
-        image = "ghost:5.39.0"
+        image = "ghost:5.40.0"
         ports = ["http"]
 
         auth_soft_fail = true
@@ -129,6 +130,93 @@ job "Blog" {
       resources {
         cpu    = 1024
         memory = 1024
+      }
+    }
+  }
+
+
+  group "DB" {
+    count = 1
+
+    restart {
+      attempts = 3
+      delay    = "15s"
+      interval = "10m"
+      mode     = "fail"
+    }
+
+    network {
+      dns {
+        servers = ["1.1.1.1", "1.0.0.1"]
+      }
+
+      port "mysql" {
+        to = 3306
+      }
+    }
+
+    volume "blog_db_volume" {
+      type            = "csi"
+      source          = "blog_db_volume"
+      read_only       = false
+      attachment_mode = "file-system"
+      access_mode     = "single-node-writer"
+    }
+
+    task "mysql" {
+      driver = "docker"
+      config = {
+        image = "mysql:8.0.32-debian"
+        ports = ["mysql"]
+
+        auth_soft_fail = true
+      }
+
+      volume_mount {
+        volume      = "blog_db_volume"
+        destination = "/var/lib/mysql"
+        read_only   = false
+      }
+
+      service {
+        name         = "ghost-db"
+        tags         = ["internal", "db"]
+        port         = "mysql"
+        provider     = "consul"
+
+        check {
+          name     = "TCP Health Check"
+          type     = "tcp"
+          port     = "mysql"
+          interval = "30s"
+          timeout  = "5s"
+
+          check_restart {
+            limit = 3
+            grace = "90s"
+            ignore_warnings = false
+          }
+        }
+      }
+
+      resources {
+        cpu    = 1024
+        memory = 1024
+      }
+
+      template {
+        data = <<EOH
+MYSQL_ROOT_PASSWORD={{ timestamp | sha256Hex }}
+
+{{ with nomadVar "nomad/jobs/Blog" -}}
+MYSQL_DATABASE={{ .dbName }}
+MYSQL_USER={{ .dbUser }}
+MYSQL_PASSWORD={{ .dbPassword }}
+{{- end }}
+        EOH
+
+        destination = "secrets/file.env"
+        env         = true
       }
     }
   }

@@ -61,6 +61,30 @@ resource "nomad_external_volume" "blog_volume" {
   }
 }
 
+resource "nomad_external_volume" "blog_db_volume" {
+  type         = "csi"
+  plugin_id    = "org.democratic-csi.truenas-nfs"
+  volume_id    = "blog_db_volume"
+  name         = "blog_db_volume"
+  capacity_min = "1GiB"
+  capacity_max = "10GiB"
+
+  capability {
+    access_mode = "multi-node-reader-only"
+    attachment_mode = "file-system"
+  }
+
+  capability {
+    access_mode = "multi-node-multi-writer"
+    attachment_mode = "file-system"
+  }
+
+  mount_options {
+    fs_type = "nfs"
+    mount_flags = ["noatime", "nfsvers=3", "nolock"]
+  }
+}
+
 resource "nomad_external_volume" "netbox_db_volume" {
   type         = "csi"
   plugin_id    = "org.democratic-csi.truenas-nfs"
