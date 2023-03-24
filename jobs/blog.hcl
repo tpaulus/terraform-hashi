@@ -21,9 +21,12 @@ job "Blog" {
       mode     = "fail"
     }
 
-
     network {
       port "http" {}
+
+      dns {
+        servers = ["${attr.unique.network.ip-address}"]
+      }
     }
 
     volume "blog-nfs-volume" {
@@ -31,7 +34,7 @@ job "Blog" {
       source          = "blog_volume"
       read_only       = false
       attachment_mode = "file-system"
-      access_mode     = "single-node-writer"
+      access_mode     = "multi-node-multi-writer"
     }
 
     service {
@@ -61,23 +64,36 @@ job "Blog" {
       }
     }
 
+    task "wait-for-db" {
+      lifecycle {
+        hook = "prestart"
+        sidecar = false
+      }
+
+      driver = "exec"
+      config {
+        command = "sh"
+        args = ["-c", "while ! nc -z ghost-db.service.seaview.consul 61612; do sleep 1; done"]
+      }
+    }
+
     task "ghost" {
       driver = "docker"
-      config = {
-        image = "ghost:5.40.0"
+      config {
+        image = "ghost:5.39.0"
         ports = ["http"]
 
         auth_soft_fail = true
 
-        mount {
+        mount = {
           type   = "bind"
-          source = "local/config.production.json"
+          source = "secrets/config.production.json"
           target = "/var/lib/ghost/config.production.json"
         }
       }
 
       template {
-        destination   = "local/config.production.json"
+        destination   = "secrets/config.production.json"
         data          = <<EOH
 {
   "url": "https://blog.tompaulus.com/",
@@ -85,6 +101,10 @@ job "Blog" {
     "port": {{ env "NOMAD_PORT_http" }},
     "host": "0.0.0.0"
   },
+  "comments": {
+    "url": false
+  },
+
   "mail": {
     "from": "Tom's Journal <blog@tompaulus.com>",
     "transport": "SMTP",
@@ -101,9 +121,19 @@ job "Blog" {
 {{- end }}
   },
   "database": {
-    "client": "sqlite3",
+    "client": "mysql",
     "connection": {
-      "filename": "/var/lib/ghost/content/data/ghost.db"
+      "host": "ghost-db.service.seaview.consul",
+      "port": 61612,
+      {{ with nomadVar "nomad/jobs/Blog" -}}
+      "user": "{{ .dbUser }}",
+      "password": "{{ .dbPassword }}",
+      "database": "{{ .dbName }}"
+      {{- end }}
+    },
+    "pool": {
+      "min": 2,
+      "max": 20
     }
   },
   "logging": {
@@ -146,12 +176,9 @@ job "Blog" {
     }
 
     network {
-      dns {
-        servers = ["1.1.1.1", "1.0.0.1"]
-      }
-
       port "mysql" {
         to = 3306
+        static = 61612
       }
     }
 
@@ -165,7 +192,7 @@ job "Blog" {
 
     task "mysql" {
       driver = "docker"
-      config = {
+      config {
         image = "mysql:8.0.32-debian"
         ports = ["mysql"]
 
@@ -201,7 +228,7 @@ job "Blog" {
 
       resources {
         cpu    = 1024
-        memory = 1024
+        memory = 2048
       }
 
       template {
