@@ -193,7 +193,7 @@ job "Blog" {
     task "mysql" {
       driver = "docker"
       config {
-        image = "mysql:8.0.32-debian"
+        image = "mysql:8.0.32"
         ports = ["mysql"]
 
         auth_soft_fail = true
