@@ -12,7 +12,7 @@ job "storage-node" {
       }
 
       config {
-        image = "democraticcsi/democratic-csi:v1.8.1"
+        image = "democraticcsi/democratic-csi:v1.8.2"
 
         args = [
           "--csi-version=1.5.0",
