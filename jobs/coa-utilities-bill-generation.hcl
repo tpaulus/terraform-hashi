@@ -26,6 +26,8 @@ SMTP_USERNAME="{{ .user }}"
 SMTP_PASSWORD="{{ .pass }}"
 {{- end }}
 
+TZ="America/Los_Angeles"
+
 {{ with nomadVar "nomad/jobs/coa-utilities-bill-generation" -}}
 {{ range .Tuples -}}
 {{ .K }}="{{ .V }}"
