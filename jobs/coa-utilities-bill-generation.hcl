@@ -14,7 +14,7 @@ job "coa-utilities-bill-generation" {
       driver = "docker"
 
       config {
-        image = "ghcr.io/tpaulus/nextcentury-payhoa:v0.0.2"
+        image = "ghcr.io/tpaulus/nextcentury-payhoa:main"
       }
 
       template {
