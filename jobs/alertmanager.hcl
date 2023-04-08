@@ -61,18 +61,19 @@ route:
   group_wait: 30s
   group_interval: 5m
   repeat_interval: 1h
-  receiver: 'web.hook'
+  receiver: 'email-tom'
 receivers:
-- name: 'web.hook'
-  webhook_configs:
-  - url: 'http://127.0.0.1:5001/'
-inhibit_rules:
-  - source_match:
-      severity: 'critical'
-    target_match:
-      severity: 'warning'
-    equal: ['alertname', 'dev', 'instance']
-
+- name: 'email-tom'
+  email_configs:
+  - to: tom@tompaulus.com
+gobal:
+{{ with nomadVar "SMTP" -}}
+  smtp_from: alertmanager@whitestar.systems
+  smtp_smarthost: {{ .host }}:{{ .port }}
+  smtp_auth_username: {{ .user }}
+  smtp_auth_password: {{ .pass }}
+  smtp_require_tls: true
+{{- end }}
 EOH
 
         change_mode   = "signal"
