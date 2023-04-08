@@ -62,7 +62,7 @@ global:
   evaluation_interval: 3s
 
 rule_files:
-  - rules.yml
+  - local/config/rules.yml
 
 alerting:
  alertmanagers:
@@ -199,6 +199,33 @@ EOH
         change_mode   = "signal"
         change_signal = "SIGHUP"
         destination   = "local/config/prometheus.yml"
+      }
+
+      template {
+        data = <<EOH
+---
+groups:
+- name: RaftBackups
+  rules:
+  - alert: NomadRaftBackups
+    expr: time() - nomad_raft_backup_completed{} > 16200
+    for: 1m
+    annotations:
+      summary: Nomad Raft Not Being Backed Up
+      description: It has been over 4 hours since the Nomad Raft has been backed up
+      dashboard: https://grafana.brickyard.whitestar.systems/d/p1er_aLVk/backups?orgId=1
+  - alert: ConsulRaftBackups
+    expr: time() - consul_raft_backup_completed{} > 16200
+    for: 1m
+    annotations:
+      summary: Consul Raft Not Being Backed Up
+      description: It has been over 4 hours since the Consul Raft has been backed up
+      dashboard: https://grafana.brickyard.whitestar.systems/d/p1er_aLVk/backups?orgId=1
+EOH
+
+        change_mode   = "signal"
+        change_signal = "SIGHUP"
+        destination   = "local/config/rules.yml"
       }
 
       resources {
