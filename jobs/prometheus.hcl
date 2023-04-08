@@ -77,6 +77,14 @@ scrape_configs:
     - targets:
       - 0.0.0.0:9090
 
+  - job_name: "node_exporter"
+    metrics_path: "/metrics"
+    static_configs:
+    - targets:
+      - 10.0.10.48:9100
+      - 10.0.10.64:9100
+      - 10.0.10.80:9100
+
   - job_name: "consul"
     metrics_path: "/metrics"
     consul_sd_configs:
