@@ -62,7 +62,7 @@ global:
   evaluation_interval: 3s
 
 rule_files:
-  - local/config/rules.yml
+  - /local/config/rules.yml
 
 alerting:
  alertmanagers:
