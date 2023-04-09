@@ -66,7 +66,7 @@ receivers:
 - name: 'email-tom'
   email_configs:
   - to: tom@tompaulus.com
-gobal:
+global:
   {{ with nomadVar "SMTP" -}}
   smtp_from: alertmanager@whitestar.systems
   smtp_smarthost: "{{ .host }}:{{ .port }}"
