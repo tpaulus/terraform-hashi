@@ -179,7 +179,7 @@ scrape_configs:
 {{- scratch.Set "metrics_path" "/metrics" }}
 {{- range .Tags }}
 {{- if . | contains "metrics_path=" }}
-{{- scratch.Set "metrics_path" (.Value | trimPrefix "metrics_path=") }}
+{{- scratch.Set "metrics_path" ( . | trimPrefix "metrics_path=") }}
 {{- end }}
 {{- end }}
   - job_name: {{ .Name }}
