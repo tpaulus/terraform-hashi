@@ -234,14 +234,14 @@ groups:
   - alert: Internal Service Down
     expr: sum(rate(success{job="cloudprober", location="internal"}[1m])) by (probe) / sum(rate(total{job="cloudprober", location="internal"}[1m])) by (probe) < 0.50
     for: 3m
-    annotaions:
-      summary: {{ $labels.probe }} Is Down
-      description: {{ $labels.probe }} is failing Cloudprober Healthchecks
+    annotations:
+      summary: "{{ $labels.probe }} Is Down"
+      description: "{{ $labels.probe }} is failing Cloudprober Healthchecks"
       dashboard: https://grafana.brickyard.whitestar.systems/d/bztcrl14k/status-overview
-  - alerts: Internet Down
+  - alert: Internet Down
     expr: sum(rate(success{job="cloudprober", location="external"}[1m])) / sum(rate(total{job="cloudprober", location="external"}[1m])) < 0.75
     for: 3m
-    annotaions:
+    annotations:
       summary: Internet is Down
       description: External Healthchecks are failing - Internet or DNS May be down
       dashboard: https://grafana.brickyard.whitestar.systems/d/bztcrl14k/status-overview
@@ -265,14 +265,14 @@ groups:
     expr: (node_md_disks - node_md_disks{state="active"}) != 0
     for: 1m
     annotations:
-      title: MDRAID on node {{ $labels.instance }} is in degrade mode
-      description: Degraded RAID array {{ $labels.device }} on {{ $labels.instance }}: {{ $value }} disks failed
+      title: "MDRAID on node {{ $labels.instance }} is in degrade mode"
+      description: "Degraded RAID array {{ $labels.device }} on {{ $labels.instance }}: {{ $value }} disks failed"
   - alert: Node down
     expr: up{job="node_exporter"} == 0
     for: 3m
     annotations:
-      title: Node {{ $labels.instance }} is down
-      description: Failed to scrape {{ $labels.job }} on {{ $labels.instance }} for more than 3 minutes. Node seems down.
+      title: "Node {{ $labels.instance }} is down"
+      description: "Failed to scrape {{ $labels.job }} on {{ $labels.instance }} for more than 3 minutes. Node seems down."
 EOH
 
         left_delimiter  = "[["
