@@ -67,7 +67,7 @@ receivers:
   email_configs:
   - to: tom@tompaulus.com
 gobal:
-{{ with nomadVar "SMTP" -}}
+  {{ with nomadVar "SMTP" -}}
   smtp_from: alertmanager@whitestar.systems
   smtp_smarthost: "{{ .host }}:{{ .port }}"
   smtp_auth_username: {{ .user }}
