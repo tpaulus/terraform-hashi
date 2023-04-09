@@ -46,7 +46,8 @@ job "obs-alertmanager" {
         ports = ["http"]
 
         args = [
-          "--config.file=${NOMAD_TASK_DIR}/config/alertmanager.yml"
+          "--config.file=${NOMAD_TASK_DIR}/config/alertmanager.yml",
+          "--web.external-url=https://alertmanager.brickyard.whitestar.systems"
         ]
       }
 
