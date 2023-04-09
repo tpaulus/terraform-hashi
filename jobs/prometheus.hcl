@@ -275,9 +275,11 @@ groups:
       description: Failed to scrape {{ $labels.job }} on {{ $labels.instance }} for more than 3 minutes. Node seems down.
 EOH
 
-        change_mode   = "signal"
-        change_signal = "SIGHUP"
-        destination   = "local/config/rules.yml"
+        left_delimiter  = "[["
+        right_delimiter = "]]"
+        change_mode     = "signal"
+        change_signal   = "SIGHUP"
+        destination     = "local/config/rules.yml"
       }
 
       resources {
