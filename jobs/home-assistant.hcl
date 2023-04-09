@@ -49,7 +49,7 @@ job "ha-HomeAssistant" {
         dns_servers = ["10.0.10.3"]
         ipv4_address = "10.0.10.51"  # Temporary until Consul DNS issues are resolved
 
-        image = "ghcr.io/home-assistant/home-assistant:2023.4.1"
+        image = "ghcr.io/home-assistant/home-assistant:2023.4.2"
         ports = ["http"]
 
         auth_soft_fail = true
