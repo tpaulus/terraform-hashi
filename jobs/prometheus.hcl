@@ -225,7 +225,6 @@ groups:
   rules:
   - alert: UPS_On_Batt
     expr: network_ups_tools_ups_status{flag="OB"} == 1
-    for: 1m
     annotations:
       summary: UPS Is On Battery
       description: UPS is on battery power
