@@ -69,7 +69,7 @@ receivers:
 gobal:
 {{ with nomadVar "SMTP" -}}
   smtp_from: alertmanager@whitestar.systems
-  smtp_smarthost: {{ .host }}:{{ .port }}
+  smtp_smarthost: "{{ .host }}:{{ .port }}"
   smtp_auth_username: {{ .user }}
   smtp_auth_password: {{ .pass }}
   smtp_require_tls: true
