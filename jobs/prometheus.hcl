@@ -207,14 +207,14 @@ EOH
 groups:
 - name: RaftBackups
   rules:
-  - alert: NomadRaftBackups
+  - alert: Nomad Raft Backups Missing
     expr: time() - nomad_raft_backup_completed{} > 16200
     for: 1m
     annotations:
       summary: Nomad Raft Not Being Backed Up
       description: It has been over 4 hours since the Nomad Raft has been backed up
       dashboard: https://grafana.brickyard.whitestar.systems/d/p1er_aLVk/backups?orgId=1
-  - alert: ConsulRaftBackups
+  - alert: Consul Raft Backups Missing
     expr: time() - consul_raft_backup_completed{} > 16200
     for: 1m
     annotations:
@@ -223,12 +223,56 @@ groups:
       dashboard: https://grafana.brickyard.whitestar.systems/d/p1er_aLVk/backups?orgId=1
 - name: UPSAlerts
   rules:
-  - alert: UPS_On_Batt
+  - alert: UPS On Batt
     expr: network_ups_tools_ups_status{flag="OB"} == 1
     annotations:
       summary: UPS Is On Battery
       description: UPS is on battery power
       dashboard: https://grafana.brickyard.whitestar.systems/d/j4a-DMWRk/ups-statistics?orgId=1
+- name: Cloudprober
+  rules:
+  - alert: Internal Service Down
+    expr: sum(rate(success{job="cloudprober", location="internal"}[1m])) by (probe) / sum(rate(total{job="cloudprober", location="internal"}[1m])) by (probe) < 0.50
+    for: 3m
+    annotaions:
+      summary: {{ $labels.probe }} Is Down
+      description: {{ $labels.probe }} is failing Cloudprober Healthchecks
+      dashboard: https://grafana.brickyard.whitestar.systems/d/bztcrl14k/status-overview
+  - alerts: Internet Down
+    expr: sum(rate(success{job="cloudprober", location="external"}[1m])) / sum(rate(total{job="cloudprober", location="external"}[1m])) < 0.75
+    for: 3m
+    annotaions:
+      summary: Internet is Down
+      description: External Healthchecks are failing - Internet or DNS May be down
+      dashboard: https://grafana.brickyard.whitestar.systems/d/bztcrl14k/status-overview
+- name: Consul
+  rules:
+  - alert: Consul agent is not healthy
+    expr: consul_health_node_status{status="critical"} == 1
+    for: 1m
+    annotations:
+      title: Consul agent is down
+      description: Consul agent is not healthy on {{ $labels.node }}.
+  - alert: Consul cluster is degraded
+    expr: min(consul_raft_peers) < 3
+    for: 1m
+    annotations:
+      title: Consul cluster is degraded
+      description: Consul cluster has {{ $value }} servers alive. This may lead to cluster break.
+- name: Node
+  rules:
+  - alert: MDRAID degraded
+    expr: (node_md_disks - node_md_disks{state="active"}) != 0
+    for: 1m
+    annotations:
+      title: MDRAID on node {{ $labels.instance }} is in degrade mode
+      description: Degraded RAID array {{ $labels.device }} on {{ $labels.instance }}: {{ $value }} disks failed
+  - alert: Node down
+    expr: up{job="node_exporter"} == 0
+    for: 3m
+    annotations:
+      title: Node {{ $labels.instance }} is down
+      description: Failed to scrape {{ $labels.job }} on {{ $labels.instance }} for more than 3 minutes. Node seems down.
 EOH
 
         change_mode   = "signal"
