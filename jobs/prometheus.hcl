@@ -221,6 +221,15 @@ groups:
       summary: Consul Raft Not Being Backed Up
       description: It has been over 4 hours since the Consul Raft has been backed up
       dashboard: https://grafana.brickyard.whitestar.systems/d/p1er_aLVk/backups?orgId=1
+- name: UPSAlerts
+  roles:
+  - alert: UPS_On_Batt
+    expr: network_ups_tools_ups_status{flag="OB"} == 1
+    for: 1m
+    annotations:
+      summary: UPS Is On Battery
+      description: UPS is on battery power
+      dashboard: https://grafana.brickyard.whitestar.systems/d/j4a-DMWRk/ups-statistics?orgId=1
 EOH
 
         change_mode   = "signal"
