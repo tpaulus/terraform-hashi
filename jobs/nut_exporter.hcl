@@ -35,10 +35,10 @@ job "obs-nut-exporter" {
 
       template {
         data = <<EOH
-{{ with nomadVar "nomad/jobs/CF_Gateway_IP" -}}
-NUT_EXPORTER_SERVER = {{ .CF_API_TOKEN }}
-NUT_EXPORTER_USERNAME = {{ .CF_ACCOUNT_ID }}
-NUT_EXPORTER_PASSWORD = {{ .CF_GATEWAY_LOCATION }}
+{{ with nomadVar "nomad/jobs/obs-nut-exporter" -}}
+NUT_EXPORTER_SERVER = {{ .NUT_EXPORTER_SERVER }}
+NUT_EXPORTER_USERNAME = {{ .NUT_EXPORTER_USERNAME }}
+NUT_EXPORTER_PASSWORD = {{ .NUT_EXPORTER_PASSWORD }}
 {{- end }}
         EOH
 
