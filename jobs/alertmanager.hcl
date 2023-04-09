@@ -66,6 +66,7 @@ receivers:
 - name: 'email-tom'
   email_configs:
   - to: tom@tompaulus.com
+    send_resolved: true
 global:
   {{ with nomadVar "SMTP" -}}
   smtp_from: alertmanager@whitestar.systems
