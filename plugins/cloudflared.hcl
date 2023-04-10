@@ -19,7 +19,7 @@ job "cloudflared" {
       driver = "docker"
 
       config {
-        image = "cloudflare/cloudflared:2023.3.1"
+        image = "cloudflare/cloudflared:2023.4.0"
         ports = ["metrics"]
         command = "tunnel"
         args = [
