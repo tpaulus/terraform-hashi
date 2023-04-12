@@ -80,7 +80,7 @@ job "Netbox" {
         check {
           name     = "TCP Health Check"
           type     = "tcp"
-          port     = "http"
+          port     = "8080"
           interval = "60s"
           timeout  = "5s"
 
@@ -94,7 +94,7 @@ job "Netbox" {
         check {
           name     = "HTTP Health Check"
           type     = "http"
-          port     = "http"
+          port     = "8080"
           path     = "/"
           interval = "60s"
           timeout  = "5s"
