@@ -11,12 +11,6 @@ job "ha-HomeAssistant" {
    unlimited      = true
   }
 
-  affinity {
-    attribute = "${attr.unique.hostname}"
-    value     = "magnolia"
-    weight    = 100
-  }
-
   group "home-assistant" {
     count = 1
 

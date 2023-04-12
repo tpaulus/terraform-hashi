@@ -28,7 +28,7 @@ job "mdns_reflector" {
         network_mode = "host"
         image   = "yuxzhu/mdns-reflector:latest"
         command = "/usr/local/bin/mdns-reflector"
-        args = ["-fn", "enp16s0f1", "weave"]
+        args = ["-fn", "enp16s0f1", "weave"]  # Remove the Affinity and get the default interface automatically
       }
 
       resources {
