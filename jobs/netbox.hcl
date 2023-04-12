@@ -49,10 +49,9 @@ job "Netbox" {
 
     task "netbox-ui" {
       driver = "docker"
-      config = {
+      config {
         network_mode = "weave"
         image = "netboxcommunity/netbox:v3.4.7"
-        ports = [8080]
 
         auth_soft_fail = true
       }
@@ -67,6 +66,7 @@ job "Netbox" {
         name         = "netbox"  # netbox.service.seaview.consul
         port         = 8080
         provider     = "consul"
+        address_mode = "driver"
 
         tags = [
           "global", "netbox",
@@ -80,9 +80,9 @@ job "Netbox" {
         check {
           name     = "TCP Health Check"
           type     = "tcp"
-          port     = 8080
           interval = "60s"
           timeout  = "5s"
+          address_mode = "driver"
 
           check_restart {
             limit = 3
@@ -94,10 +94,10 @@ job "Netbox" {
         check {
           name     = "HTTP Health Check"
           type     = "http"
-          port     = 8080
           path     = "/"
           interval = "60s"
           timeout  = "5s"
+          address_mode = "driver"
 
           header {
             X-Forwarded-Host  = ["netbox.whitestar.systems"]
@@ -188,7 +188,7 @@ WEBHOOKS_ENABLED=true
 
     task "netbox-housekeeping" {
       driver = "docker"
-      config = {
+      config {
         network_mode = "weave"
         image = "netboxcommunity/netbox:v3.4.7"
 
@@ -272,7 +272,7 @@ WEBHOOKS_ENABLED=true
 
     task "netbox-worker" {
       driver = "docker"
-      config = {
+      config {
         network_mode = "weave"
         image = "netboxcommunity/netbox:v3.4.7"
 
@@ -364,10 +364,9 @@ WEBHOOKS_ENABLED=true
 
     task "postgres" {
       driver = "docker"
-      config = {
+      config {
         network_mode = "weave"
         image = "postgres:15.2-alpine"
-        ports = [5432]
 
         auth_soft_fail = true
       }
@@ -383,13 +382,14 @@ WEBHOOKS_ENABLED=true
         tags         = ["internal", "db"]
         port         = 5432
         provider     = "consul"
+        address_mode = "driver"
 
         check {
           name     = "TCP Health Check"
           type     = "tcp"
-          port     = 5432
           interval = "30s"
           timeout  = "5s"
+          address_mode = "driver"
 
           check_restart {
             limit = 3
@@ -439,15 +439,14 @@ POSTGRES_USER={{ .dbUser }}
 
     task "redis-cache" {
       driver = "docker"
-      config = {
+      config {
         network_mode = "weave"
         image = "redis:7.0.10"
-        ports = [6379]
 
         auth_soft_fail = true
         args = ["/local/redis.conf"]
 
-        mount {
+        mount = {
           type   = "bind"
           source = "local"
           target = "/data"
@@ -459,13 +458,14 @@ POSTGRES_USER={{ .dbUser }}
         tags         = ["internal"]
         port         = 6379
         provider     = "consul"
+        address_mode = "driver"
 
         check {
           name     = "TCP Health Check"
           type     = "tcp"
-          port     = 6379
           interval = "30s"
           timeout  = "5s"
+          address_mode = "driver"
 
           check_restart {
             limit = 3
@@ -510,15 +510,14 @@ requirepass {{ .redisCachePassword }}
 
     task "redis" {
       driver = "docker"
-      config = {
+      config {
         network_mode = "weave"
         image = "redis:7.0.10"
-        ports = [6379]
 
         auth_soft_fail = true
         args = ["/local/redis.conf"]
 
-        mount {
+        mount = {
           type   = "bind"
           source = "local"
           target = "/data"
@@ -530,13 +529,14 @@ requirepass {{ .redisCachePassword }}
         tags         = ["internal"]
         port         = 6379
         provider     = "consul"
+        address_mode = "driver"
 
         check {
           name     = "TCP Health Check"
           type     = "tcp"
-          port     = 6379
           interval = "30s"
           timeout  = "5s"
+          address_mode = "driver"
 
           check_restart {
             limit = 3
