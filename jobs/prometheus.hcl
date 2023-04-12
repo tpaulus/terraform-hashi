@@ -302,11 +302,11 @@ groups:
       link: "https://nomad.brickyard.whitestar.systems/ui/jobs/ha-Zigbee2MQTT@default"
 
   - alert: Non-Recovering Failed Job
-    expr: sum(nomad_nomad_job_summary_running{}) by (exported_job, task_group, job) == 0 and sum(nomad_nomad_job_summary_failed{}) by (exported_job, task_group, job) != 0
+    expr: sum(nomad_nomad_job_summary_running{}) by (exported_job, task_group) == 0 and sum(nomad_nomad_job_summary_failed{}) by (exported_job, task_group) != 0
     for: 10m
     annotations:
       title: Non-Recoverying Failed Nomad Job
-      description: "{{ $labels.export_job }}/{{ $labels.task_group }}/{{ $labels.job }} is in a Failed State with no Running Instances"
+      description: "{{ $labels.export_job }}/{{ $labels.task_group }} is in a Failed State with no Running Instances"
 EOH
 
         left_delimiter  = "[["
