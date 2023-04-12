@@ -19,24 +19,6 @@ job "obs-cloudprober" {
         servers = ["${attr.unique.network.ip-address}"]
       }
     }
-    service {
-      name = "cloudprober"
-      provider = "consul"
-      port = 9313
-      address_mode = "driver"
-      
-      tags = [
-        "metrics=true"
-      ]
-
-      check {
-        type     = "http"
-        path     = "/status"
-        interval = "3s"
-        timeout  = "1s"
-        address_mode = "driver"
-      }
-    }
 
     task "cloudprober" {
       driver = "docker"
@@ -54,6 +36,26 @@ job "obs-cloudprober" {
         cpu    = 200
         memory = 256
       }
+
+      service {
+        name = "cloudprober"
+        provider = "consul"
+        port = 9313
+        address_mode = "driver"
+        
+        tags = [
+          "metrics=true"
+        ]
+
+        check {
+          type     = "http"
+          path     = "/status"
+          interval = "3s"
+          timeout  = "1s"
+          address_mode = "driver"
+        }
+      }
+
       template {
         data = <<EOF
 # Internal Services

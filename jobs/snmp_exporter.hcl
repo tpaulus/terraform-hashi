@@ -29,6 +29,7 @@ job "obs-snmp-exporter" {
           path     = "/"
           interval = "30s"
           timeout  = "30s"
+          address_mode = "driver"
         }
       }
 
