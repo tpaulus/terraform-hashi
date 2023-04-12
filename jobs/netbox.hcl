@@ -52,7 +52,7 @@ job "Netbox" {
       config = {
         network_mode = "weave"
         image = "netboxcommunity/netbox:v3.4.7"
-        ports = ["8080"]
+        ports = [8080]
 
         auth_soft_fail = true
       }
@@ -65,7 +65,7 @@ job "Netbox" {
 
       service {
         name         = "netbox"  # netbox.service.seaview.consul
-        port         = "8080"
+        port         = 8080
         provider     = "consul"
 
         tags = [
@@ -80,7 +80,7 @@ job "Netbox" {
         check {
           name     = "TCP Health Check"
           type     = "tcp"
-          port     = "8080"
+          port     = 8080
           interval = "60s"
           timeout  = "5s"
 
@@ -94,7 +94,7 @@ job "Netbox" {
         check {
           name     = "HTTP Health Check"
           type     = "http"
-          port     = "8080"
+          port     = 8080
           path     = "/"
           interval = "60s"
           timeout  = "5s"
@@ -367,7 +367,7 @@ WEBHOOKS_ENABLED=true
       config = {
         network_mode = "weave"
         image = "postgres:15.2-alpine"
-        ports = ["5432"]
+        ports = [5432]
 
         auth_soft_fail = true
       }
@@ -381,13 +381,13 @@ WEBHOOKS_ENABLED=true
       service {
         name         = "netbox-db"
         tags         = ["internal", "db"]
-        port         = "5432"
+        port         = 5432
         provider     = "consul"
 
         check {
           name     = "TCP Health Check"
           type     = "tcp"
-          port     = "psql"
+          port     = 5432
           interval = "30s"
           timeout  = "5s"
 
@@ -442,7 +442,7 @@ POSTGRES_USER={{ .dbUser }}
       config = {
         network_mode = "weave"
         image = "redis:7.0.10"
-        ports = ["6379"]
+        ports = [6379]
 
         auth_soft_fail = true
         args = ["/local/redis.conf"]
@@ -457,13 +457,13 @@ POSTGRES_USER={{ .dbUser }}
       service {
         name         = "netbox-redis-cache"
         tags         = ["internal"]
-        port         = "6379"
+        port         = 6379
         provider     = "consul"
 
         check {
           name     = "TCP Health Check"
           type     = "tcp"
-          port     = "redis"
+          port     = 6379
           interval = "30s"
           timeout  = "5s"
 
@@ -513,7 +513,7 @@ requirepass {{ .redisCachePassword }}
       config = {
         network_mode = "weave"
         image = "redis:7.0.10"
-        ports = ["6379"]
+        ports = [6379]
 
         auth_soft_fail = true
         args = ["/local/redis.conf"]
@@ -528,13 +528,13 @@ requirepass {{ .redisCachePassword }}
       service {
         name         = "netbox-redis"
         tags         = ["internal"]
-        port         = "6379"
+        port         = 6379
         provider     = "consul"
 
         check {
           name     = "TCP Health Check"
           type     = "tcp"
-          port     = "redis"
+          port     = 6379
           interval = "30s"
           timeout  = "5s"
 
