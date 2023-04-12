@@ -54,6 +54,7 @@ job "Netbox" {
     task "netbox-ui" {
       driver = "docker"
       config = {
+        network_mode = "weave"
         image = "netboxcommunity/netbox:v3.4.7"
         ports = ["http"]
 
@@ -192,6 +193,7 @@ WEBHOOKS_ENABLED=true
     task "netbox-housekeeping" {
       driver = "docker"
       config = {
+        network_mode = "weave"
         image = "netboxcommunity/netbox:v3.4.7"
 
         auth_soft_fail = true
@@ -275,6 +277,7 @@ WEBHOOKS_ENABLED=true
     task "netbox-worker" {
       driver = "docker"
       config = {
+        network_mode = "weave"
         image = "netboxcommunity/netbox:v3.4.7"
 
         auth_soft_fail = true
@@ -370,6 +373,7 @@ WEBHOOKS_ENABLED=true
     task "postgres" {
       driver = "docker"
       config = {
+        network_mode = "weave"
         image = "postgres:15.2-alpine"
         ports = ["psql"]
 
@@ -448,6 +452,7 @@ POSTGRES_USER={{ .dbUser }}
     task "redis-cache" {
       driver = "docker"
       config = {
+        network_mode = "weave"
         image = "redis:7.0.10"
         ports = ["redis"]
 
@@ -522,6 +527,7 @@ requirepass {{ .redisCachePassword }}
     task "redis" {
       driver = "docker"
       config = {
+        network_mode = "weave"
         image = "redis:7.0.10"
         ports = ["redis"]
 
