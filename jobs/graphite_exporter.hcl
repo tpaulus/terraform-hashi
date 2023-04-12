@@ -10,7 +10,7 @@ job "obs-graphite-exporter" {
       config {
         network_mode = "weave"
         image = "prom/graphite-exporter:v0.13.3"
-        command = "--graphite.mapping-config=local/graphite_mapping.conf --graphite.listen-address=0.0.0.0:2003"
+        args = ["--graphite.listen-address=0.0.0.0:2003", "--graphite.mapping-config=local/graphite_mapping.conf"]
       }
 
       resources {
