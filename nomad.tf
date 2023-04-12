@@ -372,3 +372,7 @@ resource "nomad_job" "coa-utilities-bill-generation" {
 resource "nomad_job" "icloud_pd" {
   jobspec = file("${path.module}/jobs/backup-icloud-photos.hcl") 
 }
+
+resource "nomad_job" "mdns_reflector" {
+  jobspec = file("${path.module}/jobs/mdns_reflector.hcl") 
+}
