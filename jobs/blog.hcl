@@ -22,8 +22,6 @@ job "Blog" {
     }
 
     network {
-      port "http" {}
-
       dns {
         servers = ["${attr.unique.network.ip-address}"]
       }
@@ -37,33 +35,6 @@ job "Blog" {
       access_mode     = "multi-node-multi-writer"
     }
 
-    service {
-      name         = "blog"  # blog.service.seaview.consul
-      port         = "http"
-      provider     = "consul"
-
-      tags = [
-          "global", "blog",
-          "traefik.enable=true",
-          "traefik.http.routers.blog.rule=Host(`blog.tompaulus.com`)",
-          "traefik.http.services.blog.loadbalancer.passhostheader=true"
-      ]
-
-      check {
-        name     = "TCP Health Check"
-        type     = "tcp"
-        port     = "http"
-        interval = "30s"
-        timeout  = "5s"
-
-        check_restart {
-          limit = 3
-          grace = "90s"
-          ignore_warnings = false
-        }
-      }
-    }
-
     task "wait-for-db" {
       lifecycle {
         hook = "prestart"
@@ -73,15 +44,15 @@ job "Blog" {
       driver = "exec"
       config {
         command = "sh"
-        args = ["-c", "while ! nc -z ghost-db.service.seaview.consul 61612; do sleep 1; done"]
+        args = ["-c", "while ! nc -z ghost-db.service.seaview.consul 3306; do sleep 1; done"]
       }
     }
 
     task "ghost" {
       driver = "docker"
       config {
+        network_mode = "weave"
         image = "ghost:5.42.2"
-        ports = ["http"]
 
         auth_soft_fail = true
 
@@ -92,13 +63,41 @@ job "Blog" {
         }
       }
 
+      service {
+        name         = "blog"  # blog.service.seaview.consul
+        port         = 2368
+        provider     = "consul"
+        address_mode = "driver"
+
+        tags = [
+            "global", "blog",
+            "traefik.enable=true",
+            "traefik.http.routers.blog.rule=Host(`blog.tompaulus.com`)",
+            "traefik.http.services.blog.loadbalancer.passhostheader=true"
+        ]
+
+        check {
+          name     = "TCP Health Check"
+          type     = "tcp"
+          interval = "30s"
+          timeout  = "5s"
+          address_mode = "driver"
+
+          check_restart {
+            limit = 3
+            grace = "90s"
+            ignore_warnings = false
+          }
+        }
+      }
+
       template {
         destination   = "secrets/config.production.json"
         data          = <<EOH
 {
   "url": "https://blog.tompaulus.com/",
   "server": {
-    "port": {{ env "NOMAD_PORT_http" }},
+    "port": 2368,
     "host": "0.0.0.0"
   },
   "comments": {
@@ -124,7 +123,7 @@ job "Blog" {
     "client": "mysql",
     "connection": {
       "host": "ghost-db.service.seaview.consul",
-      "port": 61612,
+      "port": 3306,
       {{ with nomadVar "nomad/jobs/Blog" -}}
       "user": "{{ .dbUser }}",
       "password": "{{ .dbPassword }}",
@@ -175,13 +174,6 @@ job "Blog" {
       mode     = "fail"
     }
 
-    network {
-      port "mysql" {
-        to = 3306
-        static = 61612
-      }
-    }
-
     volume "blog_db_volume" {
       type            = "csi"
       source          = "blog_db_volume"
@@ -194,7 +186,6 @@ job "Blog" {
       driver = "docker"
       config {
         image = "mysql:8.0.32"
-        ports = ["mysql"]
 
         auth_soft_fail = true
       }
@@ -208,15 +199,16 @@ job "Blog" {
       service {
         name         = "ghost-db"
         tags         = ["internal", "db"]
-        port         = "mysql"
+        port         = 3306
         provider     = "consul"
+        address_mode = "driver"
 
         check {
           name     = "TCP Health Check"
           type     = "tcp"
-          port     = "mysql"
           interval = "30s"
           timeout  = "5s"
+          address_mode = "driver"
 
           check_restart {
             limit = 3

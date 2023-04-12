@@ -23,37 +23,7 @@ job "N8N" {
 
     network {
       dns {
-        servers = ["10.0.10.3", "1.1.1.1", "1.0.0.1"]
-      }
-
-      port "http" {
-        to = 5678
-      }
-    }
-
-    service {
-      name         = "n8n"  # n8n.service.seaview.consul
-      port         = "http"
-      provider     = "consul"
-
-      tags = [
-        "global", "n8n",
-        "traefik.enable=true",
-        "traefik.http.routers.n8n.rule=Host(`n8n.brickyard.whitestar.systems`)",
-      ]
-
-      check {
-        name     = "TCP Health Check"
-        type     = "tcp"
-        port     = "http"
-        interval = "60s"
-        timeout  = "5s"
-
-        check_restart {
-          limit = 3
-          grace = "90s"
-          ignore_warnings = false
-        }
+        servers = ["${attr.unique.network.ip-address}"]
       }
     }
 
@@ -69,10 +39,37 @@ job "N8N" {
     task "N8N" {
       driver = "docker"
       config = {
+        network_mode = "weave"
         image = "n8nio/n8n:0.223.0"
-        ports = ["http"]
 
         auth_soft_fail = true
+      }
+
+      service {
+        name         = "n8n"  # n8n.service.seaview.consul
+        port         = 5678
+        provider     = "consul"
+        address_mode = "driver"
+
+        tags = [
+          "global", "n8n",
+          "traefik.enable=true",
+          "traefik.http.routers.n8n.rule=Host(`n8n.brickyard.whitestar.systems`)",
+        ]
+
+        check {
+          name     = "TCP Health Check"
+          type     = "tcp"
+          interval = "60s"
+          timeout  = "5s"
+          address_mode = "driver"
+
+          check_restart {
+            limit = 3
+            grace = "90s"
+            ignore_warnings = false
+          }
+        }
       }
 
       template {
