@@ -214,6 +214,7 @@ groups:
       summary: Consul Raft Not Being Backed Up
       description: It has been over 4 hours since the Consul Raft has been backed up
       dashboard: https://grafana.brickyard.whitestar.systems/d/p1er_aLVk/backups?orgId=1
+
 - name: UPSAlerts
   rules:
   - alert: UPS On Batt
@@ -222,6 +223,7 @@ groups:
       summary: UPS Is On Battery
       description: UPS is on battery power
       dashboard: https://grafana.brickyard.whitestar.systems/d/j4a-DMWRk/ups-statistics?orgId=1
+
 - name: Cloudprober
   rules:
   - alert: Internal Service Down
@@ -238,6 +240,7 @@ groups:
       summary: Internet is Down
       description: External Healthchecks are failing - Internet or DNS May be down
       dashboard: https://grafana.brickyard.whitestar.systems/d/bztcrl14k/status-overview
+
 - name: Consul
   rules:
   - alert: Consul agent is not healthy
@@ -252,6 +255,7 @@ groups:
     annotations:
       title: Consul cluster is degraded
       description: Consul cluster has {{ $value }} servers alive. This may lead to cluster break.
+
 - name: Node
   rules:
   - alert: MDRAID degraded
@@ -272,6 +276,37 @@ groups:
     annotations:
       title: "Weave is not running on {{ $labels.instance }}"
       description: "Weave Network on {{ $labels.instance }} is not active, current state: {{ $labels.state }}"
+
+- name: NomadJobs
+  rules:
+  - alert: Home Assistant Down
+    expr: nomad_nomad_job_summary_running{exported_job="ha-HomeAssistant"} == 0
+    for: 5m
+    annotations:
+      title: Home Assistant is Down
+      description: No Nomad Job is running for Home Assistant
+      link: "https://nomad.brickyard.whitestar.systems/ui/jobs/ha-HomeAssistant@default"
+  - alert: MQTT Broker Down
+    expr: nomad_nomad_job_summary_running{exported_job="MQTT"} == 0
+    for: 5m
+    annotations:
+      title: MQTT Broker Down is Down
+      description: No Nomad Job is running for MQTT
+      link: "https://nomad.brickyard.whitestar.systems/ui/jobs/MQTT@default"
+  - alert: Z2M Down
+    expr: nomad_nomad_job_summary_running{exported_job="ha-Zigbee2MQTT"} == 0
+    for: 5m
+    annotations:
+      title: Z2M is Down
+      description: No Nomad Job is running for Zigbee2MQTT
+      link: "https://nomad.brickyard.whitestar.systems/ui/jobs/ha-Zigbee2MQTT@default"
+
+  - alert: Non-Recovering Failed Job
+    expr: sum(nomad_nomad_job_summary_running{}) by (exported_job, task_group, job) != 0 and sum(nomad_nomad_job_summary_failed{}) by (exported_job, task_group, job) != 0
+    for: 10m
+    annotations:
+      title: Non-Recoverying Failed Nomad Job
+      description: "{{ $labels.export_job }}/{{ $labels.task_group }}/{{ $labels.job }} is in a Failed State with no Running Instances"
 EOH
 
         left_delimiter  = "[["
