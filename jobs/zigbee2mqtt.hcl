@@ -22,7 +22,9 @@ job "ha-Zigbee2MQTT" {
     }
 
     network {
-      port "http" {}
+      dns {
+        servers = ["${attr.unique.network.ip-address}"]
+      }
     }
 
     volume "z2m-nfs-volume" {
@@ -35,13 +37,10 @@ job "ha-Zigbee2MQTT" {
 
     task "z2m" {
       driver = "docker"
-      kill_timeout = "30s"
       config = {
-        network_mode = "corp"
-        dns_servers = ["10.0.10.99", "1.1.1.1", "1.0.0.1"]
+        network_mode = "weave"
 
         image = "koenkk/zigbee2mqtt:1.30.3"
-        ports = ["http"]
 
         auth_soft_fail = true
 
@@ -55,7 +54,7 @@ job "ha-Zigbee2MQTT" {
 
     service {
       name         = "Zigbee2MQTT"
-      port         = "http"
+      port         = 8080
       provider     = "consul"
       address_mode = "driver"
 
@@ -67,7 +66,6 @@ job "ha-Zigbee2MQTT" {
       template {
         data = <<EOH
 TZ=America/Los_Angeles
-ZIGBEE2MQTT_CONFIG_FRONTEND_PORT={{ env "NOMAD_PORT_http" }}
 ZIGBEE2MQTT_CONFIG_MQTT_SERVER=mqtt://{{ range service "mqtt" }}{{ .Address }}:{{ .Port }}{{ end }}
 {{ with nomadVar "nomad/jobs/Zigbee2MQTT" -}}
 ZIGBEE2MQTT_CONFIG_MQTT_USER={{ .user }}

@@ -21,8 +21,8 @@ job "MQTT" {
     }
 
     network {
-      port "broker" {
-        to = 1883
+      dns {
+        servers = ["${attr.unique.network.ip-address}"]
       }
     }
 
@@ -36,13 +36,10 @@ job "MQTT" {
 
     task "mosquitto" {
       driver = "docker"
-      kill_timeout = "30s"
       config = {
-        network_mode = "corp"
-        dns_servers = ["10.0.10.3"]
+        network_mode = "weave"
 
         image = "eclipse-mosquitto:2.0.15"
-        ports = ["broker"]
 
         auth_soft_fail = true
 
@@ -56,7 +53,7 @@ job "MQTT" {
       service {
         name         = "mqtt"  # mqtt.service.seaview.consul
         tags         = ["global", "mqtt"]
-        port         = "broker"
+        port         = 1883
         provider     = "consul"
         address_mode = "driver"
       }

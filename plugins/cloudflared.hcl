@@ -154,6 +154,17 @@ ingress:
 - hostname: blog.tompaulus.com
   service: http://blog.service.seaview.consul:2368
   originRequest: {}
+- hostname: home.whitestar.systems
+  service: http://homeassistant.service.seaview.consul:8123
+  originRequest: {}
+- hostname: z2m.brickyard.whitestar.systems
+  service: http://zigbee2mqtt.service.seaview.consul:8080
+  originRequest:
+    access:
+      required: true
+      teamName: whitestar
+      audTag:
+      - 01f0514e4c3906ce6684afdaac727c9f4ae46d67726e31dd5408edede08fa8af
 - service: http_status:200
   hostname: n3d.brickyard.whitestar.systems
   originRequest: {}

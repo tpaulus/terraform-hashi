@@ -28,8 +28,8 @@ job "ha-HomeAssistant" {
     }
 
     network {
-      port "http" {
-        to = 8123
+      dns {
+        servers = ["${attr.unique.network.ip-address}"]
       }
     }
 
@@ -45,9 +45,7 @@ job "ha-HomeAssistant" {
       driver = "docker"
       kill_timeout = "30s"
       config = {
-        network_mode = "corp"
-        dns_servers = ["10.0.10.3"]
-        ipv4_address = "10.0.10.51"  # Temporary until Consul DNS issues are resolved
+        network_mode = "weave"
 
         image = "ghcr.io/home-assistant/home-assistant:2023.4.2"
         ports = ["http"]
@@ -65,7 +63,7 @@ job "ha-HomeAssistant" {
 
       service {
         name         = "HomeAssistant"
-        port         = "http"
+        port         = 8123
         provider     = "consul"
         address_mode = "driver"
 
