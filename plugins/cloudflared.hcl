@@ -8,8 +8,10 @@ job "cloudflared" {
     stagger      = "1m"
   }
 
-  dns {
-    servers = ["${attr.unique.network.ip-address}"]
+  network {
+    dns {
+      servers = ["${attr.unique.network.ip-address}"]
+    }
   }
 
   group "cloudflared" {
