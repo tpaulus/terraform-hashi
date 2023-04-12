@@ -16,10 +16,13 @@
       "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}"
     }
   ],
+  "platformAutomerge": true,
   "packageRules": [
     {
       "matchManagers": ["regex"],
-      "automerge": false
+      "groupName": "docker-image-updates",
+      "automerge": true,
+      "stabilityDays": 1
     }
   ],
     "hostRules": [
