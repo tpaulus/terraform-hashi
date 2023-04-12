@@ -83,6 +83,9 @@ probe {
   targets {
     host_names: "protect.brickyard.whitestar.systems"
   }
+  tls_config {
+    disable_cert_validation: true
+  }
   additional_label {
     key: "location"
     value: "internal"
