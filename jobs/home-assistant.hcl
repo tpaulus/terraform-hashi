@@ -48,7 +48,6 @@ job "ha-HomeAssistant" {
         network_mode = "weave"
 
         image = "ghcr.io/home-assistant/home-assistant:2023.4.2"
-        ports = ["http"]
 
         auth_soft_fail = true
 
