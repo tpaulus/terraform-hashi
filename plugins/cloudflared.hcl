@@ -8,13 +8,13 @@ job "cloudflared" {
     stagger      = "1m"
   }
 
-  network {
-    dns {
-      servers = ["${attr.unique.network.ip-address}"]
-    }
-  }
-
   group "cloudflared" {
+    network {
+      dns {
+        servers = ["${attr.unique.network.ip-address}"]
+      }
+    }
+
     task "cloudflared" {
       driver = "docker"
 
