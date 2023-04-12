@@ -5,23 +5,12 @@ job "obs-graphite-exporter" {
   group "prometheus_graphite_exporter" {
     count = 1
 
-    network {
-      port "graphite" {
-        to = 9109
-        static = 2003
-      }
-      
-      port "prometheus" {
-        to = 9108
-      }
-    }
-
     task "prometheus_graphite_exporter" {
       driver = "docker"
       config {
+        network_mode = "weave"
         image = "prom/graphite-exporter:v0.13.3"
-        command = "--graphite.mapping-config=local/graphite_mapping.conf"
-        ports = ["graphite", "prometheus"]
+        command = "--graphite.mapping-config=local/graphite_mapping.conf --graphite.listen-address=2003"
       }
 
       resources {
@@ -32,13 +21,15 @@ job "obs-graphite-exporter" {
       service {
         name     = "prometheus-graphite-exporter"
         provider = "consul"
-        port     = "prometheus"
+        port     = 9108
         tags     = ["global", "metrics", "metrics-scraper"]
+        address_mode = "driver"
         check {
           type     = "http"
           path     = "/"
           interval = "30s"
           timeout  = "30s"
+          address_mode = "driver"
         }
       }
       

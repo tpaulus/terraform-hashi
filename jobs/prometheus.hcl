@@ -12,14 +12,6 @@ job "obs-prometheus" {
   }
   
   group "prometheus" {
-
-    network {
-      port "http" {
-        to = 9090
-        static = 9090
-      }
-    }
-
     volume "prometheus-volume" {
       type            = "csi"
       source          = "prometheus_volume"
@@ -32,8 +24,8 @@ job "obs-prometheus" {
       driver = "docker"
 
       config {
+        network_mode = "weave"
         image = "prom/prometheus:v2.43.0"
-        ports = ["http"]
         
         args = [
           "--config.file=/etc/prometheus/config/prometheus.yml",
@@ -289,8 +281,9 @@ EOH
       }
       service {
         name = "prometheus"
-        port = "http"
+        port = 9090
         provider = "consul"
+        address_mode = "driver"
 
         tags = [
           "global", "metrics",
@@ -303,6 +296,7 @@ EOH
           path     = "/-/healthy"
           interval = "3s"
           timeout  = "1s"
+          address_mode = "driver"
         }
       }
     }

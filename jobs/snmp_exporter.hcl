@@ -5,17 +5,11 @@ job "obs-snmp-exporter" {
   group "prometheus_snmp_exporter" {
     count = 1
 
-    network {
-      port "http" {
-        to = 9116
-      }
-    }
-
     task "prometheus_snmp_exporter" {
       driver = "docker"
       config {
+        network_mode = "weave"
         image = "prom/snmp-exporter:v0.21.0"
-        ports = ["http"]
         command = "--config.file=${NOMAD_TASK_DIR}/snmp.yaml"
       }
 
@@ -27,8 +21,9 @@ job "obs-snmp-exporter" {
       service {
         name     = "prometheus-snmp-exporter"
         provider = "consul"
-        port     = "http"
+        port     = 9116
         tags     = ["global", "metrics", "metrics-scraper"]
+        address_mode = "driver"
         check {
           type     = "http"
           path     = "/"

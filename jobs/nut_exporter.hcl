@@ -5,17 +5,11 @@ job "obs-nut-exporter" {
   group "prometheus_nut_exporter" {
     count = 1
 
-    network {
-      port "metrics" {
-        to = 9199
-      }
-    }
-
     task "prometheus_snmp_exporter" {
       driver = "docker"
       config {
+        network_mode = "weave"
         image = "ghcr.io/druggeri/nut_exporter:3.0.0"
-        ports = ["metrics"]
       }
 
       resources {
@@ -26,7 +20,8 @@ job "obs-nut-exporter" {
       service {
         name     = "prometheus-nut-exporter-main-ups"
         provider = "consul"
-        port     = "metrics"
+        port     = 9199
+        address_mode = "driver"
         tags = [
           "metrics=true",
           "metrics_path=/ups_metrics"

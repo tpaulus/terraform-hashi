@@ -18,6 +18,7 @@ job "obs-consul_exporter" {
       driver = "docker"
 
       config {
+        network_mode = "weave"
         image = "prom/consul-exporter:v0.9.0"
         ports = ["http"]
         args  = [

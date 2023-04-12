@@ -19,10 +19,6 @@ job "obs-grafana" {
       dns {
         servers = ["${attr.unique.network.ip-address}"]
       }
-
-      port "http" {
-        to = 3000
-      }
     }
 
     volume "grafana" {
@@ -33,16 +29,6 @@ job "obs-grafana" {
       access_mode     = "multi-node-multi-writer"
     }
 
-    service {
-      name = "grafana"
-      port = "http"
-      tags = [
-        "global", "metrics",
-        "traefik.enable=true",
-        "traefik.http.routers.grafana.rule=Host(`grafana.brickyard.whitestar.systems`)"
-      ]
-    }
-
     task "grafana" {
       driver = "docker"
       volume_mount {
@@ -51,9 +37,20 @@ job "obs-grafana" {
         read_only   = false
       }
 
+      service {
+        name = "grafana"
+        port = 3000
+        tags = [
+          "global", "metrics",
+          "traefik.enable=true",
+          "traefik.http.routers.grafana.rule=Host(`grafana.brickyard.whitestar.systems`)"
+        ]
+        address_mode = "driver"
+      }
+
       config {
+        network_mode = "weave"
         image = "grafana/grafana:9.4.7"
-        ports = ["http"]
       }
 
       resources {

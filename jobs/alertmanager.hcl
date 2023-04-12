@@ -14,41 +14,39 @@ job "obs-alertmanager" {
   group "alertmanager" {
     count = 1
 
-    network {
-      port "http" {
-        to = 9093
-      }
-    }
-    service {
-      name = "alertmanager"
-      provider = "consul"
-      port = "http"
-      
-      tags = [
-        "global", "metrics",
-        "traefik.enable=true",
-        "traefik.http.routers.alertmanager.rule=Host(`alertmanager.brickyard.whitestar.systems`)",
-      ]
-
-      check {
-        type     = "http"
-        path     = "/-/healthy"
-        interval = "3s"
-        timeout  = "1s"
-      }
-    }
-
     task "alertmanager" {
       driver = "docker"
 
       config {
+        network_mode = "weave"
+        
         image = "prom/alertmanager:v0.25.0"
-        ports = ["http"]
 
         args = [
           "--config.file=${NOMAD_TASK_DIR}/config/alertmanager.yml",
           "--web.external-url=https://alertmanager.brickyard.whitestar.systems"
         ]
+      }
+
+     service {
+        name = "alertmanager"
+        provider = "consul"
+        port = 9093
+        address_mode = "driver"
+        
+        tags = [
+          "global", "metrics",
+          "traefik.enable=true",
+          "traefik.http.routers.alertmanager.rule=Host(`alertmanager.brickyard.whitestar.systems`)",
+        ]
+
+        check {
+          type     = "http"
+          path     = "/-/healthy"
+          interval = "3s"
+          timeout  = "1s"
+          address_mode = "driver"
+        }
       }
 
       resources {

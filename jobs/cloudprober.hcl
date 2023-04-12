@@ -18,13 +18,12 @@ job "obs-cloudprober" {
       dns {
         servers = ["${attr.unique.network.ip-address}"]
       }
-
-      port "http" {}
     }
     service {
       name = "cloudprober"
       provider = "consul"
-      port = "http"
+      port = 9313
+      address_mode = "driver"
       
       tags = [
         "metrics=true"
@@ -35,6 +34,7 @@ job "obs-cloudprober" {
         path     = "/status"
         interval = "3s"
         timeout  = "1s"
+        address_mode = "driver"
       }
     }
 
@@ -42,16 +42,12 @@ job "obs-cloudprober" {
       driver = "docker"
 
       config {
+        network_mode = "weave"
         image = "cloudprober/cloudprober:v0.12.6"
-        ports = ["http"]
 
         args = [
           "--config_file", "${NOMAD_TASK_DIR}/cloudprober.cfg"
         ]
-      }
-
-      env {
-        CLOUDPROBER_PORT = "${NOMAD_PORT_http}"
       }
 
       resources {
