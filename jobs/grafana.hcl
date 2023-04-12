@@ -41,9 +41,7 @@ job "obs-grafana" {
         name = "grafana"
         port = 3000
         tags = [
-          "global", "metrics",
-          "traefik.enable=true",
-          "traefik.http.routers.grafana.rule=Host(`grafana.brickyard.whitestar.systems`)"
+          "global", "metrics"
         ]
         address_mode = "driver"
       }

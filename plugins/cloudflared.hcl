@@ -156,7 +156,8 @@ ingress:
   originRequest: {}
 - hostname: home.whitestar.systems
   service: http://homeassistant.service.seaview.consul:8123
-  originRequest: {}
+  originRequest: 
+    disableChunkedEncoding: true
 - hostname: z2m.brickyard.whitestar.systems
   service: http://zigbee2mqtt.service.seaview.consul:8080
   originRequest:

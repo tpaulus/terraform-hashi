@@ -60,15 +60,10 @@ job "obs-cloudprober" {
         data = <<EOF
 # Internal Services
 probe {
-  name: "Router Consul DNS"
-  type: DNS
+  name: "Home Assistant"
+  type: HTTP
   targets {
-    host_names: "10.0.10.3"
-  }
-  dns_probe {
-    query_type: A
-    resolved_domain: "consul.service.seaview.consul"
-    min_answers: 1
+    host_names: "home.whitestar.systems"
   }
   additional_label {
     key: "location"
@@ -76,18 +71,35 @@ probe {
   }
   additional_label {
     key: "type"
-    value: "infra"
+    value: "service"
   }
   interval_msec: 5000  # 5s
   timeout_msec: 1000   # 1s
 }
 
-
 probe {
-  name: "Home Assistant"
+  name: "Protect NVR"
   type: HTTP
   targets {
-    host_names: "home.whitestar.systems"
+    host_names: "protect.brickyard.whitestar.systems"
+  }
+  additional_label {
+    key: "location"
+    value: "internal"
+  }
+  additional_label {
+    key: "type"
+    value: "service"
+  }
+  interval_msec: 5000  # 5s
+  timeout_msec: 1000   # 1s
+}
+
+probe {
+  name: "Blog"
+  type: HTTP
+  targets {
+    host_names: "blog.tompaulus.com"
   }
   additional_label {
     key: "location"

@@ -287,8 +287,6 @@ EOH
 
         tags = [
           "global", "metrics",
-          "traefik.enable=true",
-          "traefik.http.routers.prometheus.rule=Host(`prometheus.brickyard.whitestar.systems`)",
         ]
 
         check {

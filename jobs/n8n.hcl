@@ -52,9 +52,7 @@ job "N8N" {
         address_mode = "driver"
 
         tags = [
-          "global", "n8n",
-          "traefik.enable=true",
-          "traefik.http.routers.n8n.rule=Host(`n8n.brickyard.whitestar.systems`)",
+          "global", "n8n"
         ]
 
         check {

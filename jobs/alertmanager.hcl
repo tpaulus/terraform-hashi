@@ -36,8 +36,6 @@ job "obs-alertmanager" {
         
         tags = [
           "global", "metrics",
-          "traefik.enable=true",
-          "traefik.http.routers.alertmanager.rule=Host(`alertmanager.brickyard.whitestar.systems`)",
         ]
 
         check {

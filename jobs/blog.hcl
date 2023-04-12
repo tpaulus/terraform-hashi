@@ -35,19 +35,6 @@ job "Blog" {
       access_mode     = "multi-node-multi-writer"
     }
 
-    task "wait-for-db" {
-      lifecycle {
-        hook = "prestart"
-        sidecar = false
-      }
-
-      driver = "exec"
-      config {
-        command = "sh"
-        args = ["-c", "while ! nc -z ghost-db.service.seaview.consul 3306; do sleep 1; done"]
-      }
-    }
-
     task "ghost" {
       driver = "docker"
       config {
@@ -70,10 +57,7 @@ job "Blog" {
         address_mode = "driver"
 
         tags = [
-            "global", "blog",
-            "traefik.enable=true",
-            "traefik.http.routers.blog.rule=Host(`blog.tompaulus.com`)",
-            "traefik.http.services.blog.loadbalancer.passhostheader=true"
+            "global", "blog"
         ]
 
         check {
@@ -185,6 +169,7 @@ job "Blog" {
     task "mysql" {
       driver = "docker"
       config {
+        network_mode = "weave"
         image = "mysql:8.0.32"
 
         auth_soft_fail = true
