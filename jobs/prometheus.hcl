@@ -266,6 +266,12 @@ groups:
     annotations:
       title: "Node {{ $labels.instance }} is down"
       description: "Failed to scrape {{ $labels.job }} on {{ $labels.instance }} for more than 3 minutes. Node seems down."
+  - alert: Weave Network Down
+    expr: node_systemd_unit_state{name="weave.service", state!="active"} != 0
+    for: 2m
+    annotations:
+      title: "Weave is not running on {{ $labels.instance }}"
+      description: "Weave Network on {{ $labels.instance }} is not active, current state: {{ $labels.state }}"
 EOH
 
         left_delimiter  = "[["
