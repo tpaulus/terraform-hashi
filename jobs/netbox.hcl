@@ -36,10 +36,6 @@ job "Netbox" {
       dns {
         servers = ["1.1.1.1", "1.0.0.1"]
       }
-
-      port "http" {
-        to = 8080
-      }
     }
 
 
@@ -56,7 +52,7 @@ job "Netbox" {
       config = {
         network_mode = "weave"
         image = "netboxcommunity/netbox:v3.4.7"
-        ports = ["http"]
+        ports = ["8080"]
 
         auth_soft_fail = true
       }
@@ -69,7 +65,7 @@ job "Netbox" {
 
       service {
         name         = "netbox"  # netbox.service.seaview.consul
-        port         = "http"
+        port         = "8080"
         provider     = "consul"
 
         tags = [
@@ -356,10 +352,6 @@ WEBHOOKS_ENABLED=true
       dns {
         servers = ["1.1.1.1", "1.0.0.1"]
       }
-
-      port "psql" {
-        to = 5432
-      }
     }
 
     volume "netbox-nfs-volume" {
@@ -375,7 +367,7 @@ WEBHOOKS_ENABLED=true
       config = {
         network_mode = "weave"
         image = "postgres:15.2-alpine"
-        ports = ["psql"]
+        ports = ["5432"]
 
         auth_soft_fail = true
       }
@@ -389,7 +381,7 @@ WEBHOOKS_ENABLED=true
       service {
         name         = "netbox-db"
         tags         = ["internal", "db"]
-        port         = "psql"
+        port         = "5432"
         provider     = "consul"
 
         check {
@@ -442,10 +434,6 @@ POSTGRES_USER={{ .dbUser }}
       dns {
         servers = ["1.1.1.1", "1.0.0.1"]
       }
-
-      port "redis" {
-        to = "6379"
-      }
     }
 
 
@@ -454,7 +442,7 @@ POSTGRES_USER={{ .dbUser }}
       config = {
         network_mode = "weave"
         image = "redis:7.0.10"
-        ports = ["redis"]
+        ports = ["6379"]
 
         auth_soft_fail = true
         args = ["/local/redis.conf"]
@@ -469,7 +457,7 @@ POSTGRES_USER={{ .dbUser }}
       service {
         name         = "netbox-redis-cache"
         tags         = ["internal"]
-        port         = "redis"
+        port         = "6379"
         provider     = "consul"
 
         check {
@@ -518,10 +506,6 @@ requirepass {{ .redisCachePassword }}
       dns {
         servers = ["1.1.1.1", "1.0.0.1"]
       }
-
-      port "redis" {
-        to = "6379"
-      }
     }
 
     task "redis" {
@@ -529,7 +513,7 @@ requirepass {{ .redisCachePassword }}
       config = {
         network_mode = "weave"
         image = "redis:7.0.10"
-        ports = ["redis"]
+        ports = ["6379"]
 
         auth_soft_fail = true
         args = ["/local/redis.conf"]
@@ -544,7 +528,7 @@ requirepass {{ .redisCachePassword }}
       service {
         name         = "netbox-redis"
         tags         = ["internal"]
-        port         = "redis"
+        port         = "6379"
         provider     = "consul"
 
         check {
