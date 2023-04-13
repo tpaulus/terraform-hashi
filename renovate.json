@@ -20,7 +20,6 @@
   "packageRules": [
     {
       "matchManagers": ["regex"],
-      "groupName": "docker-image-updates",
       "automerge": true,
       "stabilityDays": 1
     }
