@@ -1,4 +1,4 @@
-job "cloudflared" {
+job "net-cloudflared" {
   datacenters = ["seaview"]
   type        = "system"
   priority    = 100
