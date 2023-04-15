@@ -1,4 +1,4 @@
-job "mdns_reflector" {
+job "net-mdns_reflector" {
   datacenters = ["seaview"]
   type = "service"
 
