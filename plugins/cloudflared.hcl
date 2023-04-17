@@ -20,7 +20,7 @@ job "net-cloudflared" {
 
       config {
         network_mode = "weave"
-        image = "cloudflare/cloudflared:2023.4.0"
+        image = "cloudflare/cloudflared:2023.4.1"
         command = "tunnel"
         args = [
           "run \"${TUNNEL_NAME}\""
