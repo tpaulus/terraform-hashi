@@ -286,20 +286,6 @@ groups:
       title: Home Assistant is Down
       description: No Nomad Job is running for Home Assistant
       link: "https://nomad.brickyard.whitestar.systems/ui/jobs/ha-HomeAssistant@default"
-  - alert: MQTT Broker Down
-    expr: nomad_nomad_job_summary_running{exported_job="MQTT"} == 0
-    for: 5m
-    annotations:
-      title: MQTT Broker Down is Down
-      description: No Nomad Job is running for MQTT
-      link: "https://nomad.brickyard.whitestar.systems/ui/jobs/MQTT@default"
-  - alert: Z2M Down
-    expr: nomad_nomad_job_summary_running{exported_job="ha-Zigbee2MQTT"} == 0
-    for: 5m
-    annotations:
-      title: Z2M is Down
-      description: No Nomad Job is running for Zigbee2MQTT
-      link: "https://nomad.brickyard.whitestar.systems/ui/jobs/ha-Zigbee2MQTT@default"
 
 EOH
 

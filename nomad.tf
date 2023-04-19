@@ -128,54 +128,6 @@ resource "nomad_external_volume" "netbox_media_volume" {
   }
 }
 
-resource "nomad_external_volume" "z2m_volume" {
-  type         = "csi"
-  plugin_id    = "org.democratic-csi.truenas-nfs"
-  volume_id    = "z2m_volume"
-  name         = "z2m_volume"
-  capacity_min = "1GiB"
-  capacity_max = "2.5GiB"
-
-  capability {
-    access_mode = "multi-node-reader-only"
-    attachment_mode = "file-system"
-  }
-
-  capability {
-    access_mode = "multi-node-multi-writer"
-    attachment_mode = "file-system"
-  }
-
-  mount_options {
-    fs_type = "nfs"
-    mount_flags = ["noatime", "nfsvers=3", "nolock"]
-  }
-}
-
-resource "nomad_external_volume" "mqtt_volume" {
-  type         = "csi"
-  plugin_id    = "org.democratic-csi.truenas-nfs"
-  volume_id    = "mqtt_volume"
-  name         = "mqtt_volume"
-  capacity_min = "1GiB"
-  capacity_max = "1GiB"
-
-  capability {
-    access_mode = "multi-node-reader-only"
-    attachment_mode = "file-system"
-  }
-
-  capability {
-    access_mode = "multi-node-multi-writer"
-    attachment_mode = "file-system"
-  }
-
-  mount_options {
-    fs_type = "nfs"
-    mount_flags = ["noatime", "nfsvers=3", "nolock"]
-  }
-}
-
 resource "nomad_external_volume" "home_assistant_volume" {
   type         = "csi"
   plugin_id    = "org.democratic-csi.truenas-nfs"
@@ -301,10 +253,6 @@ resource "nomad_job" "Lunch_Money_Offsets" {
   jobspec = file("${path.module}/jobs/offset_tracker.hcl")
 }
 
-resource "nomad_job" "MQTT" {
-  jobspec = file("${path.module}/jobs/mosquitto.hcl")
-}
-
 resource "nomad_job" "CF_Gateway_IP_Updater" {
   jobspec = file("${path.module}/jobs/gateway-ip.hcl")
 }
@@ -319,10 +267,6 @@ resource "nomad_job" "Blog" {
 
 resource "nomad_job" "Netbox" {
   jobspec = file("${path.module}/jobs/netbox.hcl")
-}
-
-resource "nomad_job" "Zigbee2Mqtt" {
-  jobspec = file("${path.module}/jobs/zigbee2mqtt.hcl")
 }
 
 resource "nomad_job" "HomeAssistant" {
