@@ -5,7 +5,7 @@ job "ha-Zigbee2MQTT" {
   priority = 75
 
   reschedule {
-   delay          = "0s"
+   delay          = "5s"
    delay_function = "exponential"
    max_delay      = "1m"
    unlimited      = true
