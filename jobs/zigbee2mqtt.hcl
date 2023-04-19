@@ -43,13 +43,6 @@ job "ha-Zigbee2MQTT" {
         image = "koenkk/zigbee2mqtt:1.30.3"
 
         auth_soft_fail = true
-
-        devices = [
-          {
-            host_path = "/dev/ttyUSB0"
-            container_path = "/dev/ttyUSB0"
-          }
-        ]
       }
 
     service {
@@ -66,7 +59,7 @@ job "ha-Zigbee2MQTT" {
       template {
         data = <<EOH
 TZ=America/Los_Angeles
-ZIGBEE2MQTT_CONFIG_MQTT_SERVER=mqtt://{{ range service "mqtt" }}{{ .Address }}:{{ .Port }}{{ end }}
+ZIGBEE2MQTT_CONFIG_MQTT_SERVER=mqtt://mqtt.service.seaview.consul:1883
 {{ with nomadVar "nomad/jobs/Zigbee2MQTT" -}}
 ZIGBEE2MQTT_CONFIG_MQTT_USER={{ .user }}
 ZIGBEE2MQTT_CONFIG_MQTT_PASSWORD={{ .pass }}
@@ -85,8 +78,6 @@ ZIGBEE2MQTT_CONFIG_MQTT_CLIENT_ID={{ env "NOMAD_ALLOC_NAME" }}
       }
 
       resources {
-        device "1a86/usb/7523" {}
-
         cpu    = 1024
         memory = 1024
       }
