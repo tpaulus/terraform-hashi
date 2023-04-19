@@ -4,9 +4,9 @@ job "MQTT" {
   priority    = 75
 
   reschedule {
-   delay          = "30s"
+   delay          = "0s"
    delay_function = "exponential"
-   max_delay      = "10m"
+   max_delay      = "1m"
    unlimited      = true
   }
 
