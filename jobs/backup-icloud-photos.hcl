@@ -71,7 +71,7 @@ COOKIE={{ .cookie }}
       driver = "docker"
 
       config {
-        image = "icloudpd/icloudpd:1.12.0"
+        image = "icloudpd/icloudpd:1.13.0"
         auth_soft_fail = true
         interactive = true
 
@@ -193,7 +193,7 @@ COOKIE={{ .cookie }}
       driver = "docker"
 
       config {
-        image = "icloudpd/icloudpd:1.12.0"
+        image = "icloudpd/icloudpd:1.13.0"
         auth_soft_fail = true
         interactive = true
 
