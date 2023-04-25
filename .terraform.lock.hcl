@@ -22,20 +22,21 @@ provider "registry.terraform.io/hashicorp/consul" {
 }
 
 provider "registry.terraform.io/hashicorp/nomad" {
-  version = "1.4.19"
+  version     = "1.4.20"
+  constraints = "1.4.20"
   hashes = [
-    "h1:cUd0oNqbdTQLSKmfwYFksNt3aVgq03vOAzUMoAKGLWw=",
-    "zh:2f3ceeb3318a6304026035b0ac9ee3e52df04913bb9ee78827e58c5398b41254",
-    "zh:3fbe76c7d957d20dfe3c8c0528b33084651f22a95be9e0452b658e0922916e2a",
-    "zh:595671a05828cfe6c42ef73aac894ac39f81a52cc662a76f37eb74ebe04ddf75",
-    "zh:5d76e8788d2af3e60daf8076babf763ec887480bbb9734baccccd8fcddf4f03e",
-    "zh:676985afeaca6e67b22d60d43fd0ed7055763029ffebc3026089fe2fd3b4a288",
-    "zh:69152ce6164ac999a640cff962ece45208270e1ac37c10dac484eeea5cf47275",
-    "zh:6da0b15c05b81f947ec8e139bd81eeeb05c0d36eb5a967b985d0625c60998b40",
+    "h1:UGkum3tCY5KaHD8iNWiYh6yF/xjlh8GDPtmu7tqp7iw=",
+    "zh:02989edcebe724fc0aa873b22176fd20074c4f46295e728010711a8fc5dfa72c",
+    "zh:089ba7d19bcf5c6bab3f8b8c5920eb6d78c52cf79bb0c5dfeb411c600e7efcba",
+    "zh:235865a2182ca372bcbf440201a8b8cc0715ad5dbc4de893d99b6f32b5be53ab",
+    "zh:67ea718764f3f344ecc6e027d20c1327b86353c8064aa90da3ec12cec4a88954",
     "zh:78d5eefdd9e494defcb3c68d282b8f96630502cac21d1ea161f53cfe9bb483b3",
-    "zh:822c0a3bbada5e38099a379db8b2e339526843699627c3be3664cc3b3752bab7",
-    "zh:af23af2f98a84695b25c8eba7028a81ad4aad63c44aefb79e01bbe2dc82e7f78",
-    "zh:e36cac9960b7506d92925b667254322520966b9c3feb3ca6102e57a1fb9b1761",
-    "zh:ffd1e096c1cc35de879c740a91918e9f06b627818a3cb4b1d87b829b54a6985f",
+    "zh:8c68c540f0df4980568bdd688c2adec86eda62eb2de154e3db215b16de0a7ae0",
+    "zh:911969c63a69a733be57b96d54c5966c9424e1abec8d5f20038c8cef3a504c65",
+    "zh:a673c92ddc9d47e8d53dcb9b376f1adcb4543488202fc83a3e7eab8677530684",
+    "zh:a94a73eae89fd8c8ebf872013079be41161d3f293f4026c92d45c4c5667dd613",
+    "zh:db6b89f8b696040c0344f00928e4cf6e0a75034421ba14cdcd8a4d23bc865dce",
+    "zh:e512c0b1239e3d66b60d22c2b4de19fea288e492cde90dff9277cc475fd9dbbf",
+    "zh:ef6eccecbdef3bb8ce629cabfb5550c1db5c3e952943dda1786ef6cb470a8c23",
   ]
 }
