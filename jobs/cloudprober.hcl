@@ -161,6 +161,26 @@ probe {
   interval_msec: 5000  # 5s
   timeout_msec: 1000   # 1s
 }
+        
+probe {
+  name: "Internet - Lumen"
+  type: PING
+  targets {
+    host_names: "1.1.1.10"
+  }
+  interval_msec: 5000  # 5s
+  timeout_msec: 1000   # 1s
+}
+        
+probe {
+  name: "Internet - T-Mobile"
+  type: PING
+  targets {
+    host_names: "1.1.1.11"
+  }
+  interval_msec: 5000  # 5s
+  timeout_msec: 1000   # 1s
+}        
 EOF
 
         change_mode   = "signal"
