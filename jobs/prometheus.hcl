@@ -246,7 +246,7 @@ groups:
     annotations:
       summary: Centurylink is Down
       dashboard: https://grafana.brickyard.whitestar.systems/d/a6c53492-cfb0-41c9-8f71-cce622706523/internet-uplink
- - alert: Backup Internet Down
+  - alert: Backup Internet Down
     expr: (success{probe="Internet - T-Mobile"} / total{probe="Internet - T-Mobile"}) < 0.75
     for: 3m
     annotations:
