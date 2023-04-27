@@ -241,13 +241,13 @@ groups:
       description: External Healthchecks are failing - Internet or DNS May be down
       dashboard: https://grafana.brickyard.whitestar.systems/d/bztcrl14k/status-overview
   - alert: Primary Internet Down
-    expr: (success{probe="Internet - Lumen"} / total{probe="Internet - Lumen"}) < 0.75
+    expr: sum(rate(success{probe="Internet - Lumen"}[1m]) / rate(total{probe="Internet - Lumen"}[1m])) < 0.75
     for: 3m
     annotations:
       summary: Centurylink is Down
       dashboard: https://grafana.brickyard.whitestar.systems/d/a6c53492-cfb0-41c9-8f71-cce622706523/internet-uplink
   - alert: Backup Internet Down
-    expr: (success{probe="Internet - T-Mobile"} / total{probe="Internet - T-Mobile"}) < 0.75
+    expr: sum(rate(success{probe="Internet - T-Mobile"}[1m]) / rate(total{probe="Internet - T-Mobile"}[1m])) < 0.75
     for: 3m
     annotations:
       summary: T-Mobile is Down
