@@ -36,7 +36,7 @@ job "backup-unifi-protect" {
     task "unifi-protect-backup" {
       driver = "docker"
       config = {
-        image = "ghcr.io/ep1cman/unifi-protect-backup:0.9.0"
+        image = "ghcr.io/ep1cman/unifi-protect-backup:0.9.1"
         auth_soft_fail = true
 
         mount {
