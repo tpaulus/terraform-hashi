@@ -103,7 +103,7 @@ resource "consul_acl_role" "consul_agents" {
 resource "consul_acl_token" "consul_agents" {
   count = length(local.nodes)
     description = "Token for node ${local.nodes[count.index].hostname}"
-    roles = ["${local.nodes[count.index].hostname}"]
+    roles = [consul_acl_role.consul_agents[count.index].name]
 }
 
 resource "consul_acl_token" "nomad" {
