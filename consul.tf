@@ -3,7 +3,8 @@ locals {
     {"hostname": "magnolia", "server": true},
     {"hostname":"ravenna", "server": true},
     {"hostname":"roosevelt", "server": true},
-    {"hostname":"woodlandpark", "server": false}
+    {"hostname":"woodlandpark", "server": false},
+    {"hostname": "broadmoor", "server": true},
   ]
 }
 
