@@ -78,6 +78,14 @@ scrape_configs:
       - 10.0.10.64:9100
       - 10.0.10.80:9100
 
+  - job_name: "weave"
+    metrics_path: "/metrics"
+    static_configs:
+    - targets:
+      - 10.0.10.48:21049
+      - 10.0.10.64:21049
+      - 10.0.10.80:21049
+
   - job_name: "consul"
     metrics_path: "/metrics"
     consul_sd_configs:
