@@ -209,14 +209,14 @@ groups:
 - name: RaftBackups
   rules:
   - alert: Nomad Raft Backups Missing
-    expr: time() - min(nomad_raft_backup_completed{}) > 16200
+    expr: time() - max(nomad_raft_backup_completed{}) > 16200
     for: 1m
     annotations:
       summary: Nomad Raft Not Being Backed Up
       description: It has been over 4 hours since the Nomad Raft has been backed up
       dashboard: https://grafana.brickyard.whitestar.systems/d/p1er_aLVk/backups?orgId=1
   - alert: Consul Raft Backups Missing
-    expr: time() - min(consul_raft_backup_completed{}) > 16200
+    expr: time() - max(consul_raft_backup_completed{}) > 16200
     for: 1m
     annotations:
       summary: Consul Raft Not Being Backed Up
