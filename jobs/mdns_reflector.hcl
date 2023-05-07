@@ -11,13 +11,6 @@ job "net-mdns_reflector" {
    unlimited      = true
   }
 
-  affinity {
-    attribute = "${attr.unique.hostname}"
-    operator  = "!="
-    value     = "magnolia"
-    weight    = 100
-  }
-
   group "mDNS" {
     count = 1
 
@@ -28,7 +21,7 @@ job "net-mdns_reflector" {
         network_mode = "host"
         image   = "yuxzhu/mdns-reflector:latest"
         command = "/usr/local/bin/mdns-reflector"
-        args = ["-fn", "enp16s0f1", "weave"]  # Remove the Affinity and get the default interface automatically
+        args = ["-fn", "${meta.network.primary_interface}", "weave"]  # Remove the Affinity and get the default interface automatically
       }
 
       resources {
