@@ -46,7 +46,8 @@ job "net-cloudflared" {
         address_mode = "driver"
         
         tags = [
-          "metrics=true"
+          "metrics=true",
+          "node_as_instance"
         ]
       }
 
