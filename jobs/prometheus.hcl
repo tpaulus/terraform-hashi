@@ -183,6 +183,14 @@ scrape_configs:
 {{- scratch.Set "metrics_path" ( . | trimPrefix "metrics_path=") }}
 {{- end }}
 {{- end }}
+
+{{- scratch.Set "node_as_instance" "false" }}
+{{- range .Tags }}
+{{- if . | contains "node_name_as_instance" }}
+{{- scratch.Set "node_as_instance" "true" }}
+{{- end }}
+{{- end }}
+
   - job_name: {{ .Name }}
     metrics_path: "{{ scratch.Get "metrics_path" }}"
     params:
@@ -192,7 +200,12 @@ scrape_configs:
     - server: "{{ env "attr.unique.network.ip-address" }}:8500"
       services:
         - "{{ .Name }}"
-
+    {{ if eq (scratch.Get "node_as_instance") "true" -}}
+    relabel_configs:
+    - action: replace
+      source_labels: [__meta_consul_node]
+      target_label: instance
+    {{- end }}
 {{- end }}
 {{- end -}}
 EOH
