@@ -47,7 +47,7 @@ job "net-cloudflared" {
         
         tags = [
           "metrics=true",
-          "node_as_instance"
+          "node_name_as_instance"
         ]
       }
 
