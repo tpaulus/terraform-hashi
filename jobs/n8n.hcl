@@ -40,7 +40,7 @@ job "N8N" {
       driver = "docker"
       config = {
         network_mode = "weave"
-        image = "n8nio/n8n:0.230.1"
+        image = "n8nio/n8n:0.230.2"
 
         auth_soft_fail = true
       }
