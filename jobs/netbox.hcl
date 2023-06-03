@@ -51,7 +51,7 @@ job "Netbox" {
       driver = "docker"
       config {
         network_mode = "weave"
-        image = "netboxcommunity/netbox:v3.5.2"
+        image = "netboxcommunity/netbox:v3.5.3"
 
         auth_soft_fail = true
       }
@@ -185,7 +185,7 @@ WEBHOOKS_ENABLED=true
       driver = "docker"
       config {
         network_mode = "weave"
-        image = "netboxcommunity/netbox:v3.5.2"
+        image = "netboxcommunity/netbox:v3.5.3"
 
         auth_soft_fail = true
 
@@ -269,7 +269,7 @@ WEBHOOKS_ENABLED=true
       driver = "docker"
       config {
         network_mode = "weave"
-        image = "netboxcommunity/netbox:v3.5.2"
+        image = "netboxcommunity/netbox:v3.5.3"
 
         auth_soft_fail = true
         entrypoint = ["/opt/netbox/venv/bin/python"]
