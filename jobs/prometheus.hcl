@@ -337,22 +337,8 @@ groups:
       description: No Nomad Job is running for backing up Unifi Protect Events offsite
       link: "https://nomad.brickyard.whitestar.systems/ui/jobs/backup-unifi-protect @default"
   # mDNS Reflector
-  - alert: mDNS Reflector Down
-    expr: nomad_nomad_job_summary_running{exported_job="net-mdns_reflector"} == 0
-    for: 2m
-    annotations:
-      title: mDNS Reflector Down
-      description: No Nomad Job is running for mDNS Reflector, services like HomeKit will not work
-      link: "https://nomad.brickyard.whitestar.systems/ui/jobs/net-mdns_reflector@default"
-  - alert: More than One mDNS Reflector
-    expr: nomad_nomad_job_summary_running{exported_job="net-mdns_reflector"} > 1
-    for: 2m
-    annotations:
-      title: More than mDNS Reflector Running
-      description: More than one mDNS Reflector is running, this can cause a routing loop and bring down the network. Stop the excess jobs and ensure exactly one job is running.
-      link: "https://nomad.brickyard.whitestar.systems/ui/jobs/net-mdns_reflector@default"
   - alert: mDNS Reflector Routing Loop
-    expr: max(nomad_client_allocs_cpu_total_percent{exported_job="net-mdns_reflector"}) > 0.5
+    expr: max(nomad_client_allocs_cpu_total_percent{task="mdns-reflector"}) > 0.5
     for: 1m
     annotations:
       title: mDNS Reflector Routing Loop
