@@ -65,6 +65,28 @@ probe {
   targets {
     host_names: "home.whitestar.systems"
   }
+  {{ with nomadVar "nomad/jobs/obs-cloudprober" -}}
+  http_probe {
+    header {
+      key: "CF-Access-Client-Id"
+      value: "{{ .ID }}"
+    }
+    header {
+      key: "CF-Access-Client-Secret"
+      value: "{{ .Secret }}"
+    }
+  }
+  {{- end }}
+  validator {
+      name: "status_code_2xx"
+      http_validator {
+          success_status_codes: "200-299"
+      }
+  }
+  validator {
+      name: "expected_content"
+      regex: "Home Assistant"
+  }
   additional_label {
     key: "location"
     value: "internal"
@@ -88,6 +110,12 @@ probe {
       disable_cert_validation: true
     }
   }
+  validator {
+      name: "status_code_2xx"
+      http_validator {
+          success_status_codes: "200-299"
+      }
+  }
   additional_label {
     key: "location"
     value: "internal"
@@ -105,6 +133,16 @@ probe {
   type: HTTP
   targets {
     host_names: "blog.tompaulus.com"
+  }
+  validator {
+      name: "status_code_2xx"
+      http_validator {
+          success_status_codes: "200-299"
+      }
+  }
+  validator {
+      name: "expected_content"
+      regex: "Journal"
   }
   additional_label {
     key: "location"
@@ -190,4 +228,3 @@ EOF
     }
   }
 }
-
