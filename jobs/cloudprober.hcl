@@ -142,7 +142,7 @@ probe {
   }
   validator {
       name: "expected_content"
-      regex: "Journal"
+      regex: "[Jj]ournal"
   }
   additional_label {
     key: "location"
