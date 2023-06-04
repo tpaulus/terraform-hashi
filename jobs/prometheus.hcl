@@ -477,8 +477,8 @@ EOH
       }
 
       resources {
-        cpu    = 1000
-        memory = 2048
+        cpu    = 2500
+        memory = 4096
       }
       service {
         name = "prometheus"
