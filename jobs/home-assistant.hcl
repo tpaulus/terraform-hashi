@@ -100,5 +100,26 @@ PEER="{{ .Address }}"
         source = "https://raw.githubusercontent.com/tpaulus/server-scripts/main/home-automation/update_coiot.sh"
       }
     }
+
+    task "mdns-reflector" {
+      lifecycle {
+        hook = "poststart"
+        sidecar = true
+      }
+
+      driver = "docker"
+
+      config {
+        network_mode = "host"
+        image   = "yuxzhu/mdns-reflector:latest"
+        command = "/usr/local/bin/mdns-reflector"
+        args = ["-fn", "${meta.network.primary_interface}", "weave"]
+      }
+
+      resources {
+        cpu    = 128
+        memory = 100
+      }
+    }
   }
 }
