@@ -358,6 +358,7 @@ groups:
       title: mDNS Reflector Routing Loop
       description: mDNS CPU Usage is High, indicating a potential routing loop. Stop the reflector temporarily to allow traffic to clear.
       link: "https://nomad.brickyard.whitestar.systems/ui/jobs/net-mdns_reflector@default"
+
 - name: weave-net
   rules:
   - alert: WeaveNetIPAMSPlitBrain
@@ -402,7 +403,7 @@ groups:
       description: 'Actionable: Find the reason for IPAM claims to be in pending state
         and fix it.'
   - alert: WeaveNetFastDPFlowsLow
-    expr: sum(weave_flows) < 15000
+    expr: sum(weave_flows) < 15
     for: 3m
     labels:
       severity: critical
