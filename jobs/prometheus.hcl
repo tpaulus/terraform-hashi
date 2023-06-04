@@ -361,8 +361,7 @@ groups:
 - name: weave-net
   rules:
   - alert: WeaveNetIPAMSPlitBrain
-    expr: max(weave_ipam_unreachable_percentage) - min(weave_ipam_unreachable_percentage)
-      > 0
+    expr: max(weave_ipam_unreachable_percentage) - min(weave_ipam_unreachable_percentage) > 0
     for: 3m
     labels:
       severity: critical
@@ -372,7 +371,7 @@ groups:
       description: 'Actionable: Every node should see same unreachability percentage.
         Please check and fix why it is not so.'
   - alert: WeaveNetIPAMUnreachable
-    expr: weave_ipam_unreachable_percentage[10m] > 25
+    expr: weave_ipam_unreachable_percentage > 25
     for: 10m
     labels:
       severity: critical
@@ -477,8 +476,8 @@ EOH
       }
 
       resources {
-        cpu    = 2500
-        memory = 4096
+        cpu    = 5000
+        memory = 6144
       }
       service {
         name = "prometheus"
