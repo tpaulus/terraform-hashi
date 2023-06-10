@@ -452,7 +452,7 @@ groups:
       summary: WeaveNet FastDP flows is not happening in some or all nodes. Go to
         the below prometheus link for details.
       description: 'Actionable: Find the reason for fast dp being off.'
-    link: https://grafana.brickyard.whitestar.systems/d/voS3tW_Zk/weavenet-cluster
+      link: https://grafana.brickyard.whitestar.systems/d/voS3tW_Zk/weavenet-cluster
   - alert: WeaveNetHighConnectionTerminationRate
     expr: rate(weave_connection_terminations_total[5m]) > 0.1
     for: 5m
