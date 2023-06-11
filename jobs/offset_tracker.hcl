@@ -16,7 +16,7 @@ job "Lunch_Money_Offset_Tracker" {
       driver = "docker"
 
       config {
-        image = "ghcr.io/tpaulus/lunch-money-offset-tracker:v0.0.1"
+        image = "ghcr.io/tpaulus/lunch-money-offset-tracker:main"
       }
 
       template {
