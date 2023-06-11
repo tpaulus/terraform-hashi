@@ -246,6 +246,7 @@ groups:
         and fix it.'
       link: https://grafana.brickyard.whitestar.systems/d/voS3tW_Zk/weavenet-cluster
   - alert: WeaveNetConnectionsConnecting
+    # pint disable promql/series
     expr: sum(weave_connections{state='connecting'}) > 0
     for: 3m
     labels:
@@ -256,6 +257,7 @@ groups:
       description: 'Actionable: Find the reason and fix it.'
       link: https://grafana.brickyard.whitestar.systems/d/voS3tW_Zk/weavenet-cluster
   - alert: WeaveNetConnectionsRetying
+   # pint disable promql/series
     expr: sum(weave_connections{state='retrying'}) > 0
     for: 3m
     labels:
@@ -266,6 +268,7 @@ groups:
       description: 'Actionable: Find the reason and fix it.'
       link: https://grafana.brickyard.whitestar.systems/d/voS3tW_Zk/weavenet-cluster
   - alert: WeaveNetConnectionsPending
+    # pint disable promql/series
     expr: sum(weave_connections{state='pending'}) > 0
     for: 3m
     labels:
@@ -276,6 +279,7 @@ groups:
       description: 'Actionable: Find the reason and fix it.'
       link: https://grafana.brickyard.whitestar.systems/d/voS3tW_Zk/weavenet-cluster
   - alert: WeaveNetConnectionsFailed
+    # pint disable promql/series
     expr: sum(weave_connections{state='failed'}) > 0
     for: 3m
     labels:

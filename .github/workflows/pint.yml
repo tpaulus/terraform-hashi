@@ -24,4 +24,6 @@ jobs:
         with:
           token: ${{ github.token }}
           workdir: 'jobs/configuration/prometheus'
-          requireOwner: 'false'
+        env:
+          PINT_BRICKYARD_CLIENT_ID: ${{ secrets.PINT_BRICKYARD_CLIENT_ID }}
+          PINT_BRICKYARD_CLIENT_SECRET: ${{ secrets.PINT_BRICKYARD_CLIENT_SECRET }}
