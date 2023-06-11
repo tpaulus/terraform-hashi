@@ -64,6 +64,10 @@ alerting:
         services:
         - alertmanager
 
+storage:
+  tsdb:
+    out_of_order_time_window: 1m
+
 scrape_configs:
   - job_name: prometheus
     static_configs:
