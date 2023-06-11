@@ -5,3 +5,8 @@ prometheus "Brickyard" {
     "CF-Access-Client-Secret": "${ENV_PINT_BRICKYARD_CLIENT_SECRET}"
   }
 }
+
+ci {
+  include    = [ "jobs/configuration/prometheus/rules.*" ]
+  baseBranch = "main"
+}
