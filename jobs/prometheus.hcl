@@ -30,10 +30,12 @@ job "obs-prometheus" {
         args = [
           "--config.file=/etc/prometheus/config/prometheus.yml",
           "--storage.tsdb.path=/prometheus",
+          "--storage.tsdb.retention.time=4w",
           "--web.listen-address=0.0.0.0:9090",
           "--web.console.libraries=/usr/share/prometheus/console_libraries",
           "--web.console.templates=/usr/share/prometheus/consoles",
-          "--web.external-url=https://prometheus.brickyard.whitestar.systems"
+          "--web.external-url=https://prometheus.brickyard.whitestar.systems",
+          "--enable-feature=auto-gomaxprocs,new-service-discovery-manager,memory-snapshot-on-shutdown"
         ]
 
         volumes = [
