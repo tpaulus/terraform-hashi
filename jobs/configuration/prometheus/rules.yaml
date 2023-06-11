@@ -1,0 +1,287 @@
+---
+groups:
+- name: RaftBackups
+  rules:
+  - alert: Nomad Raft Backups Missing
+    expr: time() - max(nomad_raft_backup_completed{}) > 16200
+    for: 1m
+    labels:
+      severity: low
+    annotations:
+      summary: Nomad Raft Not Being Backed Up
+      description: It has been over 4 hours since the Nomad Raft has been backed up
+      dashboard: https://grafana.brickyard.whitestar.systems/d/p1er_aLVk/backups?orgId=1
+  - alert: Consul Raft Backups Missing
+    expr: time() - max(consul_raft_backup_completed{}) > 16200
+    for: 1m
+    labels:
+      severity: low
+    annotations:
+      summary: Consul Raft Not Being Backed Up
+      description: It has been over 4 hours since the Consul Raft has been backed up
+      dashboard: https://grafana.brickyard.whitestar.systems/d/p1er_aLVk/backups?orgId=1
+
+- name: UPSAlerts
+  rules:
+  - alert: UPS On Batt
+    expr: network_ups_tools_ups_status{flag="OB"} == 1
+    labels:
+      severity: critical
+    annotations:
+      summary: UPS Is On Battery
+      description: UPS is on battery power
+      dashboard: https://grafana.brickyard.whitestar.systems/d/j4a-DMWRk/ups-statistics?orgId=1
+
+- name: Cloudprober
+  rules:
+  - alert: Internal Service Down
+    expr: sum(rate(success{job="cloudprober", location="internal"}[1m])) by (probe) / sum(rate(total{job="cloudprober", location="internal"}[1m])) by (probe) < 0.50
+    for: 3m
+    labels:
+      severity: high
+    annotations:
+      summary: "{{ $labels.probe }} Is Down"
+      description: "{{ $labels.probe }} is failing Cloudprober Healthchecks"
+      dashboard: https://grafana.brickyard.whitestar.systems/d/bztcrl14k/status-overview
+  - alert: Internet Down
+    expr: sum(rate(success{job="cloudprober", location="external"}[1m])) / sum(rate(total{job="cloudprober", location="external"}[1m])) < 0.75
+    for: 3m
+    labels:
+      severity: high
+    annotations:
+      summary: Internet is Down
+      description: External Healthchecks are failing - Internet or DNS May be down
+      dashboard: https://grafana.brickyard.whitestar.systems/d/bztcrl14k/status-overview
+  - alert: Primary Internet Down
+    expr: sum(rate(success{probe="Internet - Lumen"}[1m]) / rate(total{probe="Internet - Lumen"}[1m])) < 0.75
+    for: 3m
+    labels:
+      severity: high
+    annotations:
+      summary: Centurylink is Down
+      dashboard: https://grafana.brickyard.whitestar.systems/d/a6c53492-cfb0-41c9-8f71-cce622706523/internet-uplink
+  - alert: Backup Internet Down
+    expr: sum(rate(success{probe="Internet - T-Mobile"}[1m]) / rate(total{probe="Internet - T-Mobile"}[1m])) < 0.75
+    for: 3m
+    labels:
+      severity: low
+    annotations:
+      summary: T-Mobile is Down
+      dashboard: https://grafana.brickyard.whitestar.systems/d/a6c53492-cfb0-41c9-8f71-cce622706523/internet-uplink
+
+- name: Consul
+  rules:
+  - alert: Consul agent is not healthy
+    expr: consul_health_node_status{status="critical"} == 1
+    for: 1m
+    labels:
+      severity: low
+    annotations:
+      title: Consul agent is down
+      description: Consul agent is not healthy on {{ $labels.node }}.
+  - alert: Consul cluster is degraded
+    expr: min(consul_raft_peers) < 3
+    for: 1m
+    labels:
+      severity: high
+    annotations:
+      title: Consul cluster is degraded
+      description: Consul cluster has {{ $value }} servers alive. This may lead to cluster break.
+
+- name: Node
+  rules:
+  - alert: MDRAID degraded
+    expr: (node_md_disks - node_md_disks{state="active"}) != 0
+    for: 1m
+    labels:
+      severity: high
+    annotations:
+      title: "MDRAID on node {{ $labels.instance }} is in degrade mode"
+      description: "Degraded RAID array {{ $labels.device }} on {{ $labels.instance }}: {{ $value }} disks failed"
+  - alert: Node down
+    expr: up{job="node_exporter"} == 0
+    for: 3m
+    labels:
+      severity: high
+    annotations:
+      title: "Node {{ $labels.instance }} is down"
+      description: "Failed to scrape {{ $labels.job }} on {{ $labels.instance }} for more than 3 minutes. Node seems down."
+  - alert: Weave Network Down
+    expr: node_systemd_unit_state{name="weave.service", state!="active"} != 0
+    for: 2m
+    labels:
+      severity: high
+    annotations:
+      title: "Weave is not running on {{ $labels.instance }}"
+      description: "Weave Network on {{ $labels.instance }} is not active, current state: {{ $labels.state }}"
+
+- name: NomadJobs
+  rules:
+  # Cloudflared
+  - alert: Cloudflared Not on All Nodes
+    expr: sum(nomad_nomad_job_summary_running{exported_job="net-cloudflared"}) < count(up{job="nomad_client"})
+    for: 5m
+    labels:
+      severity: low
+    annotations:
+      title: Cloudflared is not running on all Nomad Clients
+      description: Cloudflared is not running on all nodes, check which nodes are missing the system job.
+      link: "https://nomad.brickyard.whitestar.systems/ui/jobs/net-cloudflared@default"
+  # Home Assistant
+  - alert: Home Assistant Down
+    expr: nomad_nomad_job_summary_running{exported_job="ha-HomeAssistant"} == 0
+    for: 5m
+    labels:
+      severity: high
+    annotations:
+      title: Home Assistant is Down
+      description: No Nomad Job is running for Home Assistant
+      link: "https://nomad.brickyard.whitestar.systems/ui/jobs/ha-HomeAssistant@default"
+  # Protect Backup
+  - alert: Protect Backup Down
+    expr: nomad_nomad_job_summary_running{exported_job="backup-unifi-protect"} == 0
+    for: 5m
+    labels:
+      severity: critical
+    annotations:
+      title: Protect Backup Service is Down
+      description: No Nomad Job is running for backing up Unifi Protect Events offsite
+      link: "https://nomad.brickyard.whitestar.systems/ui/jobs/backup-unifi-protect @default"
+  # mDNS Reflector
+  - alert: mDNS Reflector Routing Loop
+    expr: max(nomad_client_allocs_cpu_total_percent{task="mdns-reflector"}) > 0.5
+    for: 1m
+    annotations:
+      title: mDNS Reflector Routing Loop
+      description: mDNS CPU Usage is High, indicating a potential routing loop. Stop the reflector temporarily to allow traffic to clear.
+      link: "https://nomad.brickyard.whitestar.systems/ui/jobs/net-mdns_reflector@default"
+  # CloudProber
+  - alert: Cloud Prober Down
+    expr: nomad_nomad_job_summary_running{exported_job="obs-cloudprober"} == 0
+    for: 5m
+    labels:
+      severity: high
+    annotations:
+      title: Home Assistant is Down
+      description: No Nomad Job is running for Cloud Prober
+      link: "https://nomad.brickyard.whitestar.systems/ui/jobs/obs-cloudprober @default"
+
+- name: weave-net
+  rules:
+  - alert: WeaveNetIPAMSPlitBrain
+    expr: max(weave_ipam_unreachable_percentage) - min(weave_ipam_unreachable_percentage) > 0
+    for: 3m
+    labels:
+      severity: critical
+    annotations:
+      summary: WeaveNetIPAM has a split brain. Go to the below prometheus link for
+        details.
+      description: 'Actionable: Every node should see same unreachability percentage.
+        Please check and fix why it is not so.'
+      link: https://grafana.brickyard.whitestar.systems/d/voS3tW_Zk/weavenet-cluster
+  - alert: WeaveNetIPAMUnreachable
+    expr: weave_ipam_unreachable_percentage > 25
+    for: 10m
+    labels:
+      severity: critical
+    annotations:
+      summary: WeaveNetIPAM unreachability percentage is above threshold. Go to the
+        below prometheus link for details.
+      description: 'Actionable: Find why the unreachability threshold have increased
+        from threshold and fix it. WeaveNet is responsible to keep it under control.
+        Weave rm peer deployment can help clean things.'
+      link: https://grafana.brickyard.whitestar.systems/d/voS3tW_Zk/weavenet-cluster
+  - alert: WeaveNetIPAMPendingAllocates
+    expr: sum(weave_ipam_pending_allocates) > 0
+    for: 3m
+    labels:
+      severity: critical
+    annotations:
+      summary: WeaveNet IPAM has pending allocates. Go to the below prometheus link
+        for details.
+      description: 'Actionable: Find the reason for IPAM allocates to be in pending
+        state and fix it.'
+      link: https://grafana.brickyard.whitestar.systems/d/voS3tW_Zk/weavenet-cluster
+  - alert: WeaveNetIPAMPendingClaims
+    expr: sum(weave_ipam_pending_claims) > 0
+    for: 3m
+    labels:
+      severity: critical
+    annotations:
+      summary: WeaveNet IPAM has pending claims. Go to the below prometheus link for
+        details.
+      description: 'Actionable: Find the reason for IPAM claims to be in pending state
+        and fix it.'
+      link: https://grafana.brickyard.whitestar.systems/d/voS3tW_Zk/weavenet-cluster
+  - alert: WeaveNetFastDPFlowsLow
+    expr: sum(weave_flows) < 15
+    for: 3m
+    labels:
+      severity: critical
+    annotations:
+      summary: WeaveNet total FastDP flows is below threshold. Go to the below prometheus
+        link for details.
+      description: 'Actionable: Find the reason for fast dp flows dropping below the
+        threshold.'
+      link: https://grafana.brickyard.whitestar.systems/d/voS3tW_Zk/weavenet-cluster
+  - alert: WeaveNetFastDPFlowsOff
+    expr: sum(weave_flows == bool 0) > 0
+    for: 3m
+    labels:
+      severity: critical
+    annotations:
+      summary: WeaveNet FastDP flows is not happening in some or all nodes. Go to
+        the below prometheus link for details.
+      description: 'Actionable: Find the reason for fast dp being off.'
+      link: https://grafana.brickyard.whitestar.systems/d/voS3tW_Zk/weavenet-cluster
+  - alert: WeaveNetHighConnectionTerminationRate
+    expr: rate(weave_connection_terminations_total[5m]) > 0.1
+    for: 5m
+    labels:
+      severity: critical
+    annotations:
+      summary: A lot of connections are getting terminated. Go to the below prometheus
+        link for details.
+      description: 'Actionable: Find the reason for high connection termination rate
+        and fix it.'
+      link: https://grafana.brickyard.whitestar.systems/d/voS3tW_Zk/weavenet-cluster
+  - alert: WeaveNetConnectionsConnecting
+    expr: sum(weave_connections{state='connecting'}) > 0
+    for: 3m
+    labels:
+      severity: critical
+    annotations:
+      summary: A lot of connections are in connecting state. Go to the below prometheus
+        link for details.
+      description: 'Actionable: Find the reason and fix it.'
+      link: https://grafana.brickyard.whitestar.systems/d/voS3tW_Zk/weavenet-cluster
+  - alert: WeaveNetConnectionsRetying
+    expr: sum(weave_connections{state='retrying'}) > 0
+    for: 3m
+    labels:
+      severity: critical
+    annotations:
+      summary: A lot of connections are in retrying state. Go to the below prometheus
+        link for details.
+      description: 'Actionable: Find the reason and fix it.'
+      link: https://grafana.brickyard.whitestar.systems/d/voS3tW_Zk/weavenet-cluster
+  - alert: WeaveNetConnectionsPending
+    expr: sum(weave_connections{state='pending'}) > 0
+    for: 3m
+    labels:
+      severity: critical
+    annotations:
+      summary: A lot of connections are in pending state. Go to the below prometheus
+        link for details.
+      description: 'Actionable: Find the reason and fix it.'
+      link: https://grafana.brickyard.whitestar.systems/d/voS3tW_Zk/weavenet-cluster
+  - alert: WeaveNetConnectionsFailed
+    expr: sum(weave_connections{state='failed'}) > 0
+    for: 3m
+    labels:
+      severity: critical
+    annotations:
+      summary: A lot of connections are in failed state. Go to the below prometheus
+        link for details.
+      description: 'Actionable: Find the reason and fix it.'
+      link: https://grafana.brickyard.whitestar.systems/d/voS3tW_Zk/weavenet-cluster

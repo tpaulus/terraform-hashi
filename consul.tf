@@ -112,3 +112,16 @@ resource "consul_acl_token" "nomad" {
   policies = ["${consul_acl_policy.nomad.name}"]
   local = false
 }
+
+# KVs
+data "local_file" "nomad_prometheus_config_rules" {
+  filename = "${path.module}/jobs/configuration/prometheus/rules.yaml"
+}
+
+resource "consul_key_prefix" "nomad_prometheus_config" {
+  path_prefix = "nomad/prometheus/"
+
+  subkeys = {
+    "rules" = data.local_file.nomad_prometheus_config_rules.content
+  }
+}
