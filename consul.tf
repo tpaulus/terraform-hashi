@@ -114,14 +114,19 @@ resource "consul_acl_token" "nomad" {
 }
 
 # KVs
-data "local_file" "nomad_prometheus_config_rules" {
+data "local_file" "nomad_prometheus_rules" {
   filename = "${path.module}/jobs/configuration/prometheus/rules.yaml"
+}
+
+data "local_file" "nomad_prometheus_config" {
+  filename = "${path.module}/jobs/configuration/prometheus/config.yaml.tpl"
 }
 
 resource "consul_key_prefix" "nomad_prometheus_config" {
   path_prefix = "nomad/prometheus/"
 
   subkeys = {
-    "rules" = data.local_file.nomad_prometheus_config_rules.content
+    "config" = data.local_file.nomad_prometheus_config.content
+    "rules"  = data.local_file.nomad_prometheus_rules.content
   }
 }
