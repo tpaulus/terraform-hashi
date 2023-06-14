@@ -3,7 +3,8 @@ job "backup-icloud-photos" {
   type = "batch"
 
   periodic {
-    cron = "0 */12 * * *"
+    cron = "0 9,21 * * *"
+    time_zone = "America/Los_Angeles"
     prohibit_overlap = true
   }
 
