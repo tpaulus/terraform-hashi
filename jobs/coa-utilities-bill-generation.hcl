@@ -4,6 +4,7 @@ job "coa-utilities-bill-generation" {
 
   periodic {
     cron = "0 0 2 * *"
+    time_zone = "America/Los_Angeles"
     prohibit_overlap = true
   }
 
