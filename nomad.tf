@@ -248,6 +248,30 @@ resource "nomad_external_volume" "icloud_pd_volume" {
   }
 }
 
+resource "nomad_external_volume" "unifi_controller_volume" {
+  type         = "csi"
+  plugin_id    = "org.democratic-csi.truenas-nfs"
+  volume_id    = "unifi_controller_volume"
+  name         = "unifi_controller_volume"
+  capacity_min = "10GiB"
+  capacity_max = "10GiB"
+
+  capability {
+    access_mode = "multi-node-reader-only"
+    attachment_mode = "file-system"
+  }
+
+  capability {
+    access_mode = "multi-node-multi-writer"
+    attachment_mode = "file-system"
+  }
+
+  mount_options {
+    fs_type = "nfs"
+    mount_flags = ["noatime", "nfsvers=3", "nolock"]
+  }
+}
+
 // ==== Jobs ====
 resource "nomad_job" "Lunch_Money_Offsets" {
   jobspec = file("${path.module}/jobs/offset_tracker.hcl")
@@ -315,4 +339,8 @@ resource "nomad_job" "coa-utilities-bill-generation" {
 
 resource "nomad_job" "icloud_pd" {
   jobspec = file("${path.module}/jobs/backup-icloud-photos.hcl") 
+}
+
+resource "nomad_job" "unifi_controller" {
+  jobspec = file("${path.module}/jobs/unifi-controller.hcl") 
 }

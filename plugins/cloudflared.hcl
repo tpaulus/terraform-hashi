@@ -167,6 +167,16 @@ ingress:
       teamName: whitestar
       audTag:
       - 01f0514e4c3906ce6684afdaac727c9f4ae46d67726e31dd5408edede08fa8af
+- hostname: ubnt.brickyard.whitestar.systems
+  service: https://unifi.service.seaview.consul:8443
+  originRequest:
+    noTLSVerify: true
+    http2Origin: true
+    access:
+      required: true
+      teamName: whitestar
+      audTag:
+      - 532715a07b4167d137676d49f3fce8621973f2bd3f712b58eb0482c105183a67
 - service: http_status:200
   hostname: n3d.brickyard.whitestar.systems
   originRequest: {}
