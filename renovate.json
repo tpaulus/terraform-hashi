@@ -12,8 +12,7 @@
         "image\\s?=\\s?\"(?<depName>.*?):(?<currentValue>.*?)(?:@(?<currentDigest>sha256:[a-f0-9]+))?\""
       ],
       "datasourceTemplate": "docker",
-      "depTypeTemplate": "docker_image",
-      "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}"
+      "depTypeTemplate": "docker_image"
     }
   ],
   "platformAutomerge": true,
@@ -22,6 +21,11 @@
       "matchManagers": ["regex"],
       "automerge": true,
       "stabilityDays": 1
+    },
+    {
+      "matchManagers": ["github-actions"],
+      "automerge": true,
+      "stabilityDays": 2
     }
   ],
     "hostRules": [
