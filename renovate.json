@@ -23,7 +23,7 @@
       "stabilityDays": 1
     },
     {
-      "matchManagers": ["github-actions"],
+      "matchManagers": ["github-actions", "terraform"],
       "automerge": true,
       "stabilityDays": 2
     }
