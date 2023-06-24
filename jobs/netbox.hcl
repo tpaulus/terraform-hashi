@@ -109,8 +109,8 @@ job "Netbox" {
       }
 
       resources {
-        cpu    = 512
-        memory = 256
+        cpu    = 1536
+        memory = 2048
       }
 
       template {
