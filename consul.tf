@@ -5,6 +5,7 @@ locals {
     {"hostname":"roosevelt", "server": true},
     {"hostname":"woodlandpark", "server": false},
     {"hostname": "broadmoor", "server": true},
+    {"hostname": "beaconhill", "server": false}
   ]
 }
 
