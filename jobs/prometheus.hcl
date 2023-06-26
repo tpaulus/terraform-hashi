@@ -80,9 +80,16 @@ scrape_configs:
     metrics_path: "/metrics"
     static_configs:
     - targets:
+      - 10.0.10.1:9100
       - 10.0.10.48:9100
       - 10.0.10.64:9100
       - 10.0.10.80:9100
+
+  - job_name: "coredns"
+    metrics_path: "/metrics"
+    static_configs:
+    - targets:
+      - 10.0.10.1:9253
 
   - job_name: "weave"
     metrics_path: "/metrics"
