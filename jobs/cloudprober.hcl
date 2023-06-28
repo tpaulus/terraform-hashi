@@ -20,6 +20,17 @@ job "obs-cloudprober" {
       }
     }
 
+    update {
+      max_parallel      = 1
+      health_check      = "checks"
+      min_healthy_time  = "10s"
+      healthy_deadline  = "5m"
+      progress_deadline = "10m"
+      auto_revert       = true
+      auto_promote      = true
+      canary            = 1
+    }
+
     task "cloudprober" {
       driver = "docker"
 
@@ -60,14 +71,16 @@ job "obs-cloudprober" {
         data = <<EOF
 # Internal Services
 probe {
-   name: "Router DNS - Internal Query"
-   type: DNS
-   targets {
-     host_names: "10.0.10.1"
-   }
-   fqdn: "consul.service.seaview.consul"
-   queryType: A
-   additional_label {
+  name: "Router DNS - Internal Query"
+  type: DNS
+  targets {
+    host_names: "10.0.10.1"
+  }
+  dns_probe {
+    resolved_domain: "consul.service.seaview.consul"
+    query_type: A
+  }
+  additional_label {
     key: "location"
     value: "internal"
   }
@@ -75,19 +88,21 @@ probe {
     key: "type"
     value: "dns"
   }
-   interval_msec: 5000  # 5s
-   timeout_msec: 1000   # 1s
+  interval_msec: 5000  # 5s
+  timeout_msec: 1000   # 1s
 }
 
 probe {
-   name: "Router DNS - External Query"
-   type: DNS
-   targets {
-     host_names: "10.0.10.1"
-   }
-   fqdn: "tompaulus.com"
-   queryType: A
-   additional_label {
+  name: "Router DNS - External Query"
+  type: DNS
+  targets {
+    host_names: "10.0.10.1"
+  }
+  dns_probe {
+    resolved_domain: "tompaulus.com"
+    query_type: A
+  }
+  additional_label {
     key: "location"
     value: "internal"
   }
@@ -95,8 +110,8 @@ probe {
     key: "type"
     value: "dns"
   }
-   interval_msec: 5000  # 5s
-   timeout_msec: 1000   # 1s
+  interval_msec: 5000  # 5s
+  timeout_msec: 1000   # 1s
 }
 
 probe {
@@ -206,7 +221,7 @@ probe {
 
 probe {
   name: "Cloudflare"
-  type: PING
+  type: HTTP
   targets {
     host_names: "www.cloudflare.com"
   }
