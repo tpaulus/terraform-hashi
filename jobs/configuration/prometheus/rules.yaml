@@ -43,30 +43,33 @@ groups:
       summary: "{{ $labels.probe }} Is Down"
       description: "{{ $labels.probe }} is failing Cloudprober Healthchecks"
       dashboard: https://grafana.brickyard.whitestar.systems/d/bztcrl14k/status-overview
+  
+- name: OPNSense
+  rules:
   - alert: Internet Down
-    expr: sum(rate(success{job="cloudprober", location="external"}[1m])) / sum(rate(total{job="cloudprober", location="external"}[1m])) < 0.75
+    expr: sum(gateway_up{gateway_name!~"[a-zA-Z]*_Weave|.*DHCP6"}) == 0
     for: 3m
     labels:
-      severity: high
+      severity: critical
     annotations:
       summary: Internet is Down
-      description: External Healthchecks are failing - Internet or DNS May be down
+      description: All Upstream Gateways are Offline
       dashboard: https://grafana.brickyard.whitestar.systems/d/bztcrl14k/status-overview
   - alert: Primary Internet Down
-    expr: sum(rate(success{probe="Internet - Lumen"}[1m]) / rate(total{probe="Internet - Lumen"}[1m])) < 0.75
+    expr: gateway_up{gateway_name="CENTURYLINKINET_PPPOE"} == 0
     for: 3m
     labels:
       severity: high
     annotations:
-      summary: Centurylink is Down
+      summary: Centurylink Internet Gateway is Down - Running on Backup Gateway
       dashboard: https://grafana.brickyard.whitestar.systems/d/a6c53492-cfb0-41c9-8f71-cce622706523/internet-uplink
   - alert: Backup Internet Down
-    expr: sum(rate(success{probe="Internet - T-Mobile"}[1m]) / rate(total{probe="Internet - T-Mobile"}[1m])) < 0.75
+    expr: gateway_up{gateway_name="TMOBILEGATEWAY_DHCP"} == 0
     for: 3m
     labels:
       severity: low
     annotations:
-      summary: T-Mobile is Down
+      summary: T-Mobile Internet Gateway is Down - Redundancy Lost
       dashboard: https://grafana.brickyard.whitestar.systems/d/a6c53492-cfb0-41c9-8f71-cce622706523/internet-uplink
 
 - name: Consul
