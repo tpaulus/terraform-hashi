@@ -67,6 +67,8 @@ probe {
   }
   {{ with nomadVar "nomad/jobs/obs-cloudprober" -}}
   http_probe {
+    protocol: "HTTPS"
+    
     header {
       key: "CF-Access-Client-Id"
       value: "{{ .ID }}"
@@ -106,6 +108,7 @@ probe {
     host_names: "protect.brickyard.whitestar.systems"
   }
   http_probe {
+    protocol: "HTTPS"
     tls_config {
       disable_cert_validation: true
     }
@@ -134,6 +137,9 @@ probe {
   targets {
     host_names: "blog.tompaulus.com"
   }
+  http_probe {
+    protocol: "HTTPS"
+  }
   validator {
       name: "status_code_2xx"
       http_validator {
@@ -159,10 +165,19 @@ probe {
 # External Services
 
 probe {
-  name: "1.1.1.1"
+  name: "Cloudflare"
   type: PING
   targets {
-    host_names: "1.1.1.1"
+    host_names: "www.cloudflare.com"
+  }
+  http_probe {
+    protocol: "HTTPS"
+  }
+  validator {
+      name: "status_code_2xx"
+      http_validator {
+          success_status_codes: "200-299"
+      }
   }
   additional_label {
     key: "location"
@@ -178,6 +193,15 @@ probe {
   targets {
     host_names: "www.google.com"
   }
+  http_probe {
+    protocol: "HTTPS"
+  }
+  validator {
+      name: "status_code_2xx"
+      http_validator {
+          success_status_codes: "200-299"
+      }
+  }
   additional_label {
     key: "location"
     value: "external"
@@ -190,7 +214,16 @@ probe {
   name: "Apple Homepage"
   type: HTTP
   targets {
-    host_names: "apple.com"
+    host_names: "www.apple.com"
+  }
+  http_probe {
+    protocol: "HTTPS"
+  }
+  validator {
+      name: "status_code_2xx"
+      http_validator {
+          success_status_codes: "200-299"
+      }
   }
   additional_label {
     key: "location"
@@ -199,26 +232,7 @@ probe {
   interval_msec: 5000  # 5s
   timeout_msec: 1000   # 1s
 }
-        
-probe {
-  name: "Internet - Lumen"
-  type: PING
-  targets {
-    host_names: "1.1.1.10"
-  }
-  interval_msec: 5000  # 5s
-  timeout_msec: 1000   # 1s
-}
-        
-probe {
-  name: "Internet - T-Mobile"
-  type: PING
-  targets {
-    host_names: "1.1.1.11"
-  }
-  interval_msec: 5000  # 5s
-  timeout_msec: 1000   # 1s
-}        
+      
 EOF
 
         change_mode   = "signal"

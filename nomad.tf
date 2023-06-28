@@ -344,3 +344,7 @@ resource "nomad_job" "icloud_pd" {
 resource "nomad_job" "unifi_controller" {
   jobspec = file("${path.module}/jobs/unifi-controller.hcl") 
 }
+
+resource "nomad_job" "opnsense-exporter" {
+  jobspec = file("${path.module}/jobs/opnsense-exporter.hcl")
+}
