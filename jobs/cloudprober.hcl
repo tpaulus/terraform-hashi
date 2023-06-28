@@ -60,6 +60,46 @@ job "obs-cloudprober" {
         data = <<EOF
 # Internal Services
 probe {
+   name: "Router DNS - Internal Query"
+   type: DNS
+   targets {
+     host_names: "10.0.10.1"
+   }
+   fqdn: "consul.service.seaview.consul"
+   queryType: A
+   additional_label {
+    key: "location"
+    value: "internal"
+  }
+  additional_label {
+    key: "type"
+    value: "dns"
+  }
+   interval_msec: 5000  # 5s
+   timeout_msec: 1000   # 1s
+}
+
+probe {
+   name: "Router DNS - External Query"
+   type: DNS
+   targets {
+     host_names: "10.0.10.1"
+   }
+   fqdn: "tompaulus.com"
+   queryType: A
+   additional_label {
+    key: "location"
+    value: "internal"
+  }
+  additional_label {
+    key: "type"
+    value: "dns"
+  }
+   interval_msec: 5000  # 5s
+   timeout_msec: 1000   # 1s
+}
+
+probe {
   name: "Home Assistant"
   type: HTTP
   targets {

@@ -14,6 +14,12 @@ job "obs-alertmanager" {
   group "alertmanager" {
     count = 1
 
+    network {
+      dns {
+        servers = ["1.1.1.1", "1.0.0.1", "${attr.unique.network.ip-address}"]  # Include non-internal DNS Resolvers to enable notifications when the internal resolvers are down
+      }
+    }
+
     task "alertmanager" {
       driver = "docker"
 
