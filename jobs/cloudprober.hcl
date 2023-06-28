@@ -67,7 +67,7 @@ probe {
   }
   {{ with nomadVar "nomad/jobs/obs-cloudprober" -}}
   http_probe {
-    protocol: "HTTPS"
+    protocol: HTTPS
     
     header {
       key: "CF-Access-Client-Id"
@@ -108,7 +108,7 @@ probe {
     host_names: "protect.brickyard.whitestar.systems"
   }
   http_probe {
-    protocol: "HTTPS"
+    protocol: HTTPS
     tls_config {
       disable_cert_validation: true
     }
@@ -138,7 +138,7 @@ probe {
     host_names: "blog.tompaulus.com"
   }
   http_probe {
-    protocol: "HTTPS"
+    protocol: HTTPS
   }
   validator {
       name: "status_code_2xx"
@@ -171,7 +171,7 @@ probe {
     host_names: "www.cloudflare.com"
   }
   http_probe {
-    protocol: "HTTPS"
+    protocol: HTTPS
   }
   validator {
       name: "status_code_2xx"
@@ -194,7 +194,7 @@ probe {
     host_names: "www.google.com"
   }
   http_probe {
-    protocol: "HTTPS"
+    protocol: HTTPS
   }
   validator {
       name: "status_code_2xx"
@@ -217,7 +217,7 @@ probe {
     host_names: "www.apple.com"
   }
   http_probe {
-    protocol: "HTTPS"
+    protocol: HTTPS
   }
   validator {
       name: "status_code_2xx"
