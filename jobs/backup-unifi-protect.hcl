@@ -21,10 +21,6 @@ job "backup-unifi-protect" {
       mode     = "fail"
     }
 
-    network {
-      port "http" {}
-    }
-
     volume "unifi-protect-backup-nfs-volume" {
       type            = "csi"
       source          = "unifi_protect_backup_volume"
