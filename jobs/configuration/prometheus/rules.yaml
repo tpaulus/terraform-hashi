@@ -76,7 +76,7 @@ groups:
   rules:
   - alert: Consul agent is not healthy
     expr: consul_health_node_status{status="critical"} == 1
-    for: 1m
+    for: 3m
     labels:
       severity: low
     annotations:
@@ -84,7 +84,7 @@ groups:
       description: Consul agent is not healthy on {{ $labels.node }}.
   - alert: Consul cluster is degraded
     expr: min(consul_raft_peers) < 3
-    for: 1m
+    for: 15m
     labels:
       severity: high
     annotations:
