@@ -320,3 +320,7 @@ resource "nomad_job" "icloud_pd" {
 resource "nomad_job" "opnsense-exporter" {
   jobspec = file("${path.module}/jobs/opnsense-exporter.hcl")
 }
+
+resource "nomad_job" "ansible-applier" {
+  jobspec = file("${path.module}/jobs/ansible-applier.hcl")
+}
