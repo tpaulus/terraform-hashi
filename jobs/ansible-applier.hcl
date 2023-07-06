@@ -99,7 +99,7 @@ NETBOX_TOKEN={{ .NETBOX_TOKEN }}
       template {
         destination = "local/entrypoint.sh"
         data        = <<EOH
- #!/bin/bash
+#!/bin/bash
 set -euxo pipefail
 
 if [[ "{{ env "attr.unique.hostname" }}" == "{{ env "NOMAD_META_TARGET_HOSTNAME"}}" ]]; then
@@ -120,7 +120,7 @@ echo "Executing Playbooks: $playbooks"
 
 ansible-playbook \
   --vault-password-file /secrets/vault_password \
-  --limit '~(?i){{ env "NOMAD_META_TARGET_HOSTNAME" }}' \  // Casing of Hostnames is not consistent, so let's just ignore casing all together
+  --limit '~(?i){{ env "NOMAD_META_TARGET_HOSTNAME" }}' \
   --inventory netbox_inventory.yaml \
   --user ansible-applier \
   "$playbooks"
