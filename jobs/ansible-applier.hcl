@@ -6,9 +6,9 @@ job "ops-ansible-applier" {
 
   reschedule {
     attempts       = 5
-    delay          = "5m"
+    delay          = "30s"
     delay_function = "fibonacci"
-    max_delay      = "1h"
+    max_delay      = "30m"
   }
 
   parameterized {
@@ -20,9 +20,9 @@ job "ops-ansible-applier" {
     count = 1
 
     restart {
-      attempts = 3
+      attempts = 1
       delay    = "15s"
-      interval = "10m"
+      interval = "2m"
       mode     = "fail"
     }
 
@@ -32,27 +32,17 @@ job "ops-ansible-applier" {
       }
     }
 
-    ephemeral_disk {
-      migrate = true
-      size    = 1000
-      sticky  = true
-    }
-
     task "ansible" {
       driver = "docker"
-
-      constraint {
-        # Do not run high-states against self, as this can cause issues if Nomad or Docker is restarted
-        attribute = "${NOMAD_META_TARGET_HOSTNAME}"
-        operator  = "!="
-        value     = "${meta.unique.hostname}"
-      }
 
       config {
         image          = "ghcr.io/tpaulus/ansible-container:main"
         auth_soft_fail = true
 
-        command = "local/entrypoint.sh"
+        entrypoint = ["/bin/bash"]
+        command    = "/local/entrypoint.sh"
+
+        network = "weave"
       }
 
       dispatch_payload {
@@ -60,8 +50,13 @@ job "ops-ansible-applier" {
       }
 
       artifact {
-        source      = "https://raw.githubusercontent.com/tpaulus/ansible/main/netbox_inventory.yaml"
-        destination = "local/inventory.yaml"
+        source      = "git::https://github.com/tpaulus/ansible.git"
+        destination = "local/ansible-repo"
+        mode        = "dir"
+        options {
+            ref   = "main"
+            depth = 1
+        }
       }
 
       template {
@@ -104,28 +99,41 @@ NETBOX_TOKEN={{ .NETBOX_TOKEN }}
       template {
         destination = "local/entrypoint.sh"
         data        = <<EOH
- #!/bin/sh
-set -eoux
+ #!/bin/bash
+set -euxo pipefail
 
-mkdir -p ~/.ssh
-ln -s /secrets/ssh_key ~/.ssh/id_ed25519
+if [[ "{{ env "attr.unique.hostname" }}" == "{{ env "NOMAD_META_TARGET_HOSTNAME"}}" ]]; then
+    echo "Cannot highstate self, aborting"
+    exit 2
+fi
 
-mkdir -p /alloc/${NOMAD_META_TARGET_HOSTNAME}
-cd /alloc/${NOMAD_META_TARGET_HOSTNAME}
+eval `ssh-agent`
+ssh-add /secrets/ssh_key
+
+cd /local/ansible-repo
 
 ansible-galaxy collection install -r requirements.yml
 
-ansible-pull \
+playbooks=`cat {{ env "NOMAD_TASK_DIR" }}/playbooks.txt`
+
+echo "Executing Playbooks: $playbooks"
+
+ansible-playbook \
   --vault-password-file /secrets/vault_password \
-  --url https://github.com/tpaulus/ansible.git \
-  -l ${NOMAD_META_TARGET_HOSTNAME} \
-  -i /local/inventory.yaml \
-  $(cat ${NOMAD_TASK_DIR}/config.json)
-         EOH
+  --limit '~(?i){{ env "NOMAD_META_TARGET_HOSTNAME" }}' \  // Casing of Hostnames is not consistent, so let's just ignore casing all together
+  --inventory netbox_inventory.yaml \
+  --user ansible-applier \
+  "$playbooks"
+        EOH
         perms       = "755"
         uid         = 0
         gid         = 0
         change_mode = "noop"
+      }
+
+      resources {
+        cpu    = 1024
+        memory = 2048
       }
     }
   }
