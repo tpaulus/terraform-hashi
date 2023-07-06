@@ -123,7 +123,7 @@ ansible-playbook \
   --limit '~(?i){{ env "NOMAD_META_TARGET_HOSTNAME" }}' \
   --inventory netbox_inventory.yaml \
   --user ansible-applier \
-  "$playbooks"
+  $playbooks
         EOH
         perms       = "755"
         uid         = 0
