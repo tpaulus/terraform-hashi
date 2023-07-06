@@ -86,7 +86,7 @@ fi
 
 amtool silence add\
   --duration="2h" \
-  --comment="Ansible Auto Apply of $(cat /local/playbooks.txt)\n\nNomad Job ID: {{ env "NOMAD_ALLOC_ID" }}\nNomad Alloc: {{ env "NOMAD_ALLOC_NAME"}}" \
+  --comment="Ansible Auto Apply of $(cat /local/playbooks.txt) (Nomad Job ID: {{ env "NOMAD_ALLOC_ID" }}) (Nomad Alloc: {{ env "NOMAD_ALLOC_NAME"}})" \
   node="{{ env "NOMAD_META_TARGET_HOSTNAME"}}"
         EOH
         perms       = "755"
