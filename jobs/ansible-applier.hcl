@@ -32,6 +32,66 @@ job "ops-ansible-applier" {
       }
     }
 
+    task "create-silences" {
+      lifecycle {
+        hook = "prestart"
+        sidecar = false
+      }
+
+      driver = "docker"
+
+      config {
+        network_mode = "weave"
+
+        image = "prom/alertmanager:v0.25.0"
+
+        entrypoint = ["/bin/bash"]
+        command    = "/local/entrypoint.sh"
+      }
+
+      dispatch_payload {
+        file = "playbooks.txt"
+      }
+
+      template {
+        destination = "local/amtool_config.yml"
+        data        = <<EOH
+alertmanager.url: "http://alertmanager.service.seaview.consul:9093"
+author: "Ansible Applier
+comment_required: true
+        EOH
+        
+        perms       = "644"
+        uid         = 0
+        gid         = 0
+        change_mode = "noop"
+      }
+
+      template {
+        destination = "local/entrypoint.sh"
+        data        = <<EOH
+#!/bin/bash
+set -euxo pipefail
+
+ln -s /local/amtool_config.yml /etc/amtool/config.yml
+
+if [[ "{{ env "attr.unique.hostname" }}" == "{{ env "NOMAD_META_TARGET_HOSTNAME"}}" ]]; then
+    echo "Cannot highstate self, aborting"
+    exit 2
+fi
+
+amtool silence add\
+  --duration="2h" \
+  --comment="Ansible Auto Apply of $(cat /local/playbooks.txt)"
+  node="{{ env "NOMAD_META_TARGET_HOSTNAME"}}"
+        EOH
+        perms       = "755"
+        uid         = 0
+        gid         = 0
+        change_mode = "noop"
+      }
+    }
+
     task "ansible" {
       driver = "docker"
 
@@ -136,5 +196,56 @@ ansible-playbook \
         memory = 2048
       }
     }
+
+    task "expire-silences" {
+      lifecycle {
+        hook = "poststop"
+        sidecar = false
+      }
+
+      driver = "docker"
+
+      config {
+        network_mode = "weave"
+
+        image = "prom/alertmanager:v0.25.0"
+
+        entrypoint = ["/bin/bash"]
+        command    = "/local/entrypoint.sh"
+      }
+
+      template {
+        destination = "local/amtool_config.yml"
+        data        = <<EOH
+alertmanager.url: "http://alertmanager.service.seaview.consul:9093"
+author: "Ansible Applier
+comment_required: true
+        EOH
+        
+        perms       = "644"
+        uid         = 0
+        gid         = 0
+        change_mode = "noop"
+      }
+
+      template {
+        destination = "local/entrypoint.sh"
+        data        = <<EOH
+#!/bin/bash
+set -euxo pipefail
+
+ln -s /local/amtool_config.yml /etc/amtool/config.yml
+
+amtool silence query node="{{ env "NOMAD_META_TARGET_HOSTNAME"}}"
+
+amtool silence expire $(amtool silence query -q node="{{ env "NOMAD_META_TARGET_HOSTNAME"}}") 
+        EOH
+        perms       = "755"
+        uid         = 0
+        gid         = 0
+        change_mode = "noop"
+      }
+    }
+
   }
 }
