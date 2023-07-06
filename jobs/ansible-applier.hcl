@@ -86,7 +86,7 @@ fi
 
 amtool silence add\
   --duration="2h" \
-  --comment="Ansible Auto Apply of $(cat /local/playbooks.txt)"
+  --comment="Ansible Auto Apply of $(cat /local/playbooks.txt)" \
   node="{{ env "NOMAD_META_TARGET_HOSTNAME"}}"
         EOH
         perms       = "755"
