@@ -50,7 +50,7 @@ job "ops-ansible-applier" {
 
         mount {
           type   = "bind"
-          source = "local/amtool_config.conf"
+          source = "local/amtool_config.yml"
           target = "/etc/amtool/config.yml"
         }
       }
@@ -219,7 +219,7 @@ ansible-playbook \
 
         mount {
           type   = "bind"
-          source = "local/amtool_config.conf"
+          source = "local/amtool_config.yml"
           target = "/etc/amtool/config.yml"
         }
       }
