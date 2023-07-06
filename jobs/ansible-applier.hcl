@@ -63,7 +63,7 @@ job "ops-ansible-applier" {
         destination = "local/amtool_config.yml"
         data        = <<EOH
 alertmanager.url: "http://alertmanager.service.seaview.consul:9093"
-author: "Ansible Applier
+author: "Ansible Applier"
 comment_required: true
         EOH
         
@@ -228,7 +228,7 @@ ansible-playbook \
         destination = "local/amtool_config.yml"
         data        = <<EOH
 alertmanager.url: "http://alertmanager.service.seaview.consul:9093"
-author: "Ansible Applier
+author: "Ansible Applier"
 comment_required: true
         EOH
         
