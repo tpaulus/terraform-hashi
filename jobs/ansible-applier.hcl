@@ -73,6 +73,7 @@ comment_required: true
 #!/bin/bash
 set -euxo pipefail
 
+mkdir -p /etc/amtool
 ln -s /local/amtool_config.yml /etc/amtool/config.yml
 
 if [[ "{{ env "attr.unique.hostname" }}" == "{{ env "NOMAD_META_TARGET_HOSTNAME"}}" ]]; then
@@ -234,6 +235,7 @@ comment_required: true
 #!/bin/bash
 set -euxo pipefail
 
+mkdir -p /etc/amtool
 ln -s /local/amtool_config.yml /etc/amtool/config.yml
 
 amtool silence query node="{{ env "NOMAD_META_TARGET_HOSTNAME"}}"
