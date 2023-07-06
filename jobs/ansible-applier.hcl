@@ -47,6 +47,12 @@ job "ops-ansible-applier" {
 
         entrypoint = ["/bin/sh"]
         command    = "/local/entrypoint.sh"
+
+        mount {
+          type   = "bind"
+          source = "local/amtool_config.conf"
+          target = "/etc/amtool/config.yml"
+        }
       }
 
       dispatch_payload {
@@ -72,9 +78,6 @@ comment_required: true
         data        = <<EOH
 #!/bin/bash
 set -euxo pipefail
-
-mkdir -p /etc/amtool
-ln -s /local/amtool_config.yml /etc/amtool/config.yml
 
 if [[ "{{ env "attr.unique.hostname" }}" == "{{ env "NOMAD_META_TARGET_HOSTNAME"}}" ]]; then
     echo "Cannot highstate self, aborting"
@@ -213,6 +216,12 @@ ansible-playbook \
 
         entrypoint = ["/bin/sh"]
         command    = "/local/entrypoint.sh"
+
+        mount {
+          type   = "bind"
+          source = "local/amtool_config.conf"
+          target = "/etc/amtool/config.yml"
+        }
       }
 
       template {
@@ -234,9 +243,6 @@ comment_required: true
         data        = <<EOH
 #!/bin/bash
 set -euxo pipefail
-
-mkdir -p /etc/amtool
-ln -s /local/amtool_config.yml /etc/amtool/config.yml
 
 amtool silence query node="{{ env "NOMAD_META_TARGET_HOSTNAME"}}"
 
