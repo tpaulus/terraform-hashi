@@ -42,7 +42,7 @@ job "ops-ansible-applier" {
         entrypoint = ["/bin/bash"]
         command    = "/local/entrypoint.sh"
 
-        network = "weave"
+        network_mode = "weave"
       }
 
       dispatch_payload {
