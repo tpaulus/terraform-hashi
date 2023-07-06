@@ -45,7 +45,7 @@ job "ops-ansible-applier" {
 
         image = "prom/alertmanager:v0.25.0"
 
-        entrypoint = ["/bin/bash"]
+        entrypoint = ["/bin/sh"]
         command    = "/local/entrypoint.sh"
       }
 
@@ -210,7 +210,7 @@ ansible-playbook \
 
         image = "prom/alertmanager:v0.25.0"
 
-        entrypoint = ["/bin/bash"]
+        entrypoint = ["/bin/sh"]
         command    = "/local/entrypoint.sh"
       }
 
