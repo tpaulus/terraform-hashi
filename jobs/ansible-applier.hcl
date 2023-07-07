@@ -178,6 +178,11 @@ cd /local/ansible-repo
 
 ansible-galaxy collection install -r requirements.yml
 
+cat << 'EOF' >> /etc/ansible/ansible.cfg
+[inventory]
+enable_plugins = nb_inventory, auto, yaml, ini
+EOF
+
 playbooks=`cat {{ env "NOMAD_TASK_DIR" }}/playbooks.txt`
 
 echo "Executing Playbooks: $playbooks"
