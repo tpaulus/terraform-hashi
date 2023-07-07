@@ -107,12 +107,6 @@ amtool silence add\
         command    = "/local/entrypoint.sh"
 
         network_mode = "weave"
-
-        mount {
-          type   = "bind"
-          source = "local/ansible.cfg"
-          target = "/etc/ansible/ansible.cfg"
-        }
       }
 
       dispatch_payload {
@@ -160,8 +154,10 @@ amtool silence add\
         data        = <<EOH
 [defaults]
 host_key_checking = False
-enable_plugins = nb_inventory, auto, yaml, ini
-        EOH
+
+[inventory]
+unparsed_is_failed = true
+         EOH
         perms       = "644"
         uid         = 0
         gid         = 0
@@ -173,6 +169,7 @@ enable_plugins = nb_inventory, auto, yaml, ini
 {{ with nomadVar "nomad/jobs/ops-ansible-applier" -}}
 NETBOX_TOKEN={{ .NETBOX_TOKEN }}
 {{ end }}
+ANSIBLE_CONFIG=/local/ansible.cfg
         EOH
 
         destination = "secrets/file.env"
