@@ -107,6 +107,12 @@ amtool silence add\
         command    = "/local/entrypoint.sh"
 
         network_mode = "weave"
+
+        mount {
+          type   = "bind"
+          source = "local/ansible.cfg"
+          target = "/etc/ansible/ansible.cfg"
+        }
       }
 
       dispatch_payload {
@@ -150,6 +156,19 @@ amtool silence add\
       }
 
       template {
+        destination = "local/ansible.cfg"
+        data        = <<EOH
+[defaults]
+host_key_checking = False
+enable_plugins = nb_inventory, auto, yaml, ini
+        EOH
+        perms       = "644"
+        uid         = 0
+        gid         = 0
+        change_mode = "noop"
+      }
+
+      template {
         data = <<EOH
 {{ with nomadVar "nomad/jobs/ops-ansible-applier" -}}
 NETBOX_TOKEN={{ .NETBOX_TOKEN }}
@@ -177,11 +196,6 @@ ssh-add /secrets/ssh_key
 cd /local/ansible-repo
 
 ansible-galaxy collection install -r requirements.yml
-
-cat << 'EOF' >> /etc/ansible/ansible.cfg
-[inventory]
-enable_plugins = nb_inventory, auto, yaml, ini
-EOF
 
 playbooks=`cat {{ env "NOMAD_TASK_DIR" }}/playbooks.txt`
 
