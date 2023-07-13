@@ -253,10 +253,6 @@ resource "nomad_job" "Lunch_Money_Offsets" {
   jobspec = file("${path.module}/jobs/offset_tracker.hcl")
 }
 
-resource "nomad_job" "CF_Gateway_IP_Updater" {
-  jobspec = file("${path.module}/jobs/gateway-ip.hcl")
-}
-
 resource "nomad_job" "N8N" {
   jobspec = file("${path.module}/jobs/n8n.hcl")
 }
