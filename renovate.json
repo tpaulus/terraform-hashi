@@ -19,7 +19,9 @@
   "packageRules": [
     {
       "matchManagers": ["regex"],
-      "automerge": true,
+      "automergeMajor": false,
+      "automergeMinor": true,
+      "automergePatch": true,
       "stabilityDays": 1
     },
     {
