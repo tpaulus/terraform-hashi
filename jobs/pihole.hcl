@@ -40,7 +40,7 @@ job "net-pihole" {
 
       config {
         network_mode = "weave"
-        image = "cloudflare/cloudflared:2023.7.0"
+        image = "cloudflare/cloudflared:2023.7.1"
         entrypoint = ["/local/entrypoint.sh"]
         command = ""
       }
