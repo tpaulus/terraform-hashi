@@ -305,13 +305,13 @@ groups:
       description: "The rate of failed DNS queries on CoreDNS is above 5% in the last 5 minutes."
       link: https://grafana.brickyard.whitestar.systems/d/wY4blRMGz/coredns
   - alert: CoreDNSHighLatency
-    expr: histogram_quantile(0.90, sum(rate(coredns_forward_request_duration_seconds_bucket{instance=~".*"}[2m])) by (to, le)) > 0.5
+    expr: histogram_quantile(0.50, sum(rate(coredns_forward_request_duration_seconds_bucket{instance=~".*"}[2m])) by (to, le)) > 0.5
     for: 2m
     labels:
       severity: warning
     annotations:
       summary: "High DNS latency on CoreDNS for Upstream {{ $labels.to }}"
-      description: "The p90 DNS query latency towards {{ $labels.to }} is above 500ms in the last 2 minutes."
+      description: "The p50 DNS query latency towards {{ $labels.to }} is above 500ms in the last 2 minutes."
       link: https://grafana.brickyard.whitestar.systems/d/wY4blRMGz/coredns
   - alert: CoreDNSSuddenQueryRateDrop
     expr: sum(increase(coredns_dns_requests_total{}[5m])) < 10
