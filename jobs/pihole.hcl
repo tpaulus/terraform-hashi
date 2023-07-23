@@ -24,12 +24,6 @@ job "net-pihole" {
       mode     = "fail"
     }
 
-    ephemeral_disk {
-      migrate = false
-      size    = 110
-      sticky  = false
-    }
-
     task "cloudflared" {
       driver = "docker"
 
@@ -41,27 +35,31 @@ job "net-pihole" {
       config {
         network_mode = "weave"
         image = "cloudflare/cloudflared:2023.7.1"
-        entrypoint = ["/local/entrypoint.sh"]
-        command = ""
+        command = "proxy-dns"
+        args = ["--address 0.0.0.0", "--upstream \"$UPSTREAM_URL\"", "--port 5301", "--metrics 0.0.0.0:50305"]
       }
 
       template {
-        destination = "local/entrypoint.sh"
         data = <<EOH
-#!/usr/bin/env bash
-set -euxo pipefail
-
-ip addr | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1  -d'/' > /alloc/cloudflared_ip.txt
-
 {{ with nomadVar "nomad/jobs/net-pihole" -}}
-exec cloudflared --no-autoupdate proxy-dns --address 0.0.0.0 --upstream {{ .DNS_UPSTREAM_URL }} --port 5301 --metrics 0.0.0.0:50305
+UPSTREAM_URL = {{ .DNS_UPSTREAM_URL }}
 {{- end }}
-EOH
-        perms       = "755"
-        uid         = 0
-        gid         = 0
-        change_mode = "noop"
+        EOH
+
+        destination = "secrets/file.env"
+        env         = true
       }
+      
+      service {
+        name     = "${BASE}"
+        provider = "consul"
+        port     = 50305
+        address_mode = "driver"
+        tags = [
+          "metrics=true",
+        ]
+      }
+
 
       service {
         name     = "cloudflared-dns-proxy"
@@ -69,7 +67,7 @@ EOH
         port     = 50305
         address_mode = "driver"
         tags = [
-          "metrics=true"
+          "metrics=true",
         ]
       }
     }
@@ -80,14 +78,6 @@ EOH
       config {
         network_mode = "weave"
         image = "ghcr.io/pi-hole/pihole:2023.05.2"
-        entrypoint = ["/local/entrypoint.sh"]
-      }
-
-      env {
-        TZ = "America/Los_Angeles"
-        WEBPASSWORD = ""
-        DHCP_ACTIVE = "false"
-        WEBTHEME = "default-dark"
       }
 
       resources {
@@ -105,21 +95,26 @@ EOH
         ]
       }
 
+      service {
+        name     = "${BASE}"
+        provider = "consul"
+        port     = 80
+        address_mode = "driver"
+        tags = []
+      }
+
        template {
-        destination = "local/entrypoint.sh"
         data = <<EOH
-#!/usr/bin/env bash
-set -euxo pipefail
+TZ = "America/Los_Angeles"
+WEBPASSWORD = ""
+DHCP_ACTIVE = "false"
+WEBTHEME = "default-dark"
 
-ip addr | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1  -d'/' > /alloc/pihole_ip.txt
+PIHOLE_DNS_ = "${NOMAD_JOB_NAME}-${NOMAD_GROUP_NAME}-cloudflared.service.${NOMAD_DC}.consul"
+        EOH
 
-export PIHOLE_DNS_ = "$(cat /alloc/cloudflared_ip.txt):5301"
-exec /s6-init
-EOH
-        perms       = "755"
-        uid         = 0
-        gid         = 0
-        change_mode = "noop"
+        destination = "secrets/file.env"
+        env         = true
       }
     }
 
@@ -134,33 +129,17 @@ EOH
       config {
         network_mode = "weave"
         image = "ekofr/pihole-exporter:v0.4.0"
-        entrypoint = ["/local/entrypoint.sh"]
-        command = ""
       }
 
       template {
         data = <<EOH
 PIHOLE_PASSWORD=""
 PORT=9617
+PIHOLE_HOSTNAME="${NOMAD_JOB_NAME}-${NOMAD_GROUP_NAME}-pihole.service.${NOMAD_DC}.consul"
         EOH
 
         destination = "secrets/file.env"
         env         = true
-      }
-
-      template {
-        destination = "local/entrypoint.sh"
-        data = <<EOH
-#!/usr/bin/env bash
-set -euxo pipefail
-
-export PIHOLE_HOSTNAME = "$(cat /alloc/pihole_ip.txt)"
-exec ./pihole-exporter
-EOH
-        perms       = "755"
-        uid         = 0
-        gid         = 0
-        change_mode = "noop"
       }
 
       service {
