@@ -320,3 +320,7 @@ resource "nomad_job" "opnsense-exporter" {
 resource "nomad_job" "ansible-applier" {
   jobspec = file("${path.module}/jobs/ansible-applier.hcl")
 }
+
+resource "nomad_job" "pihole" {
+  jobspec = file("${path.module}/jobs/pihole.hcl")
+}
