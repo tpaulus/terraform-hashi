@@ -36,7 +36,7 @@ job "obs-cloudprober" {
 
       config {
         network_mode = "weave"
-        image = "cloudprober/cloudprober:v0.12.7"
+        image = "cloudprober/cloudprober:v0.12.8"
 
         args = [
           "--config_file", "${NOMAD_TASK_DIR}/cloudprober.cfg"
