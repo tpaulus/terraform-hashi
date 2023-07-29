@@ -20,7 +20,7 @@ job "obs-opnsense-exporter" {
       }
     }
 
-    task "cloudprober" {
+    task "opnsense-exporter" {
       driver = "docker"
 
       config {
