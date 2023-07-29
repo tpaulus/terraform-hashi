@@ -78,6 +78,7 @@ receivers:
 - name: 'webhook-homeassistant'
   webhook_configs:
     - send_resolved: false
+      max_alerts: 1
       url: {{ with nomadVar "nomad/jobs/obs-alertmanager" }}{{ .HomeAssistantWebhook }}{{ end }}
 global:
   {{ with nomadVar "SMTP" -}}
