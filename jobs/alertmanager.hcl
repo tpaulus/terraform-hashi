@@ -63,13 +63,22 @@ route:
   group_by: ['alertname']
   group_wait: 30s
   group_interval: 5m
-  repeat_interval: 1h
-  receiver: 'email-tom'
+  repeat_interval: 4h
+  receiver: 'email-tom'  # Default Receiver
+  routes:
+    - receiver: 'webhook-homeassistant'
+      group_wait: 0s
+      matchers:
+        - reciever=~"(.+ )?webhook-homeassistant( .+)?"
 receivers:
 - name: 'email-tom'
   email_configs:
   - to: tom@tompaulus.com
     send_resolved: true
+- name: 'webhook-homeassistant'
+  webhook_configs:
+    - send_resolved: false
+      url: {{ with nomadVar "nomad/jobs/obs-alertmanager" }}{{ .HomeAssistantWebhook }}{{ end }}
 global:
   {{ with nomadVar "SMTP" -}}
   smtp_from: alertmanager@whitestar.systems
