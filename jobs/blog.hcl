@@ -170,7 +170,7 @@ job "Blog" {
       driver = "docker"
       config {
         network_mode = "weave"
-        image = "mysql:8.0.34"
+        image = "mysql:8.1.0"
 
         auth_soft_fail = true
       }
