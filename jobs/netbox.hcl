@@ -436,7 +436,7 @@ POSTGRES_USER={{ .dbUser }}
       driver = "docker"
       config {
         network_mode = "weave"
-        image = "redis:7.0.12"
+        image = "redis:7.2.0"
 
         auth_soft_fail = true
         args = ["/local/redis.conf"]
@@ -507,7 +507,7 @@ requirepass {{ .redisCachePassword }}
       driver = "docker"
       config {
         network_mode = "weave"
-        image = "redis:7.0.12"
+        image = "redis:7.2.0"
 
         auth_soft_fail = true
         args = ["/local/redis.conf"]
