@@ -1,8 +1,10 @@
 locals {
   nodes = [
+    {"hostname": "magnolia", "server": true},
     {"hostname":"ravenna", "server": true},
     {"hostname":"roosevelt", "server": true},
     {"hostname":"woodlandpark", "server": false},
+    {"hostname": "broadmoor", "server": true},
     {"hostname": "beaconhill", "server": false},
     {"hostname": "laurelhurst", "server": true},
   ]
