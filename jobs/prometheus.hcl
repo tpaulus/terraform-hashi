@@ -81,6 +81,7 @@ scrape_configs:
     static_configs:
     - targets:
       - 10.0.10.1:9100
+      - 10.0.10.24:9100
       - 10.0.10.48:9100
       - 10.0.10.64:9100
       - 10.0.10.80:9100
@@ -95,6 +96,7 @@ scrape_configs:
     metrics_path: "/metrics"
     static_configs:
     - targets:
+      - 10.0.10.24:21409
       - 10.0.10.48:21049
       - 10.0.10.64:21049
       - 10.0.10.80:21049
