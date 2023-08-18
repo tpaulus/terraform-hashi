@@ -1,11 +1,9 @@
 locals {
   nodes = {
     # Do not remove or change the order of items in the list
-    "magnolia": {"server": true},
     "ravenna": {"server": true},
     "roosevelt": {"server": true},
     "woodlandpark": {"server": false},
-    "broadmoor": {"server": true,},
     "beaconhill": {"server": false},
     "laurelhurst": {"server": true},
   }
