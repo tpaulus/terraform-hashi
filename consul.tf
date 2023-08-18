@@ -1,13 +1,14 @@
 locals {
-  nodes = [
-    {"hostname": "magnolia", "server": true},
-    {"hostname":"ravenna", "server": true},
-    {"hostname":"roosevelt", "server": true},
-    {"hostname":"woodlandpark", "server": false},
-    {"hostname": "broadmoor", "server": true},
-    {"hostname": "beaconhill", "server": false},
-    {"hostname": "laurelhurst", "server": true},
-  ]
+  nodes = {
+    # Do not remove or change the order of items in the list
+    "magnolia": {"server": true},
+    "ravenna": {"server": true},
+    "roosevelt": {"server": true},
+    "woodlandpark": {"server": false},
+    "broadmoor": {"server": true,},
+    "beaconhill": {"server": false},
+    "laurelhurst": {"server": true},
+  }
 }
 
 # Policies
@@ -61,19 +62,20 @@ resource "consul_acl_policy" "consul_servers" {
   RULE
 }
 resource "consul_acl_policy" "consul_agents" {
-  count = length(local.nodes)
-  name = "agent-policy-client-${local.nodes[count.index].hostname}"
+  for_each = local.nodes
+
+  name = "agent-policy-client-${each.key}"
   description = "Grants write access to self agent and self services"
   rules = <<-RULE
-  agent "${local.nodes[count.index].hostname}" {
-    policy = "write"
-  }
-  node "${local.nodes[count.index].hostname}" {
-    policy = "write"
-  }
-  service_prefix "" {
-    policy = "write"
-  }
+    agent "${each.key}" {
+      policy = "write"
+    }
+    node "${each.key}" {
+      policy = "write"
+    }
+    service_prefix "" {
+      policy = "write"
+    }
   RULE
 }
 
@@ -92,21 +94,23 @@ resource "consul_acl_policy" "nomad" {
 
 # Roles
 resource "consul_acl_role" "consul_agents" {
-  count = length(local.nodes)
-  name = local.nodes[count.index].hostname
-  description = "Grants write access to agent ${local.nodes[count.index].hostname}"
+  for_each = local.nodes
+
+  name = each.key
+  description = "Grants write access to agent ${each.key}"
   policies = flatten([ 
     consul_acl_policy.default.id,
-    consul_acl_policy.consul_agents[count.index].id,
-    local.nodes[count.index].server ? [consul_acl_policy.consul_servers.id] : []
+    consul_acl_policy.consul_agents[each.key].id,
+    each.value.server ? [consul_acl_policy.consul_servers.id] : []
    ])
 }
 
 # Tokens
 resource "consul_acl_token" "consul_agents" {
-  count = length(local.nodes)
-    description = "Token for node ${local.nodes[count.index].hostname}"
-    roles = [consul_acl_role.consul_agents[count.index].name]
+  for_each = local.nodes
+
+  description = "Token for node ${each.key}"
+  roles = [consul_acl_role.consul_agents[each.key].name]
 }
 
 resource "consul_acl_token" "nomad" {
