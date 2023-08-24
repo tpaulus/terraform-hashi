@@ -26,7 +26,7 @@ job "obs-alertmanager" {
       config {
         network_mode = "weave"
         
-        image = "prom/alertmanager:v0.25.0"
+        image = "prom/alertmanager:v0.26.0"
 
         args = [
           "--config.file=${NOMAD_TASK_DIR}/config/alertmanager.yml",
