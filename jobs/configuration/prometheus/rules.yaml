@@ -111,14 +111,14 @@ groups:
       title: "MDRAID on node {{ $labels.instance }} is in degrade mode"
       description: "Degraded RAID array {{ $labels.device }} on {{ $labels.instance }}: {{ $value }} disks failed"
   - alert: Disk Usage High
-    expr: 1 - node_filesystem_free_bytes{device!="tmpfs"} / node_filesystem_size_bytes{device!="tmpfs"} > .80
+    expr: max(1 - node_filesystem_free_bytes{device!="tmpfs"} / node_filesystem_size_bytes{device!="tmpfs"}) by (device, instance) > .80
     for: 5m
     labels:
       severity: high
     annotations:
       title: "Node {{ $labels.instance }} {{ $labels.device }} is over 80% utilized"
   - alert: Disk Usage Critical
-    expr: 1 - node_filesystem_free_bytes{device!="tmpfs"} / node_filesystem_size_bytes{device!="tmpfs"} > .95
+    expr: max(1 - node_filesystem_free_bytes{device!="tmpfs"} / node_filesystem_size_bytes{device!="tmpfs"}) by (device, instance) > .95
     for: 5m
     labels:
       severity: critical
