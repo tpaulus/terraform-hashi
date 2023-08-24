@@ -43,7 +43,7 @@ job "ops-ansible-applier" {
       config {
         network_mode = "weave"
 
-        image = "prom/alertmanager:v0.25.0"
+        image = "prom/alertmanager:v0.26.0"
 
         entrypoint = ["/bin/sh"]
         command    = "/local/entrypoint.sh"
@@ -228,7 +228,7 @@ ansible-playbook \
       config {
         network_mode = "weave"
 
-        image = "prom/alertmanager:v0.25.0"
+        image = "prom/alertmanager:v0.26.0"
 
         entrypoint = ["/bin/sh"]
         command    = "/local/entrypoint.sh"
