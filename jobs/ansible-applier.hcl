@@ -265,7 +265,7 @@ echo $silences
 # Check if there are any silences returned
 if [ -n "$silences" ]; then
     # Expire the silences
-    amtool silence expire $(amtool silence query -q node="{{ env "NOMAD_META_TARGET_HOSTNAME"}})
+    amtool silence expire $(amtool silence query -q node="{{ env "NOMAD_META_TARGET_HOSTNAME"}}")
 else
     echo "No silences found for the specified query."
 fi
