@@ -6,7 +6,7 @@ terraform {
     }
     nomad = {
       source = "hashicorp/nomad"
-      version = "1.4.20"
+      version = "2.0.0"
     }
   }
 }

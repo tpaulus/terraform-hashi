@@ -31,11 +31,11 @@ job "backup-unifi-protect" {
 
     task "unifi-protect-backup" {
       driver = "docker"
-      config = {
+      config {
         image = "ghcr.io/ep1cman/unifi-protect-backup:0.9.4"
         auth_soft_fail = true
 
-        mount {
+        mount = {
           type   = "bind"
           source = "local/rclone.conf"
           target = "/root/.config/rclone/rclone.conf"

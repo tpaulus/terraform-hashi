@@ -38,7 +38,7 @@ job "ha-HomeAssistant" {
     task "home-assistant" {
       driver = "docker"
       kill_timeout = "30s"
-      config = {
+      config {
         network_mode = "weave"
 
         image = "ghcr.io/home-assistant/home-assistant:2023.8.4"
