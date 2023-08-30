@@ -38,7 +38,7 @@ job "N8N" {
 
     task "N8N" {
       driver = "docker"
-      config = {
+      config {
         network_mode = "weave"
         image = "n8nio/n8n:0.237.0"
 
