@@ -13,8 +13,11 @@ resource "nomad_job" "cloudflared" {
 
 
 // ==== Volumes ====
-resource "nomad_external_volume" "n8n_volume" {
-  type         = "csi"
+resource "nomad_csi_volume" "n8n_volume" {
+  lifecycle {
+    prevent_destroy = true
+  }
+
   plugin_id    = "org.democratic-csi.truenas-nfs"
   volume_id    = "n8n_volume"
   name         = "n8n_volume"
@@ -32,8 +35,11 @@ resource "nomad_external_volume" "n8n_volume" {
   }
 }
 
-resource "nomad_external_volume" "blog_volume" {
-  type         = "csi"
+resource "nomad_csi_volume" "blog_volume" {
+  lifecycle {
+    prevent_destroy = true
+  }
+
   plugin_id    = "org.democratic-csi.truenas-nfs"
   volume_id    = "blog_volume"
   name         = "blog_volume"
@@ -56,8 +62,11 @@ resource "nomad_external_volume" "blog_volume" {
   }
 }
 
-resource "nomad_external_volume" "blog_db_volume" {
-  type         = "csi"
+resource "nomad_csi_volume" "blog_db_volume" {
+  lifecycle {
+    prevent_destroy = true
+  }
+  
   plugin_id    = "org.democratic-csi.truenas-nfs"
   volume_id    = "blog_db_volume"
   name         = "blog_db_volume"
@@ -80,8 +89,11 @@ resource "nomad_external_volume" "blog_db_volume" {
   }
 }
 
-resource "nomad_external_volume" "netbox_db_volume" {
-  type         = "csi"
+resource "nomad_csi_volume" "netbox_db_volume" {
+  lifecycle {
+    prevent_destroy = true
+  }
+  
   plugin_id    = "org.democratic-csi.truenas-nfs"
   volume_id    = "netbox_db_volume"
   name         = "netbox_db_volume"
@@ -104,8 +116,11 @@ resource "nomad_external_volume" "netbox_db_volume" {
   }
 }
 
-resource "nomad_external_volume" "netbox_media_volume" {
-  type         = "csi"
+resource "nomad_csi_volume" "netbox_media_volume" {
+  lifecycle {
+    prevent_destroy = true
+  }
+  
   plugin_id    = "org.democratic-csi.truenas-nfs"
   volume_id    = "netbox_media_volume"
   name         = "netbox_media_volume"
@@ -128,8 +143,11 @@ resource "nomad_external_volume" "netbox_media_volume" {
   }
 }
 
-resource "nomad_external_volume" "home_assistant_volume" {
-  type         = "csi"
+resource "nomad_csi_volume" "home_assistant_volume" {
+  lifecycle {
+    prevent_destroy = true
+  }
+  
   plugin_id    = "org.democratic-csi.truenas-nfs"
   volume_id    = "home_assistant_volume"
   name         = "home_assistant_volume"
@@ -152,8 +170,11 @@ resource "nomad_external_volume" "home_assistant_volume" {
   }
 }
 
-resource "nomad_external_volume" "unifi_protect_backup_volume" {
-  type         = "csi"
+resource "nomad_csi_volume" "unifi_protect_backup_volume" {
+  lifecycle {
+    prevent_destroy = true
+  }
+  
   plugin_id    = "org.democratic-csi.truenas-nfs"
   volume_id    = "unifi_protect_backup_volume"
   name         = "unifi_protect_backup_volume"
@@ -176,8 +197,11 @@ resource "nomad_external_volume" "unifi_protect_backup_volume" {
   }
 }
 
-resource "nomad_external_volume" "grafana_volume" {
-  type         = "csi"
+resource "nomad_csi_volume" "grafana_volume" {
+  lifecycle {
+    prevent_destroy = true
+  }
+  
   plugin_id    = "org.democratic-csi.truenas-nfs"
   volume_id    = "grafana_volume"
   name         = "grafana_volume"
@@ -200,8 +224,11 @@ resource "nomad_external_volume" "grafana_volume" {
   }
 }
 
-resource "nomad_external_volume" "prometheus_volume" {
-  type         = "csi"
+resource "nomad_csi_volume" "prometheus_volume" {
+  lifecycle {
+    prevent_destroy = true
+  }
+  
   plugin_id    = "org.democratic-csi.truenas-nfs"
   volume_id    = "prometheus_volume"
   name         = "prometheus_volume"
@@ -224,8 +251,11 @@ resource "nomad_external_volume" "prometheus_volume" {
   }
 }
 
-resource "nomad_external_volume" "icloud_pd_volume" {
-  type         = "csi"
+resource "nomad_csi_volume" "icloud_pd_volume" {
+  lifecycle {
+    prevent_destroy = true
+  }
+  
   plugin_id    = "org.democratic-csi.truenas-nfs"
   volume_id    = "icloud_pd_volume"
   name         = "icloud_pd_volume"
