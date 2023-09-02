@@ -32,6 +32,10 @@ job "Netbox" {
       canary            = 1
     }
 
+    spread {
+      attribute = "${node.unique.id}"
+    }
+
     network {
       dns {
         servers = ["1.1.1.1", "1.0.0.1"]
