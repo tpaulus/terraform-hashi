@@ -83,3 +83,7 @@ resource "nomad_job" "opnsense-exporter" {
 resource "nomad_job" "ansible-applier" {
   jobspec = file("${path.module}/jobs/ansible-applier.hcl")
 }
+
+resource "nomad_job" "restic-backend" {
+  jobspec = file("${path.module}/jobs/restic-backend.hcl")
+}
