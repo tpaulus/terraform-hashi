@@ -41,7 +41,7 @@ job "storage-restic" {
         network_mode = "weave"
         image = "restic/rest-server:0.12.1"
 
-        args = ["--prometheus", "--prometheus-no-auth", "--path", "/data"]
+        command = "/usr/bin/rest-server --path /data --htpasswd-file /secrets/.htpasswd --prometheus --prometheus-no-auth"
 
         auth_soft_fail = true
       }
@@ -74,6 +74,7 @@ job "storage-restic" {
 
       env {
         PASSWORD_FILE = "secrets/.htpasswd"
+        DATA_DIRECTORY = "/data"
       }
 
       template {
