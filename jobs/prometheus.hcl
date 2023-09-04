@@ -91,6 +91,12 @@ scrape_configs:
     - targets:
       - 10.0.10.1:9253
 
+  - job_name: "grimd"
+    metrics_path: "/metrics"
+    static_configs:
+    - targets:
+      - 10.0.1.1:10005
+
   - job_name: "weave"
     metrics_path: "/metrics"
     static_configs:
