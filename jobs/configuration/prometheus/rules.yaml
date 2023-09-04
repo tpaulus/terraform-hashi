@@ -372,3 +372,33 @@ groups:
       summary: "Significant number of requests going to fallback resolver"
       description: "Over 50% of request made to the upstream resovlers (grimd or Cloudflare) are using the fallback (Cloudflare). Not all ads will be blocked."
       link: https://grafana.brickyard.whitestar.systems/d/wY4blRMGz/coredns
+
+- name: Grimd
+  rules:
+  - alert: Grimd Not Running
+    expr: sum(up{job="grimd"}) == 0
+    for: 10m
+    labels:
+      severity: warning
+    annotations:
+      summary: "Grimd is not running"
+      description: "Prometheus is unable to scrape metrics from grimd, check that it is running. Ads may not be blocked as expected."
+      link: https://grafana.brickyard.whitestar.systems/d/d23403e2-8ee6-43f4-813e-c0c2462d341a/grimd
+  - alert: Grimd Block List Empty
+    expr: max(grimd_blocklist_size{}) < 100
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: "Grimd Blocklist empty"
+      description: "The blocklist in Grimd is emptier than it should be - ads may not be blocked as expected."
+      link: https://grafana.brickyard.whitestar.systems/d/d23403e2-8ee6-43f4-813e-c0c2462d341a/grimd
+  - alert: Grimd Low Query Rate
+    expr: sum(rate(grimd_query_result{}[1m0s])) == 0
+    for: 10m
+    labels:
+      severity: warning
+    annotations:
+      summary: "Grimd Query Rate Low"
+      description: "Grimd is serving a lower number of requests/sec than expected. Check that it is running, has enough resources, and both upstream and downstream services are operational."
+      link: https://grafana.brickyard.whitestar.systems/d/d23403e2-8ee6-43f4-813e-c0c2462d341a/grimd
