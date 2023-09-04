@@ -41,7 +41,13 @@ job "storage-restic" {
         network_mode = "weave"
         image = "restic/rest-server:0.12.1"
 
-        command = "/usr/bin/rest-server --path /data --htpasswd-file /secrets/.htpasswd --prometheus --prometheus-no-auth"
+        entrypoint = [""]
+        command = "/usr/bin/rest-server"
+        args = [
+          "--path", "/data",
+          "--htpasswd-file", "/secrets/.htpasswd",
+          "--prometheus", "--prometheus-no-auth"
+        ]
 
         auth_soft_fail = true
       }
