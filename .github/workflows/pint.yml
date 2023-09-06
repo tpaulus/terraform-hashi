@@ -15,12 +15,12 @@ jobs:
   pint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
         with:
           fetch-depth: 0
 
       - name: Run pint
-        uses: prymitive/pint-action@v1.24.0
+        uses: prymitive/pint-action@581f75f4a1e34956a3e8517751333eb8bbf89c7a # v1.24.0
         with:
           token: ${{ github.token }}
           workdir: 'jobs/configuration/prometheus'
