@@ -1,7 +1,8 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:base"
+    "config:base",
+    "github>tpaulus/renovate-config:auto-merge-gh-actions"
   ],
   "prConcurrentLimit": 0,
   "prHourlyLimit": 0,
@@ -25,7 +26,7 @@
       "stabilityDays": 1
     },
     {
-      "matchManagers": ["github-actions", "terraform"],
+      "matchManagers": ["terraform"],
       "automerge": true,
       "stabilityDays": 2
     }
