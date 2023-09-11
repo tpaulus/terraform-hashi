@@ -87,3 +87,7 @@ resource "nomad_job" "ansible-applier" {
 resource "nomad_job" "restic-backend" {
   jobspec = file("${path.module}/jobs/restic-backend.hcl")
 }
+
+resource "nomad_job" "vlmcsd" {
+  jobspec = file("${path.module}/jobs/vlmcsd.hcl")
+}
