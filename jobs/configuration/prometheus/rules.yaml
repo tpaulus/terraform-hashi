@@ -51,6 +51,14 @@ groups:
       summary: UPS Is On Battery
       description: UPS is on battery power
       dashboard: https://grafana.brickyard.whitestar.systems/d/j4a-DMWRk/ups-statistics?orgId=1
+  - alert: Unable to Scrape UPS Metrics
+    expr: up{job="prometheus-nut-exporter-main-ups"} == 0
+    for: 5m
+    labels:
+      severity: critical
+    annotations:
+      summary: Unable to scrape UPS Status
+      description: Prometheus is unable to scrape the UPS via the NUT Exporter.
 
 - name: Cloudprober
   rules:
