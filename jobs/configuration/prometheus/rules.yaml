@@ -9,7 +9,7 @@ groups:
       severity: low
     annotations:
       summary: Nomad Raft Not Being Backed Up
-      description: It has been over 4 hours since the Nomad Raft has been backed up
+      description: It has been over 4.5 hours since the Nomad Raft has been backed up
       dashboard: https://grafana.brickyard.whitestar.systems/d/p1er_aLVk/backups?orgId=1
   - alert: Consul Raft Backups Missing
     expr: time() - max(consul_raft_backup_completed{}) > 16200
@@ -18,19 +18,19 @@ groups:
       severity: low
     annotations:
       summary: Consul Raft Not Being Backed Up
-      description: It has been over 4 hours since the Consul Raft has been backed up
+      description: It has been over 4.5 hours since the Consul Raft has been backed up
       dashboard: https://grafana.brickyard.whitestar.systems/d/p1er_aLVk/backups?orgId=1
 
 - name: ShareBackups
   rules:
   - alert: Share Backup Missing
-    expr: time() - max(b2_backup_completed{}) by (share, bucket_name) > 10800
+    expr: time() - max(b2_backup_completed{}) by (share, bucket_name) > 14400
     for: 1m
     labels:
       severity: high
     annotations:
       summary: "{{ $labels.share }} Not Being Backed Up"
-      description: "It has been over 3 hours since {{ $labels.share }} has been backed up to the B2 Bucket {{ $labels.bucket_name }}"
+      description: "It has been over 4 hours since {{ $labels.share }} has been backed up to the B2 Bucket {{ $labels.bucket_name }}"
       dashboard: https://grafana.brickyard.whitestar.systems/d/p1er_aLVk/backups?orgId=1
   - alert: Share Cleanup Missing
     expr: time() - max(b2_cleanup_completed{}) by (share, bucket_name) > 21600
