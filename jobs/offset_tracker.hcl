@@ -1,4 +1,4 @@
-job "Lunch_Money_Offset_Tracker" {
+job "Monarch_Offset_Tracker" {
   datacenters = ["seaview"]
   type = "batch"
 
@@ -16,15 +16,15 @@ job "Lunch_Money_Offset_Tracker" {
       driver = "docker"
 
       config {
-        image = "ghcr.io/tpaulus/lunch-money-offset-tracker:main"
+        image = "ghcr.io/tpaulus/monarch-offset-tracker:main"
       }
 
       template {
         data = <<EOH
-{{ with nomadVar "nomad/jobs/Lunch_Money_Offset_Tracker" -}}
-LUNCHMONEY_KEY = "{{ .LUNCHMONEY_KEY }}"
-NOTION_DB = "{{ .NOTION_DB }}"
-NOTION_KEY = "{{ .NOTION_KEY }}"
+{{ with nomadVar "nomad/jobs/Monarch_Offset_Tracker" -}}
+{{ range .Tuples -}}
+{{ .K }}="{{ .V }}"
+{{ end }}
 {{- end }}
         EOH
 
