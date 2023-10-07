@@ -18,6 +18,7 @@
     }
   ],
   "platformAutomerge": true,
+  "automergeType": "branch",
   "packageRules": [
     {
       "matchManagers": ["regex"],
