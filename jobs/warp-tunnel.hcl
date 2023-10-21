@@ -34,7 +34,7 @@ job "net-warp-tunnel" {
       template {
         data = <<EOF
 {{- with nomadVar "cloudflared/brickyard-warp" -}}
-TOKEN = {{ .TunnelToken }}
+TOKEN = "{{ .TunnelToken }}"
 }
 {{ end }}
 EOF
