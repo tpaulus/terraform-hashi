@@ -27,7 +27,7 @@ job "net-warp-tunnel" {
         image = "cloudflare/cloudflared:2023.8.2"
         command = "tunnel"
         args = [
-          "run --token ${TOKEN}"
+          "run", "--token", "${TOKEN}"
         ]
       }
 
