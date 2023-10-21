@@ -91,3 +91,7 @@ resource "nomad_job" "restic-backend" {
 resource "nomad_job" "vlmcsd" {
   jobspec = file("${path.module}/jobs/vlmcsd.hcl")
 }
+
+resource "nomad_job" "warp-tunnel" {
+  jobspec = file("${path.module}/jobs/warp-tunnel.hcl")
+}
