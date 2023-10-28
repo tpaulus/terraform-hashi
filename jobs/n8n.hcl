@@ -93,7 +93,7 @@ N8N_HIRING_BANNER_ENABLED = "false"
 
       volume_mount {
           volume      = "n8n-nfs-volume"
-          destination = "/root/.n8n"
+          destination = "/home/node/.n8n"
           read_only   = false
       }
 
