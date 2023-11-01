@@ -24,7 +24,7 @@ job "net-warp-tunnel" {
 
       config {
         network_mode = "weave"
-        image = "cloudflare/cloudflared:2023.8.2"
+        image = "cloudflare/cloudflared:2023.10.0"
         command = "tunnel"
         args = [
           "run", "--token", "${TOKEN}"
