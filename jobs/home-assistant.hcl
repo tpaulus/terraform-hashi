@@ -41,7 +41,7 @@ job "ha-HomeAssistant" {
       config {
         network_mode = "weave"
 
-        image = "ghcr.io/home-assistant/home-assistant:2023.11.1"
+        image = "ghcr.io/home-assistant/home-assistant:2023.11.2"
 
         auth_soft_fail = true
 
