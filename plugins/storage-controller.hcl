@@ -15,7 +15,7 @@ job "storage-controller" {
       driver = "docker"
 
       config {
-        image = "democraticcsi/democratic-csi:v1.8.3"
+        image = "democraticcsi/democratic-csi:v1.8.4"
 
         args = [
           "--csi-version=1.5.0",
