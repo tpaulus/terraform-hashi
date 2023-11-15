@@ -365,7 +365,7 @@ WEBHOOKS_ENABLED=true
       driver = "docker"
       config {
         network_mode = "weave"
-        image = "postgres:16.0-alpine"
+        image = "postgres:16.1-alpine"
 
         auth_soft_fail = true
       }
