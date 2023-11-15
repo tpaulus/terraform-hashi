@@ -48,7 +48,7 @@ job "obs-grafana" {
 
       config {
         network_mode = "weave"
-        image = "grafana/grafana:10.2.0"
+        image = "grafana/grafana:10.2.1"
       }
 
       resources {
