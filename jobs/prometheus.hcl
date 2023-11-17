@@ -25,7 +25,7 @@ job "obs-prometheus" {
 
       config {
         network_mode = "weave"
-        image = "prom/prometheus:v2.47.2"
+        image = "prom/prometheus:v2.48.0"
         
         args = [
           "--config.file=/etc/prometheus/config/prometheus.yml",
