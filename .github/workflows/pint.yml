@@ -20,7 +20,7 @@ jobs:
           fetch-depth: 0
 
       - name: Run pint
-        uses: prymitive/pint-action@9c167b3bb1840d604535e63f4991da5a6433f9ee # v1.32.0
+        uses: prymitive/pint-action@4b61fe0064ffea016f7b2fe05978f7ef6c5ebbe4 # v1.33.0
         with:
           token: ${{ github.token }}
           workdir: 'jobs/configuration/prometheus'
