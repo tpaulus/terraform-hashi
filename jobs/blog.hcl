@@ -39,7 +39,7 @@ job "Blog" {
       driver = "docker"
       config {
         network_mode = "weave"
-        image = "ghost:5.74.0"
+        image = "ghost:5.74.5"
 
         auth_soft_fail = true
 
