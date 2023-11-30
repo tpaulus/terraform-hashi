@@ -9,7 +9,7 @@ job "obs-nut-exporter" {
       driver = "docker"
       config {
         network_mode = "weave"
-        image = "ghcr.io/druggeri/nut_exporter:3.1.0"
+        image = "ghcr.io/druggeri/nut_exporter:3.1.1"
       }
 
       resources {
