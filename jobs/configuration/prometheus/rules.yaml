@@ -191,16 +191,6 @@ groups:
       title: Home Assistant is Down
       description: No Nomad Job is running for Home Assistant
       link: "https://nomad.brickyard.whitestar.systems/ui/jobs/ha-HomeAssistant@default"
-  # Protect Backup
-  - alert: Protect Backup Down
-    expr: nomad_nomad_job_summary_running{exported_job="backup-unifi-protect"} == 0
-    for: 5m
-    labels:
-      severity: critical
-    annotations:
-      title: Protect Backup Service is Down
-      description: No Nomad Job is running for backing up Unifi Protect Events offsite
-      link: "https://nomad.brickyard.whitestar.systems/ui/jobs/backup-unifi-protect @default"
   # mDNS Reflector
   - alert: mDNS Reflector Routing Loop
     expr: max(nomad_client_allocs_cpu_total_percent{task="mdns-reflector"}) > 0.5
