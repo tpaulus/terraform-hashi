@@ -32,9 +32,9 @@ resource "nomad_job" "HomeAssistant" {
   jobspec = file("${path.module}/jobs/home-assistant.hcl") 
 }
 
-resource "nomad_job" "unifi-protect-backup" {
-  jobspec = file("${path.module}/jobs/backup-unifi-protect.hcl") 
-}
+# resource "nomad_job" "unifi-protect-backup" {
+#   jobspec = file("${path.module}/jobs/backup-unifi-protect.hcl") 
+# } Moved to K3s
 
 resource "nomad_job" "alertmanager" {
   jobspec = file("${path.module}/jobs/alertmanager.hcl") 
@@ -80,17 +80,17 @@ resource "nomad_job" "opnsense-exporter" {
   jobspec = file("${path.module}/jobs/opnsense-exporter.hcl")
 }
 
-resource "nomad_job" "ansible-applier" {
-  jobspec = file("${path.module}/jobs/ansible-applier.hcl")
-}
+# resource "nomad_job" "ansible-applier" {
+#   jobspec = file("${path.module}/jobs/ansible-applier.hcl")
+# } Deprecated
 
-resource "nomad_job" "restic-backend" {
-  jobspec = file("${path.module}/jobs/restic-backend.hcl")
-}
+# resource "nomad_job" "restic-backend" {
+#   jobspec = file("${path.module}/jobs/restic-backend.hcl")
+# } Deprecated
 
-resource "nomad_job" "vlmcsd" {
-  jobspec = file("${path.module}/jobs/vlmcsd.hcl")
-}
+# resource "nomad_job" "vlmcsd" {
+#   jobspec = file("${path.module}/jobs/vlmcsd.hcl")
+# } Moved to K3s
 
 resource "nomad_job" "warp-tunnel" {
   jobspec = file("${path.module}/jobs/warp-tunnel.hcl")
