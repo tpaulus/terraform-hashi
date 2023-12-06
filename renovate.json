@@ -17,7 +17,7 @@
       "depTypeTemplate": "docker_image"
     }
   ],
-  "platformAutomerge": true,
+  "platformAutomerge": false,
   "automergeType": "branch",
   "ignoreTests": true,
   "packageRules": [
