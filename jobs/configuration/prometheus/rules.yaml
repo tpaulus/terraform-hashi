@@ -131,16 +131,6 @@ groups:
       title: mDNS Reflector Routing Loop
       description: mDNS CPU Usage is High, indicating a potential routing loop. Stop the reflector temporarily to allow traffic to clear.
       link: "https://nomad.brickyard.whitestar.systems/ui/jobs/net-mdns_reflector@default"
-  # CloudProber
-  - alert: Cloud Prober Down
-    expr: nomad_nomad_job_summary_running{exported_job="obs-cloudprober"} == 0
-    for: 5m
-    labels:
-      severity: high
-    annotations:
-      title: Home Assistant is Down
-      description: No Nomad Job is running for Cloud Prober
-      link: "https://nomad.brickyard.whitestar.systems/ui/jobs/obs-cloudprober @default"
 
 - name: weave-net
   rules:
