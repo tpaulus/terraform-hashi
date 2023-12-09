@@ -64,9 +64,9 @@ resource "nomad_job" "consul-exporter" {
 #   jobspec = file("${path.module}/jobs/nut_exporter.hcl") 
 # } Moved to K3s
 
-resource "nomad_job" "cloudprober" {
-  jobspec = file("${path.module}/jobs/cloudprober.hcl") 
-}
+# resource "nomad_job" "cloudprober" {
+#   jobspec = file("${path.module}/jobs/cloudprober.hcl") 
+# } Moved to K3s
 
 resource "nomad_job" "coa-utilities-bill-generation" {
   jobspec = file("${path.module}/jobs/coa-utilities-bill-generation.hcl") 

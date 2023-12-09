@@ -40,18 +40,6 @@ groups:
     annotations:
       summary: "{{ $labels.share }} Not Being Cleaned Up"
       description: "It has been over 6 hours since {{ $labels.share }} has been cleaned up against the B2 Bucket {{ $labels.bucket_name }}"
-
-- name: Cloudprober
-  rules:
-  - alert: Internal Service Down
-    expr: sum(rate(success{job="cloudprober", location="internal"}[1m])) by (probe) / sum(rate(total{job="cloudprober", location="internal"}[1m])) by (probe) < 0.50
-    for: 3m
-    labels:
-      severity: high
-    annotations:
-      summary: "{{ $labels.probe }} Is Down"
-      description: "{{ $labels.probe }} is failing Cloudprober Healthchecks"
-      dashboard: https://grafana.brickyard.whitestar.systems/d/bztcrl14k/status-overview
   
 - name: Consul
   rules:
