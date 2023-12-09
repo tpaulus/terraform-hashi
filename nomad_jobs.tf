@@ -48,9 +48,9 @@ resource "nomad_job" "prometheus" {
   jobspec = file("${path.module}/jobs/prometheus.hcl") 
 }
 
-resource "nomad_job" "snmp-exporter" {
-  jobspec = file("${path.module}/jobs/snmp_exporter.hcl") 
-}
+# resource "nomad_job" "snmp-exporter" {
+#   jobspec = file("${path.module}/jobs/snmp_exporter.hcl") 
+# } Deprecated
 
 resource "nomad_job" "graphite-exporter" {
   jobspec = file("${path.module}/jobs/graphite_exporter.hcl") 
@@ -60,9 +60,9 @@ resource "nomad_job" "consul-exporter" {
   jobspec = file("${path.module}/jobs/consul_exporter.hcl") 
 }
 
-resource "nomad_job" "nut-exporter" {
-  jobspec = file("${path.module}/jobs/nut_exporter.hcl") 
-}
+# resource "nomad_job" "nut-exporter" {
+#   jobspec = file("${path.module}/jobs/nut_exporter.hcl") 
+# } Moved to K3s
 
 resource "nomad_job" "cloudprober" {
   jobspec = file("${path.module}/jobs/cloudprober.hcl") 
@@ -76,9 +76,9 @@ resource "nomad_job" "icloud_pd" {
   jobspec = file("${path.module}/jobs/backup-icloud-photos.hcl") 
 }
 
-resource "nomad_job" "opnsense-exporter" {
-  jobspec = file("${path.module}/jobs/opnsense-exporter.hcl")
-}
+# resource "nomad_job" "opnsense-exporter" {
+#   jobspec = file("${path.module}/jobs/opnsense-exporter.hcl")
+# } Moved to K3s
 
 # resource "nomad_job" "ansible-applier" {
 #   jobspec = file("${path.module}/jobs/ansible-applier.hcl")

@@ -41,25 +41,6 @@ groups:
       summary: "{{ $labels.share }} Not Being Cleaned Up"
       description: "It has been over 6 hours since {{ $labels.share }} has been cleaned up against the B2 Bucket {{ $labels.bucket_name }}"
 
-- name: UPSAlerts
-  rules:
-  - alert: UPS On Batt
-    expr: network_ups_tools_ups_status{flag="OB"} == 1
-    labels:
-      severity: critical
-    annotations:
-      summary: UPS Is On Battery
-      description: UPS is on battery power
-      dashboard: https://grafana.brickyard.whitestar.systems/d/j4a-DMWRk/ups-statistics?orgId=1
-  - alert: Unable to Scrape UPS Metrics
-    expr: up{job="prometheus-nut-exporter-main-ups"} == 0
-    for: 5m
-    labels:
-      severity: critical
-    annotations:
-      summary: Unable to scrape UPS Status
-      description: Prometheus is unable to scrape the UPS via the NUT Exporter.
-
 - name: Cloudprober
   rules:
   - alert: Internal Service Down
@@ -72,43 +53,6 @@ groups:
       description: "{{ $labels.probe }} is failing Cloudprober Healthchecks"
       dashboard: https://grafana.brickyard.whitestar.systems/d/bztcrl14k/status-overview
   
-- name: OPNSense
-  rules:
-  - alert: Internet Down
-    expr: sum(gateway_up{gateway_name!~"[a-zA-Z]*_Weave|.*DHCP6"}) == 0
-    for: 3m
-    labels:
-      severity: critical
-    annotations:
-      summary: Internet is Down
-      description: All Upstream Gateways are Offline
-      dashboard: https://grafana.brickyard.whitestar.systems/d/bztcrl14k/status-overview
-  - alert: Primary Internet Down
-    expr: gateway_up{gateway_name="CENTURYLINKINET_PPPOE"} == 0
-    for: 3m
-    labels:
-      severity: high
-    annotations:
-      summary: Centurylink Internet Gateway is Down - Running on Backup Gateway
-      dashboard: https://grafana.brickyard.whitestar.systems/d/a6c53492-cfb0-41c9-8f71-cce622706523/internet-uplink
-  - alert: Backup Internet Down
-    expr: gateway_up{gateway_name="TMOBILEGATEWAY_DHCP"} == 0
-    for: 3m
-    labels:
-      reciever: "webhook-homeassistant"
-      severity: low
-    annotations:
-      summary: T-Mobile Internet Gateway is Down - Redundancy Lost
-      dashboard: https://grafana.brickyard.whitestar.systems/d/a6c53492-cfb0-41c9-8f71-cce622706523/internet-uplink
-  - alert: Backup Internet Down (Auto Remidiation Not Successful)
-    expr: gateway_up{gateway_name="TMOBILEGATEWAY_DHCP"} == 0
-    for: 15m
-    labels:
-      severity: low
-    annotations:
-      summary: T-Mobile Internet Gateway is Down - Redundancy Lost (Auto Remidiation Not Successful)
-      dashboard: https://grafana.brickyard.whitestar.systems/d/a6c53492-cfb0-41c9-8f71-cce622706523/internet-uplink
-
 - name: Consul
   rules:
   - alert: Consul agent is not healthy
