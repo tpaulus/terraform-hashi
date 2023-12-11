@@ -9,7 +9,7 @@ job "obs-snmp-exporter" {
       driver = "docker"
       config {
         network_mode = "weave"
-        image = "prom/snmp-exporter:v0.24.1"
+        image = "prom/snmp-exporter:v0.25.0"
         command = "--config.file=${NOMAD_TASK_DIR}/snmp.yaml"
       }
 
