@@ -19,7 +19,7 @@ job "obs-consul_exporter" {
 
       config {
         network_mode = "weave"
-        image = "prom/consul-exporter:v0.9.0"
+        image = "prom/consul-exporter:v0.10.0"
         ports = ["http"]
         args  = [
         "--consul.server=${attr.unique.network.ip-address}:8500"
