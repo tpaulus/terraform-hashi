@@ -113,24 +113,6 @@ groups:
       title: Cloudflared is not running on all Nomad Clients
       description: Cloudflared is not running on all nodes, check which nodes are missing the system job.
       link: "https://nomad.brickyard.whitestar.systems/ui/jobs/net-cloudflared@default"
-  # Home Assistant
-  - alert: Home Assistant Down
-    expr: nomad_nomad_job_summary_running{exported_job="ha-HomeAssistant"} == 0
-    for: 5m
-    labels:
-      severity: high
-    annotations:
-      title: Home Assistant is Down
-      description: No Nomad Job is running for Home Assistant
-      link: "https://nomad.brickyard.whitestar.systems/ui/jobs/ha-HomeAssistant@default"
-  # mDNS Reflector
-  - alert: mDNS Reflector Routing Loop
-    expr: max(nomad_client_allocs_cpu_total_percent{task="mdns-reflector"}) > 0.5
-    for: 1m
-    annotations:
-      title: mDNS Reflector Routing Loop
-      description: mDNS CPU Usage is High, indicating a potential routing loop. Stop the reflector temporarily to allow traffic to clear.
-      link: "https://nomad.brickyard.whitestar.systems/ui/jobs/net-mdns_reflector@default"
 
 - name: weave-net
   rules:
