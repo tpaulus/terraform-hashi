@@ -28,9 +28,9 @@ resource "nomad_job" "N8N" {
 #   jobspec = file("${path.module}/jobs/netbox.hcl")
 # } Moved to K3s
 
-resource "nomad_job" "HomeAssistant" {
-  jobspec = file("${path.module}/jobs/home-assistant.hcl") 
-}
+# resource "nomad_job" "HomeAssistant" {
+#   jobspec = file("${path.module}/jobs/home-assistant.hcl") 
+# } Moved to Broadmoor
 
 # resource "nomad_job" "unifi-protect-backup" {
 #   jobspec = file("${path.module}/jobs/backup-unifi-protect.hcl") 
@@ -92,6 +92,6 @@ resource "nomad_job" "icloud_pd" {
 #   jobspec = file("${path.module}/jobs/vlmcsd.hcl")
 # } Moved to K3s
 
-resource "nomad_job" "warp-tunnel" {
-  jobspec = file("${path.module}/jobs/warp-tunnel.hcl")
-}
+# resource "nomad_job" "warp-tunnel" {
+#   jobspec = file("${path.module}/jobs/warp-tunnel.hcl")
+# } Moved to Broadmoor
