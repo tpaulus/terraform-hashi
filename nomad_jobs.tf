@@ -36,29 +36,29 @@ resource "nomad_job" "N8N" {
 #   jobspec = file("${path.module}/jobs/backup-unifi-protect.hcl") 
 # } Moved to K3s
 
-resource "nomad_job" "alertmanager" {
-  jobspec = file("${path.module}/jobs/alertmanager.hcl") 
-}
+# resource "nomad_job" "alertmanager" {
+#   jobspec = file("${path.module}/jobs/alertmanager.hcl") 
+# } Moved to K3s
 
 resource "nomad_job" "grafana" {
   jobspec = file("${path.module}/jobs/grafana.hcl") 
 }
 
-resource "nomad_job" "prometheus" {
-  jobspec = file("${path.module}/jobs/prometheus.hcl") 
-}
+# resource "nomad_job" "prometheus" {
+#   jobspec = file("${path.module}/jobs/prometheus.hcl") 
+# } Moved to K3s
 
 # resource "nomad_job" "snmp-exporter" {
 #   jobspec = file("${path.module}/jobs/snmp_exporter.hcl") 
 # } Deprecated
 
-resource "nomad_job" "graphite-exporter" {
-  jobspec = file("${path.module}/jobs/graphite_exporter.hcl") 
-}
+# resource "nomad_job" "graphite-exporter" {
+#   jobspec = file("${path.module}/jobs/graphite_exporter.hcl") 
+# } Moved to K3s
 
-resource "nomad_job" "consul-exporter" {
-  jobspec = file("${path.module}/jobs/consul_exporter.hcl") 
-}
+# resource "nomad_job" "consul-exporter" {
+#   jobspec = file("${path.module}/jobs/consul_exporter.hcl") 
+# } Deprecated
 
 # resource "nomad_job" "nut-exporter" {
 #   jobspec = file("${path.module}/jobs/nut_exporter.hcl") 
