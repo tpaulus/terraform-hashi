@@ -68,9 +68,9 @@ resource "nomad_job" "grafana" {
 #   jobspec = file("${path.module}/jobs/cloudprober.hcl") 
 # } Moved to K3s
 
-resource "nomad_job" "coa-utilities-bill-generation" {
-  jobspec = file("${path.module}/jobs/coa-utilities-bill-generation.hcl") 
-}
+# resource "nomad_job" "coa-utilities-bill-generation" {
+#   jobspec = file("${path.module}/jobs/coa-utilities-bill-generation.hcl") 
+# } Moved to K3s
 
 resource "nomad_job" "icloud_pd" {
   jobspec = file("${path.module}/jobs/backup-icloud-photos.hcl") 
