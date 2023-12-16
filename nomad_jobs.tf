@@ -16,9 +16,9 @@ resource "nomad_job" "cloudflared" {
 #   jobspec = file("${path.module}/jobs/offset_tracker.hcl")
 # } Moved to K3s
 
-resource "nomad_job" "N8N" {
-  jobspec = file("${path.module}/jobs/n8n.hcl")
-}
+# resource "nomad_job" "N8N" {
+#   jobspec = file("${path.module}/jobs/n8n.hcl")
+# } Moved to K3s
 
 # resource "nomad_job" "Blog" {
 #   jobspec = file("${path.module}/jobs/blog.hcl")
@@ -72,9 +72,9 @@ resource "nomad_job" "N8N" {
 #   jobspec = file("${path.module}/jobs/coa-utilities-bill-generation.hcl") 
 # } Moved to K3s
 
-resource "nomad_job" "icloud_pd" {
-  jobspec = file("${path.module}/jobs/backup-icloud-photos.hcl") 
-}
+# resource "nomad_job" "icloud_pd" {
+#   jobspec = file("${path.module}/jobs/backup-icloud-photos.hcl") 
+# } Deactivated
 
 # resource "nomad_job" "opnsense-exporter" {
 #   jobspec = file("${path.module}/jobs/opnsense-exporter.hcl")
