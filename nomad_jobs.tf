@@ -7,9 +7,9 @@ resource "nomad_job" "Storage-Node" {
   jobspec = file("${path.module}/plugins/storage-node.hcl")
 }
 
-resource "nomad_job" "cloudflared" {
-  jobspec = file("${path.module}/plugins/cloudflared.hcl")
-}
+# resource "nomad_job" "cloudflared" {
+#   jobspec = file("${path.module}/plugins/cloudflared.hcl")
+# }
 
 // ==== Jobs ====
 # resource "nomad_job" "Lunch_Money_Offsets" {
