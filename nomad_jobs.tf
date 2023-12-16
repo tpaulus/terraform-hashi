@@ -40,9 +40,9 @@ resource "nomad_job" "N8N" {
 #   jobspec = file("${path.module}/jobs/alertmanager.hcl") 
 # } Moved to K3s
 
-resource "nomad_job" "grafana" {
-  jobspec = file("${path.module}/jobs/grafana.hcl") 
-}
+# resource "nomad_job" "grafana" {
+#   jobspec = file("${path.module}/jobs/grafana.hcl") 
+# } Moved to K3s
 
 # resource "nomad_job" "prometheus" {
 #   jobspec = file("${path.module}/jobs/prometheus.hcl") 
